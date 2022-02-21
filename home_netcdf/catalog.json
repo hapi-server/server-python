@@ -1,0 +1,33 @@
+{
+    "HAPI": "2.0",
+    "catalog": [
+        {
+            "id": "dayspec",
+            "title": "GUVI 5-channel spectral data, daytime"
+        },
+        {
+            "id": "dayspec_03",
+            "title": "GUVI 5-channel spectral data, daytime"
+	},
+        {
+            "id": "dayspec_07",
+            "title": "GUVI 5-channel spectral data, daytime"
+	},
+        {
+            "id": "nightspec",
+            "title": "GUVI 5-channel spectral data, nighttime"
+        },
+        {
+            "id": "dayspec_gaim",
+            "title": "GUVI 5-channel spectral data, daytime"
+        },
+        {
+            "id": "nightspec_gaim",
+            "title": "GUVI 5-channel spectral data, nighttime"
+        }
+    ],
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    }
+}
