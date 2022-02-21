@@ -1,6 +1,6 @@
 # HAPI Python Server, including sample reader programs
 
-# original by jbfaden, Python3 update by sandyfreelance 04-06-2021 and onward
+original by jbfaden, Python3 update by sandyfreelance 04-06-2021 and onward
 
 
 # Introduction
@@ -16,7 +16,8 @@ The code and documentation resides at
 
 # Requires the following Python packages
   hapi-server3.py: dateutil
-  netcdf_hapireader.py: xarray
+
+netcdf_hapireader.py: xarray
 
 
 # Usage:
