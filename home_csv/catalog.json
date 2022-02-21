@@ -1,0 +1,17 @@
+{
+    "HAPI": "2.0",
+    "catalog": [
+        {
+            "id": "10.CF3744000800",
+            "title": "Pool Temperature"
+        },
+        {
+            "id": "cputemp",
+            "title": "Temperature of CPU and GPU of Raspberry PI"
+        }
+    ],
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    }
+}

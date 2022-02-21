@@ -1,33 +1,75 @@
-# server-python
-simple server written in Python, to support Raspberry Pi
+# HAPI Python Server, including sample reader programs
 
-# Introduction 
-This server is intended to be used when Apache with CGI-BIN scripts would be overkill for the simple task of implementing the HAPI interface.  For example, a Raspberry PI (https://www.raspberrypi.org/) collects temperature sensor data every minute and logs the data to files, and this code implements a HAPI server using only Python.  
+# original by jbfaden, Python3 update by sandyfreelance 04-06-2021 and onward
 
-# Setup 
-Python 2.7 provides a web server in its BaseHTTPServer module.  This is started, and the BaseHTTPServer.BaseHTTPRequestHandler do_GET method handles the different request types (catalog, info, data, etc).  The single Python file "hapi-server.py" is run to start the server.  
 
-The file must be modified for the particular installation.  Four configuration variables are found at the top of the file.  Suppose we wish to run the server at "http://192.168.0.46:9000/hapi/":
-* HOST_NAME which is the host name of the device.  (192.168.0.46)
-* PORT_NUMBER which is the port for the server.  80 is used for http, or another port, such as 9000, can be used.  
-* HAPI_HOME is the folder which will contain the data and templates for the server responses.  (/home/pi/hapi/)
-* SERVER_HOME is the folder within the server URLs.  (hapi)
+# Introduction
+This program sets up a server to stream HAPI-specification data to any
+existing HAPI client programs.  Setup requires making a configuration
+file for your server file setup, a set of JSON configuration files to
+comply with the HAPI specification, and use of a 'reader' program to
+convert your files into HAPI-formatted data (sample readers provided).
 
-There is a boolean isTesting, which was used to test things on the bench before installing it (in a headless environment which is difficult to get to).  In one mode, GPIO is used to provide feedback that a request is being served, and there is an alternate mode which echos to stderr.
+The code and documentation resides at 
+    https://github.com/hapi-server/server-python
 
-A few folders and data files must be created on the device.  Supposing HAPI_HOME is /home/pi/hapi/, the following files are needed under /home/pi/hapi:
-* capabilities.json  the capabilities response. 
-* catalog.json   the catalog response.  
-* info   a directory containing the info responses for each dataset id.
-* info/10.CF3744000800.json  the info response
-* data/10.CF3744000800/2018/10.CF3744000800.20180110.csv  a granule of the data set.
-* data/10.CF3744000800/2018/10.CF3744000800.20180111.csv  another granule of the data set.
 
-Note these are available in the zip file hapi_home.zip.  This can be unzipped and used to test the server.
+# Requires the following Python packages
+  hapi-server3.py: dateutil
+  netcdf_hapireader.py: xarray
 
-# Requirements
-* There was a module needed to run on my Pi, because it didn't have dateutil.parser.  This was fixed with:
-  * sudo apt-get install python-pip
-  * sudo pip install python-dateutil
-* Subsetting with the parameters is not yet supported, but will be shortly.
-* spawning subprocesses to read data will be available soon as well.
+
+# Usage:
+  python hapi-server3.py <MISSIONNAME> [localhost/http/https/custom]
+
+(If no arguments provided, defaults to 'csv' and 'localhost')
+
+where MISSIONNAME points to the appropriation MISSIONNAME.config file
+and:
+   localhost: server runs on localhost/port 8080
+   http:      server runs on port 80
+   https:     server runs on port 443
+   custom:    server runs on custom port that you hardcode into this code
+
+Capabilities and catalog responses must be formatted as JSON in SERVER_HOME
+info responses are in SERVER_HOME/info.
+IDs must be defined, as per HAPI, in info/*.json.
+
+The 'reader' routines (coded by the mission) then process the data to
+actually return for each id.  So the JSON defines to the server and the
+user what data is available, and the reader program also uses the JSON keys
+to find the appropriate data in the data files.
+
+
+# Readers
+
+Currently this HAPI server has sample readers that can handle:
+1) csv flat files in a directory hierarchy of "data/[id]/YYYY/[id].YYYYMMDD.csv"
+2) reading netCDF files and sending csv of a pre-defined sets of keys (GUVI)
+
+Additional readers will be provided as they are developed, and you are
+encouraged to create your own.  A reader has to read your data files
+and return CSV-formatted data for the subset of variables selected.
+
+Note server can implement per-file streaming or fetch-all then serve
+via the _config.py "stream_flag".  Generally, per-file continues sending
+data as it is processed and is generally recommended; fetch-all is useful
+if you need to add anything to post-process data before sending, or
+if data sets are small (so either way works).
+
+
+# Sample Data Sets
+
+A sample of CSV flat-file data (home_csv.zip) and NetCDF files
+(home_netcdf.zip) are provided, including all configuration, reader,
+JSON, and data files.
+
+
+# Configuration requirements
+ * responses can have templates like "lasthour" to mean the last hour boundary
+   and "lastday-P1D" to mean the last midnight minus one day.
+
+
+# Fun Fact
+Although intended as a big data server, this was originally a module needed
+to run on jfaden's Raspberry Pi, and should still will work on a Raspberry Pi!

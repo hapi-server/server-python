@@ -1,0 +1,77 @@
+{
+    "HAPI": "2.0",
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    },
+    "modificationDate": "lastday",
+    "parameters": [
+        {
+            "name": "Time",
+            "type": "isotime",
+            "fill": null,            
+            "units": "UTC"
+        },
+        {
+            "name": "channel",
+            "type": "integer",
+            "fill": null,            
+            "units": "number"
+        },
+        {
+            "name": "LATITUDE_DAY",
+            "type": "double",
+            "fill": null,            
+            "units": "radians"
+        },
+        {
+            "name": "LONGITUDE_DAY",
+            "type": "double",
+            "fill": null,            
+            "units": "radians"
+        },
+        {
+            "name": "ALTITUDE_DAY",
+            "type": "double",
+            "fill": null,            
+            "units": "meters"
+        },
+        {
+            "name": "PIERCEPOINT_DAY_SZA",
+            "type": "double",
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_INTENSITY_DAY",
+            "type": "double",
+	    "size": [5],
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_CALIBRATION_UNCERTAINTY_DAY",
+            "type": "double",
+	    "size": [5],
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_RECTIFIED_INTENSITY_DAY",
+            "type": "double",
+	    "size": [5],
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_RECTIFIED_RADIANCE_UNCERTAINTY_DAY",
+            "type": "double",
+	    "size": [5],
+            "fill": null,            
+            "units": "intensity"
+        }
+    ],
+    "startDate": "2017-09-06T21:41Z",
+    "stopDate": "2017-09-08T00:00Z",
+    "cadence": "PT1M"
+}

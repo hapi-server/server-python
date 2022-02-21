@@ -1,0 +1,73 @@
+{
+    "HAPI": "2.0",
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    },
+    "modificationDate": "lastday",
+    "parameters": [
+        {
+            "name": "Time",
+            "type": "isotime",
+            "fill": null,            
+            "units": "UTC"
+        },
+        {
+            "name": "channel",
+            "type": "integer",
+            "fill": null,            
+            "units": "number"
+        },
+        {
+            "name": "LATITUDE_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "radians"
+        },
+        {
+            "name": "LONGITUDE_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "radians"
+        },
+        {
+            "name": "ALTITUDE_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "meters"
+        },
+        {
+            "name": "PIERCEPOINT_GAIM_NIGHT_SZA",
+            "type": "double",
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_INTENSITY_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_CALIBRATION_UNCERTAINTY_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_RECTIFIED_INTENSITY_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "intensity"
+        },
+        {
+            "name": "DISK_RECTIFIED_RADIANCE_UNCERTAINTY_GAIM_NIGHT",
+            "type": "double",
+            "fill": null,            
+            "units": "intensity"
+        }
+    ],
+    "startDate": "2021-07-06T00:42Z",
+    "stopDate": "2021-07-09T00:00Z",
+    "cadence": "PT1M"
+}
