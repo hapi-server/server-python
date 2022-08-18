@@ -173,7 +173,7 @@ else:
     print("Note no config file ",cfile," exists, using generic CSV defaults")
     # csv_config.py, generic config file for local CSV files
     # as per Jeremy's original code
-    import csvhapi
+    import csv_hapireader
     HAPI_HOME= 'hapi_home/'
     api_datatype = 'file'
     floc={}
