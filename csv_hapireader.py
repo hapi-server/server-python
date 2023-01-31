@@ -11,17 +11,14 @@ Good for CSV files in a file tree
 """
 
 import os
+import json
 
-def do_get_parameters( id ):
-    if ( id=='10.CF3744000800' ):
-        return [ 'Time','Temperature' ]
-    elif ( id=='cputemp' ):
-        return [ 'Time', 'GPUTemperature', 'CPUTemperature' ]
-    else:
-        raise Except("this is not implemented!")
-
-def do_parameters_map( id, parameters ):
-    pp= do_get_parameters(id)
+def do_parameters_map( id, floc, parameters ):
+    ff= floc['dir'] + '/info/' + id + '.json'
+    fin=open(ff,'r')
+    jset = json.loads(fin.read())
+    fin.close()
+    pp = [item['name'] for item in jset['parameters']]
     result= list (map( pp.index, parameters ))
     if ( result[0]!=0 ):
         result.insert(0,0)
@@ -39,7 +36,7 @@ def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
     yrmin= int( timemin[0:4] )
     yrmax= int( timemax[0:4] )
     if ( parameters!=None ):
-        mm= do_parameters_map( id, parameters )
+        mm= do_parameters_map( id, floc, parameters )
     else:
         mm= None
 
