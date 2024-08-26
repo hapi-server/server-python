@@ -182,12 +182,14 @@ else:
 
 if api_datatype == 'aws':
     import s3netcdf
+
+#if HAPI_HOME.startswith("s3:"):
+from smart_open import open
     
 ### GET HAPI VERSION we need to support
 # (mostly needed for id/dataset, time.min/start, time.max/stop keywords)
-fin=open( HAPI_HOME + 'capabilities.json','r')
-jset=json.loads(fin.read())
-fin.close()
+with open( HAPI_HOME + 'capabilities.json','r') as fin:
+    jset=json.loads(fin.read())
 
 # below now moved to info/*.json instead of capabilities.json
 ### potential "x_*" parameters in capabilities.json extracted here
@@ -380,7 +382,7 @@ def generic_check_error(id, timemin, timemax, parameters):
     #print("debug: errorcode is ",errorcode)
     return(errorcode,qtimemin,qtimemax)
 
-def do_write_info( s, id, parameters, prefix ):
+def do_write_info( stream, id, parameters, prefix ):
     try:
         infoJson= open( HAPI_HOME + 'info/' + id + '.json' ).read()
         ##import json
@@ -396,11 +398,11 @@ def do_write_info( s, id, parameters, prefix ):
         infoJson= json.dumps( infoJsonModel, indent=4, separators=(',', ': '))
         for l in infoJson.split('\n'):
             l= do_info_macros(l)
-            if ( prefix!=None ): s.wfile.write(bytes(prefix,"utf-8"))
-            s.wfile.write(bytes(l,"utf-8"))
-            s.wfile.write(bytes('\n',"utf-8"))
+            if ( prefix!=None ): stream.wfile.write(bytes(prefix,"utf-8"))
+            stream.wfile.write(bytes(l,"utf-8"))
+            stream.wfile.write(bytes('\n',"utf-8"))
     except:
-        send_exception(s.wfile,'Not Found') 
+        send_exception(stream.wfile,'Not Found') 
 
 def get_last_modified( id, timemin, timemax ):
     '''return the time stamp of the most recently modified file,
@@ -660,8 +662,8 @@ def get_lastModified(api_datatype, id, timemin, timemax):
         lastModified=time.time()
     return(lastModified)
 
-def fetch_modifiedsince(s):
-    lms= s.headers['If-Modified-Since']
+def fetch_modifiedsince(stream):
+    lms= stream.headers['If-Modified-Since']
     ###from email.utils import parsedate_tz,formatdate
     #import time
     timecomponents= parsedate_tz(lms) 
@@ -717,7 +719,7 @@ def prep_data(query, tags):
     ##    xopts = jset['x_customRequestOptions']
     return(parameters, xopts, mydata, check_error)
 
-def print_hapi_intropage(hapi_version, s):
+def print_hapi_intropage(hapi_version, stream):
     if hapi_version >= 3:
         datasetkey = 'dataset'
         startkey = 'start'
@@ -727,19 +729,19 @@ def print_hapi_intropage(hapi_version, s):
         datasetkey = 'id'
         startkey = 'time.min'
         stopkey = 'time.max'
-    s.wfile.write(bytes("<html><head><title>Python HAPI Server</title></head>\n","utf-8"))
-    s.wfile.write(bytes("<body>\n","utf-8"))
+    stream.wfile.write(bytes("<html><head><title>Python HAPI Server</title></head>\n","utf-8"))
+    stream.wfile.write(bytes("<body>\n","utf-8"))
     # a simple info/demo page
-    s.wfile.write(bytes("<p>"+USE_CASE+" Catalogs:\n","utf-8"))
+    stream.wfile.write(bytes("<p>"+USE_CASE+" Catalogs:\n","utf-8"))
     u= "/hapi/catalog"
-    s.wfile.write(bytes("<a href='%s'>%s</a></p>\n" % ( u,u ) ,"utf-8"))
-    s.wfile.write(bytes("<p>HAPI requests:</p>\n","utf-8"))
+    stream.wfile.write(bytes("<a href='%s'>%s</a></p>\n" % ( u,u ) ,"utf-8"))
+    stream.wfile.write(bytes("<p>HAPI requests:</p>\n","utf-8"))
     ff= glob.glob( HAPI_HOME + 'info/*.json' )
     n= len( HAPI_HOME + 'info/' )
     for f in sorted(ff):
         (stat,mydata)=fetch_info_params(f,True)
         u= "/hapi/info?%s=%s" % ( datasetkey, f[n:-5] )
-        s.wfile.write(bytes("<a href='%s'>%s</a></br>\n" % ( u,u ) ,"utf-8"))
+        stream.wfile.write(bytes("<a href='%s'>%s</a></br>\n" % ( u,u ) ,"utf-8"))
         # also extract dates etc from file
         #print("debug: checking info file ",f)
         #print("debug:",mydata)
@@ -753,48 +755,48 @@ def print_hapi_intropage(hapi_version, s):
         u= "/hapi/data?%s=%s&%s=%s&%s=%s" % (
             datasetkey, f[n:-5], startkey, timemin, stopkey, timemax )
         u= do_info_macros_var(u)
-        s.wfile.write(bytes("<a href='%s'>%s</a></br>\n" % ( u,u ) ,"utf-8"))
-        s.wfile.write(bytes("Parameters:\n","utf-8"))
-        s.wfile.write(bytes("<table>","utf-8"))
+        stream.wfile.write(bytes("<a href='%s'>%s</a></br>\n" % ( u,u ) ,"utf-8"))
+        stream.wfile.write(bytes("Parameters:\n","utf-8"))
+        stream.wfile.write(bytes("<table>","utf-8"))
         for para in mydata['parameters']:
-            #s.wfile.write(bytes("<li>","utf-8"))
-            s.wfile.write(bytes("<tr>","utf-8"))
-            s.wfile.write(bytes("<td>%s:</td>" % (para['name']), "utf-8"))
+            #stream.wfile.write(bytes("<li>","utf-8"))
+            stream.wfile.write(bytes("<tr>","utf-8"))
+            stream.wfile.write(bytes("<td>%s:</td>" % (para['name']), "utf-8"))
             parakeys = sorted(para.keys())
             parakeys.remove("name")
             for parakey in parakeys:
-                s.wfile.write(bytes("<td>","utf-8"))
-                s.wfile.write(bytes("%s %s &nbsp; &nbsp; &nbsp; &nbsp;" %
+                stream.wfile.write(bytes("<td>","utf-8"))
+                stream.wfile.write(bytes("%s %s &nbsp; &nbsp; &nbsp; &nbsp;" %
                                     (parakey, para[parakey]), "utf-8"))
-                s.wfile.write(bytes("</td>","utf-8"))
-            s.wfile.write(bytes("</tr>","utf-8"))
-        s.wfile.write(bytes("</table>\n","utf-8"))
+                stream.wfile.write(bytes("</td>","utf-8"))
+            stream.wfile.write(bytes("</tr>","utf-8"))
+        stream.wfile.write(bytes("</table>\n","utf-8"))
     # Also echo an optional 'splash.html' file that users can change
     try:
         fo=open('splash.html','r')
         for line in fo:
-            s.wfile.write(bytes(line,"utf-8"))
+            stream.wfile.write(bytes(line,"utf-8"))
         fo.close()
     except:
         pass
-    s.wfile.write(bytes("</body></html>\n","utf-8"))
+    stream.wfile.write(bytes("</body></html>\n","utf-8"))
             
         
-def print_hapi_index(s):
+def print_hapi_index(stream):
     # echo an index.html, if it exists, otherwise post a banner
     try:
         fo=open('index.html','r')
         for line in fo:
-            s.wfile.write(bytes(line,"utf-8"))
+            stream.wfile.write(bytes(line,"utf-8"))
         fo.close()
     except:
-        s.wfile.write(bytes(
+        stream.wfile.write(bytes(
             "<html><head><title>Python HAPI Server</title></head>\n","utf-8"))
-        s.wfile.write(bytes("<body>\n","utf-8"))
-        s.wfile.write(bytes(
+        stream.wfile.write(bytes("<body>\n","utf-8"))
+        stream.wfile.write(bytes(
             "<p>HAPI Server for " + USE_CASE +
             ", visit <a href='/hapi/'>/hapi/</a> for data.\n","utf-8"))
-        s.wfile.write(bytes("</body></html>\n","utf-8"))
+        stream.wfile.write(bytes("</body></html>\n","utf-8"))
             
 
 ### THE HAPI SERVER ###
@@ -803,26 +805,26 @@ class MyHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
-    def do_error(s,code,alt=400):
+    def do_error(stream,code,alt=400):
         msg=hapi_errors(code)
         # try/except here to handle cases of broken pipe
         # (in which case error can not be sent either)
         try:
-            send_exception(s.wfile,msg)
+            send_exception(stream.wfile,msg)
         except:
             pass
     
-    def do_HEAD(s):
-        s.send_response(200)
-        s.send_header("Content-type", "application/json")
-        s.end_headers()
+    def do_HEAD(stream):
+        stream.send_response(200)
+        stream.send_header("Content-type", "application/json")
+        stream.end_headers()
 
-    def do_GET(s):
+    def do_GET(stream):
         ###import time
-        feedback.start(s.headers)
+        feedback.start(stream.headers)
         responseHeaders= {}
-        path= s.path
-        pp= urlparse.urlparse(s.path)
+        path= stream.path
+        pp= urlparse.urlparse(stream.path)
         path = clean_hapi_path(path)
         # allows for keywords to be placed before 'hapi/', hapi-server3d.py
         (tags,path) = get_hapi_tags(path)
@@ -833,60 +835,60 @@ class MyHandler(BaseHTTPRequestHandler):
         # HTML HEADERS
         #
         if ( path=='hapi/capabilities' ):                
-           s.send_response(200)
-           s.send_header("Content-type", "application/json")
+           stream.send_response(200)
+           stream.send_header("Content-type", "application/json")
 
         elif ( path=='hapi/catalog' ):
-           s.send_response(200)
-           s.send_header("Content-type", "application/json")
+           stream.send_response(200)
+           stream.send_header("Content-type", "application/json")
 
         elif ( path=='hapi/info' ):
            id= query['id'][0]
            if ( os.path.isfile(HAPI_HOME + 'info/' + id + '.json' ) ):
-               s.send_response(200)
+               stream.send_response(200)
            else:
-               #s.send_response(404)
-               s.do_error(1406,404)   # 'unknown dataset id'
-           s.send_header("Content-type", "application/json")
+               #stream.send_response(404)
+               stream.do_error(1406,404)   # 'unknown dataset id'
+           stream.send_header("Content-type", "application/json")
 
         elif ( path=='hapi/data' ):
            id= query['id'][0]
            (timemin, timemax, errorcode) = clean_query_time(query)
            if errorcode > 0:
-               s.do_error(errorcode)
+               stream.do_error(errorcode)
            lastModified = get_lastModified(api_datatype, id, timemin, timemax)
-           if ( s.headers.__contains__('If-Modified-Since') ):
-               theyHave = fetch_modifiedsince(s)
+           if ( stream.headers.__contains__('If-Modified-Since') ):
+               theyHave = fetch_modifiedsince(stream)
                if ( lastModified <= theyHave ):
-                   s.send_response(304)
-                   s.end_headers()
+                   stream.send_response(304)
+                   stream.end_headers()
                    feedback.finish(responseHeaders)
                    return               
            # check request header for If-Modified-Since
            if ( os.path.isfile(HAPI_HOME + 'info/' + id + '.json' ) ):
-               s.send_response(200)
-               s.send_header("Content-type", "text/csv")
+               stream.send_response(200)
+               stream.send_header("Content-type", "text/csv")
            else:
-               s.send_response(404)
-           s.send_header("Content-type", "text/csv")
+               stream.send_response(404)
+           stream.send_header("Content-type", "text/csv")
 
         elif ( path=='hapi' ):
-           s.send_response(200)
-           s.send_header("Content-type", "text/html")
+           stream.send_response(200)
+           stream.send_header("Content-type", "text/html")
 
         elif ( path=='' ):
            # allow for a top-level index call
-           s.send_response(200)
-           s.send_header("Content-type", "text/html")
+           stream.send_response(200)
+           stream.send_header("Content-type", "text/html")
 
         else:
            #print("debug: got here,",path);
-           s.send_response(404)
-           s.send_header("Content-type", "application/json")
+           stream.send_response(404)
+           stream.send_header("Content-type", "application/json")
 
-        s.send_header("Access-Control-Allow-Origin", "*")
-        s.send_header("Access-Control-Allow-Methods", "GET")
-        s.send_header("Access-Control-Allow-Headers", "Content-Type")
+        stream.send_header("Access-Control-Allow-Origin", "*")
+        stream.send_header("Access-Control-Allow-Methods", "GET")
+        stream.send_header("Access-Control-Allow-Headers", "Content-Type")
 
         if ( path=='hapi/data' ):
             ###from email.utils import formatdate
@@ -894,10 +896,10 @@ class MyHandler(BaseHTTPRequestHandler):
                 timeval=lastModified, localtime=False, usegmt=True ) 
             
         for h in responseHeaders:
-            s.send_header(h,responseHeaders[h])
+            stream.send_header(h,responseHeaders[h])
             
         try:
-            s.end_headers()
+            stream.end_headers()
         except:
             pass
 
@@ -906,26 +908,26 @@ class MyHandler(BaseHTTPRequestHandler):
         #
         if ( path=='hapi/capabilities' ):
             for l in open( HAPI_HOME + 'capabilities.json' ):
-                s.wfile.write(bytes(l,"utf-8"))
+                stream.wfile.write(bytes(l,"utf-8"))
         elif ( path=='hapi/catalog' ):
             for l in open( HAPI_HOME + 'catalog.json' ):
-                s.wfile.write(bytes(l,"utf-8"))
+                stream.wfile.write(bytes(l,"utf-8"))
         elif ( path=='hapi/info' ):
             id= query['id'][0]
             #for l in open( HAPI_HOME + '/info/' + id + '.json' ):
-            #    s.wfile.write(bytes(l,"utf-8"))
+            #    stream.wfile.write(bytes(l,"utf-8"))
             parameters= handle_key_parameters(query)
-            do_write_info( s, id, parameters, None )
+            do_write_info( stream, id, parameters, None )
         elif ( path=='hapi/data' ):
             (parameters, xopts, mydata, check_error) = prep_data(query, tags)
             floc['customOptions'] = handle_customRequestOptions(query, xopts)
             if check_error > 0:
-                s.do_error(check_error)
+                stream.do_error(check_error)
             else:
                 # parameters are valid, so run the query
                 if query.__contains__('include'):
                     if query['include'][0]=='header':
-                        do_write_info( s, id, parameters, '#' )
+                        do_write_info( stream, id, parameters, '#' )
                 (stat,mydata)=fetch_info_params(id,False)
                 #
                 # FORMAT HERE IS: id (unique dataset endpoint)
@@ -935,36 +937,36 @@ class MyHandler(BaseHTTPRequestHandler):
                 #    floc (site-specific required elements from *_config.py)
                 (status,data)=hapi_handler(
                     id, timemin, timemax, parameters, mydata, floc,
-                    stream_flag, s)
+                    stream_flag, stream)
 
                 if status >= 1400:
-                    s.do_error(status)
+                    stream.do_error(status)
                 else:
                     if len(data) == 0 and stream_flag == False:
                         # likely redundant sanity check
                         status = 1201
                     if status == 1201:
                         # status 1201 is HAPI "OK- no data for time range"
-                        s.do_error(status)
+                        stream.do_error(status)
                     else:
                         status=1200 # status 1200 is HAPI "OK"
                     # presumed valid data, so serve it
                     try:
                         # note for streaming, data is zero but legit
-                        s.wfile.write(bytes(data,"utf-8"))
+                        stream.wfile.write(bytes(data,"utf-8"))
                     except:
                         # return general 'user input error' code 
-                        s.do_error(1500) # HAPI internal server error
+                        stream.do_error(1500) # HAPI internal server error
 
         elif ( path=='hapi' ):
-            print_hapi_intropage(hapi_version, s)
+            print_hapi_intropage(hapi_version, stream)
 
         elif ( path=='' ):
-            print_hapi_index(s)
+            print_hapi_index(stream)
 
         else:
             # looks like error is 'not a known URL'
-            s.do_error(1400)
+            stream.do_error(1400)
 
         feedback.finish(responseHeaders)
 
