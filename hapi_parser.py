@@ -99,7 +99,7 @@ def get_hapiversion(hapi_home):
     jset=json.loads(fin.read())
     fin.close()
     hapi_version = float(jset['HAPI'])
-    print("Using HAPI version",hapi_version)
+    #print("Using HAPI version",hapi_version)
     return hapi_version
 
 # below now moved to info/*.json instead of capabilities.json

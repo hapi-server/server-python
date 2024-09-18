@@ -81,31 +81,14 @@ noisy=False   #set True for unix command line feedback
 # Instead, a <MISSION>_config.py sets the parameters needed for the site.
 
 ### IMPORTS ###
-
+import os.path
 import sys # only used for command-line arguments
-
 import time
 from time import gmtime, strftime
-# Python2 uses BaseHTTPServer, Python3 uses http.server
-#from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from http.server import HTTPServer, BaseHTTPRequestHandler
-# Python2 uses SocketServer, Python3 uses socketserver
-#from SocketServer import ThreadingMixIn
-from socketserver import ThreadingMixIn
-# Python2 uses urlparse, Python3 uses urllib.parse
-#import urlparse
-import urllib.parse as urlparse
-import glob
-import os
-from os.path import exists
-import dateutil.parser
-from datetime import datetime, date, timedelta
-import datetime
-from dateutil.parser import parse, isoparse
-import json
 from email.utils import parsedate_tz,formatdate
-import importlib
-import sys
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
+import urllib.parse as urlparse
 import hapi_parser as hp
 if (isPi):
     import RPi.GPIO as GPIO
