@@ -12,7 +12,7 @@ The code and documentation resides at
     https://github.com/hapi-server/server-python
 
 Usage:
-  python hapi-server3.py <MISSIONNAME> [localhost/http/https/custom]
+  python hapi_server.py <MISSIONNAME> [localhost/http/https/custom]
 (If no arguments provided, defaults to 'csv' and 'localhost')
 
 where MISSIONNAME points to the appropriation MISSIONNAME.config file
@@ -97,7 +97,7 @@ if (isPi):
 
 ### GET COMMAND LINE ARGUMENTS FOR HOW TO RUN ###
 # If none provided, defaults to 'csv' and 'localhost'
-# python hapi-server3.py <MISSIONNAME> [localhost/http/https/custom]
+# python hapi_server.py <MISSIONNAME> [localhost/http/https/custom]
 try:
     USE_CASE = str(sys.argv[1])
 except:
