@@ -1,79 +1,5 @@
-"""HAPI Python Server, including sample reader programs.
-
-original by jbfaden, Python3 update by sandyfreelance 04-06-2021 and onward
-
-This program sets up a server to stream HAPI-specification data to any
-existing HAPI client programs.  Setup requires making a configuration
-file for your server file setup, a set of JSON configuration files to
-comply with the HAPI specification, and use of a 'reader' program to
-convert your files into HAPI-formatted data (sample readers provided).
-
-The code and documentation resides at 
-    https://github.com/hapi-server/server-python
-
-Usage:
-  python hapi-server3.py <MISSIONNAME> [localhost/http/https/custom]
-(If no arguments provided, defaults to 'csv' and 'localhost')
-
-where MISSIONNAME points to the appropriation MISSIONNAME.config file
-and:
-   localhost: server runs on localhost/port 8080
-   http:      server runs on port 80
-   https:     server runs on port 443
-   custom:    server runs on custom port that you hardcode into this code
-
-Configuration requirements
-* capabilities and catalog responses must be formatted as JSON in SERVER_HOME
-* info responses are in SERVER_HOME/info.
-* responses can have templates like "lasthour" to mean the last hour boundary
-  and "lastday-P1D" to mean the last midnight minus one day.
-
-IDs must be defined, as per HAPI, in info/*.json.
-
-The 'reader' routines (coded by the mission) then specify which data
-to actually return for each id, in the handler code.  Currently this
-HAPI server has sample readers that can handle:
-1) csv flat files in a directory hierarchy of "data/[id]/YYYY/[id].YYYYMMDD.csv"
-2) reading netCDF files and sending csv of a pre-defined sets of keys (GUVI)
-
-Additional readers will be provided as they are developed, and you are
-encouraged to create your own.  A reader has to read your data files
-and return CSV-formatted data for the subset of variables selected.
-
-Note server can implement per-file streaming or fetch-all then serve
-via the _config.py "stream_flag".  Generally, per-file continues sending
-data as it is processed and is generally recommended; fetch-all is useful
-if you need to add anything to post-process data before sending, or
-if data sets are small (so either way works).
-
-Dev notes:
-  server3: python2 version updated for python3
-  server3b: configurable for different missions
-  server3c: allows multiple missions via the command line
-  server3d: url before /hapi can indicate different data archives
-  server3e: fixes to bring more in line with HAPI spec
-  server3f: imports '<MISSION>_config.py' with setup params (not hard-coded)
-            and allows both HAPI 2.x and 3.x spec on keywords
-  server3g: fixes to pass validation checks
-  server3h: added customRequestionOptions
-  server3i: refactored for readability
-  server3j: choice to stream per-file data or wait for all data then serve
-
-On Python2 versus Python3:
-  difference between Python3 as provided to github and APL-site specific
-  is items tagged as #APL  (2 imports, 1 line replaced)
-                            imports = supermap-api, hapi-server
-                            APL replaces 'do_data_csv' with
-                           'do_data_supermag'/'do_data_guvi'
-  also Python2 uses wfile.write("") but
-       Python3 uses wfile.write(bytes("","utf-8"))
-  Python3 removed 'has_key' from dictionaries, use 'in' or '__contains__(key)'
-
-"""
-
 ### FLAGS YOU MAY WANT TO CHANGE (hard-coded)
 
-isPi=False   #invokes "import RPi.GPIO as GPIO" later
 noisy=False   #set True for unix command line feedback
 
 ###############################################################################
@@ -86,12 +12,6 @@ import sys # only used for command-line arguments
 
 import time
 from time import gmtime, strftime
-# Python2 uses BaseHTTPServer, Python3 uses http.server
-#from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from http.server import HTTPServer, BaseHTTPRequestHandler
-# Python2 uses SocketServer, Python3 uses socketserver
-#from SocketServer import ThreadingMixIn
-from socketserver import ThreadingMixIn
 # Python2 uses urlparse, Python3 uses urllib.parse
 #import urlparse
 import urllib.parse as urlparse
@@ -107,87 +27,80 @@ from email.utils import parsedate_tz,formatdate
 import importlib
 import sys
 
-if (isPi):
-    import RPi.GPIO as GPIO
-
 # note also conditional import of S3 & NetCDF items after USE_CASEs, below
 
-### GET COMMAND LINE ARGUMENTS FOR HOW TO RUN ###
-# If none provided, defaults to 'csv' and 'localhost'
-# python hapi-server3.py <MISSIONNAME> [localhost/http/https/custom]
-try:
-    USE_CASE = str(sys.argv[1])
-except:
-    USE_CASE = 'csv'
-    # APL choices are 'csv', 'guvi', 'guviaws', or 'supermag'
+#    USE_CASE = 'csv'
+#    # APL choices are 'csv', 'guvi', 'guviaws', or 'supermag'
 
 # Arg 2 can be 'localhost', 'http', 'https', or 'custom'
 # Use 'custom' if need you need to mod this code to define a non-standard port
-try:
-    LOCALITY = str(sys.argv[2])
-except:
-    LOCALITY = 'localhost'
 
-if LOCALITY == 'http':
-    HOST_NAME = '0.0.0.0'
-    PORT_NUMBER = 80
-elif LOCALITY == 'https':
-    HOST_NAME = '0.0.0.0'
-    PORT_NUMBER = 443
-elif LOCALITY == 'custom':
-    # this is provided so you can hard-code your own site-specific needs
-    HOST_NAME = '0.0.0.0'
-    PORT_NUMBER = 80
-else:
-    # assume localhost
-    HOST_NAME = 'localhost'
-    PORT_NUMBER = 8000
-print("Running in",LOCALITY,"mode, initializing for",USE_CASE)
 
-### GET AND PARSE CONFIG FILE ###
-try:
-    cname = USE_CASE + "_config"
-    cfile = cname + ".py"
-except:
-    cname = "config"
-    cfile = "config.py"
-if exists(cfile):
-    try:
-        print("Loading config file for ",cname," (",cfile,")")
-        CFG = importlib.import_module(cname, package=None)
-        # created CFG.<varnames>
-        # verify all required elements exist by making local copy
-        # so the try/except will fail if a variable is missing
-        HAPI_HOME = CFG.HAPI_HOME
-        api_datatype=CFG.api_datatype
-        floc = CFG.floc
-        hapi_handler = CFG.hapi_handler
-        tags_allowed = CFG.tags_allowed
-        stream_flag = CFG.stream_flag
-        if CFG.loaded_config:
-            print("Successfully loaded ",cfile)
-    except:
-            print("Error, config file ",cfile," missing required elements")
-            quit()
-else:
-    print("Note no config file ",cfile," exists, using generic CSV defaults")
-    # csv_config.py, generic config file for local CSV files
-    # as per Jeremy's original code
-    import csv_hapireader
-    HAPI_HOME= 'hapi_home/'
+class defaultvars():
+    # TESTED
+    #import csv_hapireader
+    HAPI_HOME= 'home_csv/'
     api_datatype = 'file'
     floc={}
-    hapi_handler = csvhapi.do_data_csv
+    reader_name = "csv_hapireader"
+    csv_hapireader = importlib.import_module(reader_name, package=None)
+    hapi_handler = csv_hapireader.do_data_csv
     tags_allowed = [''] # no subparams allowed
+    stream_flag = True
 
-if api_datatype == 'aws':
-    import s3netcdf
+def fetchdata(hapi_handler, id, timemin, timemax, parameters, mydata,
+              floc, stream_flag, s):
+    (status, data) = hapi_hander(id, timemin, timemax, parameters, mydata, floc, stream_flag, s)
+    return (status, data)
+    
+def parse_config(myname):
+    # TESTED
+    ### GET AND PARSE CONFIG FILE ###
+    try:
+        cname = myname + "_config"
+        cfile = cname + ".py"
+    except:
+        cname = "config"
+        cfile = "config.py"
+    if exists(cfile):
+        try:
+            print("Loading config file for ",cname," (",cfile,")")
+            CFG = importlib.import_module(cname, package=None)
+            # created CFG.<varnames>
+            # verify all required elements exist by making local copy
+            # so the try/except will fail if a variable is missing
+            HAPI_HOME = CFG.HAPI_HOME
+            api_datatype=CFG.api_datatype
+            floc = CFG.floc
+            hapi_handler = CFG.hapi_handler
+            tags_allowed = CFG.tags_allowed
+            stream_flag = CFG.stream_flag
+            if CFG.loaded_config:
+                print("Successfully loaded ",cfile)
+        except:
+            print("Error, config file ",cfile," missing required elements")
+            quit()
+    else:
+        print("Note no config file ",cfile," exists, using generic CSV defaults")
+        # csv_config.py, generic config file for local CSV files
+        # as per Jeremy's original code
+        import csv_hapireader
+        CFG=defaultvars()        
+    return CFG
+
+##if CFG.api_datatype == 'aws':
+##    import s3netcdf
     
 ### GET HAPI VERSION we need to support
 # (mostly needed for id/dataset, time.min/start, time.max/stop keywords)
-fin=open( HAPI_HOME + 'capabilities.json','r')
-jset=json.loads(fin.read())
-fin.close()
+def get_hapiversion(hapi_home):
+    # TESTED
+    fin=open( hapi_home + 'capabilities.json','r')
+    jset=json.loads(fin.read())
+    fin.close()
+    hapi_version = float(jset['HAPI'])
+    #print("Using HAPI version",hapi_version)
+    return hapi_version
 
 # below now moved to info/*.json instead of capabilities.json
 ### potential "x_*" parameters in capabilities.json extracted here
@@ -198,79 +111,13 @@ fin.close()
 ##    xopts=''
 ##print("debug, got x_capabilities of: ",xopts)
 
-hapi_version = float(jset['HAPI'])
-print("Using HAPI version",hapi_version)
-
 ### CORE CLASS ###
-
-class StdoutFeedback():
-    def __init__(self):
-        print('feedback is over stdout')
-    def setup(self):    
-        print('setup feedback.')
-    def destroy(self):
-        print('destroy feedback.')
-    def start(self,requestHeaders):
-        ##from time import gmtime, strftime
-        print('-----', strftime("%Y-%m-%dT%H:%M:%SZ", gmtime()), '-----')
-        print(requestHeaders)
-    def finish(self,responseHeaders):
-        print('---')
-        for h in responseHeaders:
-            print('%s: %s' % ( h, responseHeaders[h] ))
-        print('-----')
-    
-class NoFeedback():
-    # does not log anything
-    def __init__(self):
-        pass
-    def setup(self):
-        pass
-    def destroy(self):
-        pass
-    def start(self,ignore):
-        pass
-    def finish(self,ignore):
-        pass
-
-    
-class GpioFeedback():
-    def __init__(self,ledpin):
-        print('feedback is over GPIO pin ',ledpin)
-        self.ledpin=ledpin
-    def setup(self):    
-        GPIO.setwarnings(False)
-        #set the gpio modes to BCM numbering
-        GPIO.setmode(GPIO.BCM)
-        #set LEDPIN's mode to output,and initial level to LOW(0V)
-        GPIO.setup(self.ledpin,GPIO.OUT,initial=GPIO.LOW)
-        GPIO.output(self.ledpin,GPIO.HIGH)
-        time.sleep(0.2)
-        GPIO.output(self.ledpin,GPIO.LOW)
-    def destroy(self):
-        #turn off LED
-        GPIO.output(self.ledpin,GPIO.LOW)
-        #release resource
-        GPIO.cleanup()
-    def start(self,requestHeaders):
-        GPIO.output(self.ledpin,GPIO.HIGH)
-    def finish(self,responseHeaders):
-        GPIO.output(self.ledpin,GPIO.LOW)
-     
-
-### QUICK PI CHECK ###
-
-if ( isPi ):
-    feedback= GpioFeedback(27)  # When this is installed on the Raspberry PI
-elif ( noisy ):
-    feedback= StdoutFeedback()  # When testing at the unix command line.
-else:
-    feedback= NoFeedback()  # for quiet deployment
 
 
 ### CORE FUNCTIONS ###
 
-def fetch_info_params(id,isFile):
+def fetch_info_params(id, hapihome, isFile):
+    # TESTED
     # open the info/[id].json file and return the parameter array
     # set isFile=True if 'id' is a filename, False if 'id' is actually an id
     # e.g. mydata['startDate'], mydata['stopDate'], etc
@@ -281,7 +128,7 @@ def fetch_info_params(id,isFile):
             jo = open(id)
         else:
             #print("Debug: id file is ", HAPI_HOME + 'info/' + id + '.json' )
-            jo = open( HAPI_HOME + 'info/' + id + '.json' )
+            jo = open( hapihome + 'info/' + id + '.json' )
         mydata=json.loads(jo.read())
         jo.close()
         status=True
@@ -306,6 +153,7 @@ def fetch_info_params(id,isFile):
 ### (Put here so you don't have to rewrite your own)
 
 def unwind_csv_array(magdata):
+    # NOT USED YET?
     """ Takes json-like arrays of e.g.                                         
         60.0,DOB,"[ -19.104668,-20.155156]"
     or
@@ -319,6 +167,7 @@ def unwind_csv_array(magdata):
     return(magdata)
 
 def csv_removekeys(magdata):
+    # NOT USED YET?
     # use:    magdata = api_removekeys(magdata)
     # changes {k:v,k:v} to just [v,v]
     magdata = re.sub(r'\'\w+\':','',magdata)
@@ -331,14 +180,15 @@ def csv_removekeys(magdata):
 
 ### HAPI required error and support utilities
 
-def generic_check_error(id, timemin, timemax, parameters):
+def generic_check_error(id, timemin, timemax, parameters, hapihome):
+    # TESTED
     # does check of generic HAPI parameters
     # note we already checked that time.min (1402),time.max (1403) are 
     # valid prior to this and also that id is valid (1406)
 
     timemax = lasthour_mod(timemax)
     errorcode = 0 # assume all is well
-    (stat,mydata)=fetch_info_params(id,False)
+    (stat,mydata)=fetch_info_params(id,hapihome,False)
     if stat == False:
         errorcode = 1406
         # no valid json exists so 'Bad request - unknown dataset id'
@@ -380,9 +230,11 @@ def generic_check_error(id, timemin, timemax, parameters):
     #print("debug: errorcode is ",errorcode)
     return(errorcode,qtimemin,qtimemax)
 
-def do_write_info( s, id, parameters, prefix ):
+def do_write_info(id, parameters, hapi_home, prefix ):
+    # TESTED
+    mystr = ""
     try:
-        infoJson= open( HAPI_HOME + 'info/' + id + '.json' ).read()
+        infoJson= open( hapi_home + 'info/' + id + '.json' ).read()
         ##import json
         infoJsonModel= json.loads(infoJson)
         if ( parameters!=None ):
@@ -396,16 +248,18 @@ def do_write_info( s, id, parameters, prefix ):
         infoJson= json.dumps( infoJsonModel, indent=4, separators=(',', ': '))
         for l in infoJson.split('\n'):
             l= do_info_macros(l)
-            if ( prefix!=None ): s.wfile.write(bytes(prefix,"utf-8"))
-            s.wfile.write(bytes(l,"utf-8"))
-            s.wfile.write(bytes('\n',"utf-8"))
+            if ( prefix!=None ): mystr += prefix
+            mystr += l
+            mystr += '\n'
     except:
-        send_exception(s.wfile,'Not Found') 
+        mystry = send_exception('Not Found')
+    return mystr
 
-def get_last_modified( id, timemin, timemax ):
+def get_last_modified( id, hapi_home, timemin, timemax ):
+    # TESTED
     '''return the time stamp of the most recently modified file,
     from files in $Y/$(x,name=id).$Y$m$d.csv, seconds since epoch (1970) UTC'''
-    ff= HAPI_HOME + 'data/' + id + '/'
+    ff= hapi_home + 'data/' + id + '/'
     #print("debug: checking last modified in ",ff,timemin)
     try:
         filemin= dateutil.parser.parse( timemin ).strftime('%Y%m%d')
@@ -436,6 +290,7 @@ def get_last_modified( id, timemin, timemax ):
     return int(lastModified)  # truncate since milliseconds are not transmitted
                               
 def do_info_macros( line ):
+    # TESTED
     ss= line.split('"now"')
     if ( len(ss)==2 ):
         ###import time
@@ -464,6 +319,7 @@ def do_info_macros( line ):
 
 # 'var' below does same as above but with no "" factoring in
 def do_info_macros_var( line ):
+    # TESTED
     ss= line.split('now')
     if ( len(ss)==2 ):
         ###import time
@@ -487,18 +343,6 @@ def do_info_macros_var( line ):
        # TODO: bug lasthour is implemented as lastday
        return ss[0]+midnight.strftime('%Y-%m-%dT%H:%M:%SZ')+ss[1]
     return line
-
-def send_exception( w, msg ):
-    myjson = '{"HAPI": "2.0","status":{"code":1500,"message":"%s"} }' % msg
-    w.write(bytes(myjson,"utf-8"))
-    
-def do_get_parameters_orig( id ):
-    if ( id=='10.CF3744000800' ):
-        return [ 'Time','Temperature' ]
-    elif ( id=='cputemp' ):
-        return [ 'Time', 'GPUTemperature', 'CPUTemperature' ]
-    else:
-        raise Except("this is not implemented!")
 
 def handle_key_parameters( query ):
     'return the parameters in an array, or None'
@@ -582,6 +426,7 @@ def hapi_errors(code):
     return(msg)
 
 def lasthour_mod(timething):
+    # TESTED
     #print("Debug: lasthour_mod input:",timething)
     try:
         if timething == 'lasthour':
@@ -593,7 +438,8 @@ def lasthour_mod(timething):
 
 ### Refactor of original 'do_GET()' method into subroutines
 
-def get_hapi_tags(path):
+def get_hapi_tags(path,tags_allowed):
+    # TESTED
     tags=[]
     #print("debug: path=",path)
     if "hapi" in path and path.startswith('hapi') == False:
@@ -606,15 +452,17 @@ def get_hapi_tags(path):
     return(tags, path)
 
 def clean_hapi_path(path):
-        while ( path.endswith('/') ):
-            path= path[:-1]
-        i= path.find('?')
-        if ( i>-1 ): path= path[0:i] 
-        while ( path.startswith('/') ):
-            path= path[1:]            
-        return(path)
+    # TESTED
+    while ( path.endswith('/') ):
+        path= path[:-1]
+    i= path.find('?')
+    if ( i>-1 ): path= path[0:i] 
+    while ( path.startswith('/') ):
+        path= path[1:]            
+    return(path)
 
 def check_v2_v3(query):
+    # TESTED
     #print("Debug, calling: ",path,pp.query)
     # as part of the transition between 2.x to 3.0/3.1, allows both keys
     # allow synonyms 'id' and 'dataset', 'time.min/max' and 'start/stop'
@@ -627,6 +475,7 @@ def check_v2_v3(query):
     return(query)
 
 def clean_query_time(query):
+    # TESTED
     errorcode = 0 # assume all is well
     timemin= query['time.min'][0]
     timemax= lasthour_mod(query['time.max'][0])
@@ -646,10 +495,11 @@ def clean_query_time(query):
     #print("Debug: lasthour check:",timemax)    
     return(timemin, timemax, errorcode)
 
-def get_lastModified(api_datatype, id, timemin, timemax):
+def get_lastModified(api_datatype, id, hapi_home, timemin, timemax):
+    # TESTED, BUT STUPID NAME, TOO CLOSE TO OTHER FUNCTION
     if api_datatype == 'file':
         #print(id,timemin,timemax)
-        lastModified= get_last_modified( id, timemin, timemax ); # tag
+        lastModified= get_last_modified( id, hapi_home, timemin, timemax ); # tag
     elif api_datatype == 'aws':
         #print(id,timemin,timemax)
         # temporary hack, should get time from json, right?
@@ -660,25 +510,15 @@ def get_lastModified(api_datatype, id, timemin, timemax):
         lastModified=time.time()
     return(lastModified)
 
-def fetch_modifiedsince(s):
-    lms= s.headers['If-Modified-Since']
-    ###from email.utils import parsedate_tz,formatdate
-    #import time
-    timecomponents= parsedate_tz(lms) 
-    os.environ['TZ']='gmt'
-    theyHave= time.mktime( timecomponents[:-1] )
-    theyHave = theyHave - timecomponents[-1]
-    return(theyHave)
-
-
-def prep_data(query, tags):
+def prep_data(query, hapihome, tags):
+    # TESTED
     id= query['id'][0]
     (timemin, timemax, errorcode) = clean_query_time(query)
     parameters= handle_key_parameters(query)
     (check_error,timemin,timemax) = generic_check_error(
-        id,timemin,timemax,parameters)
+        id,timemin,timemax,parameters,hapihome)
     # Two passes here-- first, that no non-HAPI params exist
-    (stat,mydata)=fetch_info_params(id,False)
+    (stat,mydata)=fetch_info_params(id,hapihome,False)
     allparams = [ item['name'] for item in mydata['parameters'] ]
     if parameters != None:
         if 'Time' not in allparams:
@@ -717,7 +557,10 @@ def prep_data(query, tags):
     ##    xopts = jset['x_customRequestOptions']
     return(parameters, xopts, mydata, check_error)
 
-def print_hapi_intropage(hapi_version, s):
+def print_hapi_intropage(myname, hapihome):
+    # TESTED
+    mystr = ""
+    hapi_version = get_hapiversion(hapihome)
     if hapi_version >= 3:
         datasetkey = 'dataset'
         startkey = 'start'
@@ -727,19 +570,19 @@ def print_hapi_intropage(hapi_version, s):
         datasetkey = 'id'
         startkey = 'time.min'
         stopkey = 'time.max'
-    s.wfile.write(bytes("<html><head><title>Python HAPI Server</title></head>\n","utf-8"))
-    s.wfile.write(bytes("<body>\n","utf-8"))
+    mystr += "<html><head><title>Python HAPI Server</title></head>\n"
+    mystr += "<body>\n"
     # a simple info/demo page
-    s.wfile.write(bytes("<p>"+USE_CASE+" Catalogs:\n","utf-8"))
+    mystr += "<p>"+myname+" Catalogs:\n"
     u= "/hapi/catalog"
-    s.wfile.write(bytes("<a href='%s'>%s</a></p>\n" % ( u,u ) ,"utf-8"))
-    s.wfile.write(bytes("<p>HAPI requests:</p>\n","utf-8"))
-    ff= glob.glob( HAPI_HOME + 'info/*.json' )
-    n= len( HAPI_HOME + 'info/' )
+    mystr += "<a href='%s'>%s</a></p>\n" % ( u,u ) 
+    mystr += "<p>HAPI requests:</p>\n"
+    ff= glob.glob( hapihome + 'info/*.json' )
+    n= len( hapihome + 'info/' )
     for f in sorted(ff):
-        (stat,mydata)=fetch_info_params(f,True)
+        (stat,mydata)=fetch_info_params(f,hapihome,True)
         u= "/hapi/info?%s=%s" % ( datasetkey, f[n:-5] )
-        s.wfile.write(bytes("<a href='%s'>%s</a></br>\n" % ( u,u ) ,"utf-8"))
+        mystr += "<a href='%s'>%s</a></br>\n" % ( u,u ) 
         # also extract dates etc from file
         #print("debug: checking info file ",f)
         #print("debug:",mydata)
@@ -753,239 +596,139 @@ def print_hapi_intropage(hapi_version, s):
         u= "/hapi/data?%s=%s&%s=%s&%s=%s" % (
             datasetkey, f[n:-5], startkey, timemin, stopkey, timemax )
         u= do_info_macros_var(u)
-        s.wfile.write(bytes("<a href='%s'>%s</a></br>\n" % ( u,u ) ,"utf-8"))
-        s.wfile.write(bytes("Parameters:\n","utf-8"))
-        s.wfile.write(bytes("<table>","utf-8"))
+        mystr += "<a href='%s'>%s</a></br>\n" % ( u,u ) 
+        mystr += "Parameters:\n"
+        mystr += "<table>"
         for para in mydata['parameters']:
-            #s.wfile.write(bytes("<li>","utf-8"))
-            s.wfile.write(bytes("<tr>","utf-8"))
-            s.wfile.write(bytes("<td>%s:</td>" % (para['name']), "utf-8"))
+            #mystr += "<li>"
+            mystr += "<tr>"
+            mystr += "<td>%s:</td>" % (para['name'])
             parakeys = sorted(para.keys())
             parakeys.remove("name")
             for parakey in parakeys:
-                s.wfile.write(bytes("<td>","utf-8"))
-                s.wfile.write(bytes("%s %s &nbsp; &nbsp; &nbsp; &nbsp;" %
-                                    (parakey, para[parakey]), "utf-8"))
-                s.wfile.write(bytes("</td>","utf-8"))
-            s.wfile.write(bytes("</tr>","utf-8"))
-        s.wfile.write(bytes("</table>\n","utf-8"))
+                mystr += "<td>"
+                mystr += "%s %s &nbsp; &nbsp; &nbsp; &nbsp;" % (parakey, para[parakey])
+                mystr += "</td>"
+            mystr += "</tr>"
+        mystr += "</table>\n"
     # Also echo an optional 'splash.html' file that users can change
     try:
         fo=open('splash.html','r')
         for line in fo:
-            s.wfile.write(bytes(line,"utf-8"))
+            mystr += line
         fo.close()
     except:
         pass
-    s.wfile.write(bytes("</body></html>\n","utf-8"))
+    mystr += "</body></html>\n"
+    return mystr
             
         
-def print_hapi_index(s):
+def print_hapi_index(myname):
+    # TESTED
     # echo an index.html, if it exists, otherwise post a banner
+    mystr = ""
     try:
         fo=open('index.html','r')
         for line in fo:
-            s.wfile.write(bytes(line,"utf-8"))
+            mystr += line
         fo.close()
     except:
-        s.wfile.write(bytes(
-            "<html><head><title>Python HAPI Server</title></head>\n","utf-8"))
-        s.wfile.write(bytes("<body>\n","utf-8"))
-        s.wfile.write(bytes(
-            "<p>HAPI Server for " + USE_CASE +
-            ", visit <a href='/hapi/'>/hapi/</a> for data.\n","utf-8"))
-        s.wfile.write(bytes("</body></html>\n","utf-8"))
-            
+        mystr += "<html><head><title>Python HAPI Server</title></head>\n"
+        mystr += "<body>\n"
+        mystr += "<p>HAPI Server for " + myname + ", visit <a href='/hapi/'>/hapi/</a> for data.\n"
+        mystr += "</body></html>\n"
+    return mystr
 
-### THE HAPI SERVER ###
+def fetch_modifiedsince(lms):
+    # TESTED
+    ###from email.utils import parsedate_tz,formatdate
+    #import time
+    timecomponents= parsedate_tz(lms) 
+    os.environ['TZ']='gmt'
+    theyHave= time.mktime( timecomponents[:-1] )
+    theyHave = theyHave - timecomponents[-1]
+    return(theyHave)
+
+
+
+def sampleconv():
+    from hapiclient.hapi import compute_dt
+    from hapiclient.util import jsonparse
+    import json
+    fname = 'home_csv/info/cputemp.json'
+    with open(fname) as fin:
+        meta = json.load(fin)
+    meta.update({"x_server": 'whatever'})
+    meta.update({"x_dataset": 'whatever'})
+    opts={}
+    opts['format'] = 'csv'
+    opts['method'] = 'numpynolength'
+    dt, cols, psizes, pnames, pytpes, missing_length = compute_dt(meta, opts)
+    fname = 'home_csv/data/cputemp/2018/cputemp.20180119.csv'
+    import numpy as np
+    data = hapi_conv_np(fname,dt)
+    from hapiplot import hapiplot
+    hapiplot(data,meta)
+    return meta, data
+
+
+def hapi_conv_np(fnamecsv,dt):
+    data = np.array([], dtype=dt)
+    data = np.genfromtxt(fnamecsv,
+                         dtype=dt,
+                         delimiter=',',
+                         replace_space=' ',
+                         deletechars='',
+                         encoding='utf-8')
+    return data
     
-class MyHandler(BaseHTTPRequestHandler):
-    def log_message(self, format, *args):
-        return
-
-    def do_error(s,code,alt=400):
-        msg=hapi_errors(code)
-        # try/except here to handle cases of broken pipe
-        # (in which case error can not be sent either)
-        try:
-            send_exception(s.wfile,msg)
-        except:
-            pass
-    
-    def do_HEAD(s):
-        s.send_response(200)
-        s.send_header("Content-type", "application/json")
-        s.end_headers()
-
-    def do_GET(s):
-        ###import time
-        feedback.start(s.headers)
-        responseHeaders= {}
-        path= s.path
-        pp= urlparse.urlparse(s.path)
-        path = clean_hapi_path(path)
-        # allows for keywords to be placed before 'hapi/', hapi-server3d.py
-        (tags,path) = get_hapi_tags(path)
-        query= urlparse.parse_qs( pp.query )
-        query = check_v2_v3(query)
+def hapi_conv_pandas(fnamecsv,dt,df,pnames,psizes,cols):
+    df = pandas.read_csv(fnamecsv,
+                         sep=',',
+                         header=None,
+                         encoding='utf-8')
+    data = np.ndarray(shape=len(df), dtype=dt)
+    for i in range(0, len(pnames)):
+        shape = np.append(len(data), psizes[i])
+        #data[pnames[i]] = np.squeeze(
+        #    np.reshape(df.values[:], np.arange(cols[i][0],
+        #                                      cols[i][1]+1), shape)))
+    return data
         
-        #
-        # HTML HEADERS
-        #
-        if ( path=='hapi/capabilities' ):                
-           s.send_response(200)
-           s.send_header("Content-type", "application/json")
+def hapi_meta():
+    meta.update({"x_server": SERVER})
+    meta.update({"x_dataset": DATASET})
+    meta.update({"x_parameters": PARAMETERS})
+    meta.update({"x_time.min": START})
+    meta.update({"x_time.max": STOP})
+    meta.update({"x_requestDate": datetime.now().isoformat()[0:19]})
+    meta.update({"x_cacheDir": urld})
+    meta.update({"x_downloadTime": toc0})
+    meta.update({"x_readTime": toc})
+    meta.update({"x_metaFileParsed": fnamepkl})
+    meta.update({"x_dataFileParsed": fnamenpy})
+    meta.update({"x_metaFile": fnamejson})
+    meta.update({"x_dataFile": fnamecsv})
+    meta['x_totalTime'] = time.time() - tic_totalTime
 
-        elif ( path=='hapi/catalog' ):
-           s.send_response(200)
-           s.send_header("Content-type", "application/json")
+"""
+        ``meta = hapi(server, dataset, parameters)`` returns a dict containing the  HAPI info metadata
+        for each parameter in the comma-separated string ``parameters``. The
+        dictionary structure follows 
+        `HAPI info response JSON structure <https://github.com/hapi-server/data-specification/blob/master/hapi-dev/HAPI-data-access-spec-dev.md#36-info>`_.
 
-        elif ( path=='hapi/info' ):
-           id= query['id'][0]
-           if ( os.path.isfile(HAPI_HOME + 'info/' + id + '.json' ) ):
-               s.send_response(200)
-           else:
-               #s.send_response(404)
-               s.do_error(1406,404)   # 'unknown dataset id'
-           s.send_header("Content-type", "application/json")
+        ``data, = hapi(server, dataset, parameters, start, stop)`` returns a
+        NumPy array with named fields with field names corresponding to ``parameters``, e.g., if
+        ``parameters = 'scalar,vector'`` and the number of records in the time
+        range ``start`` <= t < ``stop`` returned is N, then
 
-        elif ( path=='hapi/data' ):
-           id= query['id'][0]
-           (timemin, timemax, errorcode) = clean_query_time(query)
-           if errorcode > 0:
-               s.do_error(errorcode)
-           lastModified = get_lastModified(api_datatype, id, timemin, timemax)
-           if ( s.headers.__contains__('If-Modified-Since') ):
-               theyHave = fetch_modifiedsince(s)
-               if ( lastModified <= theyHave ):
-                   s.send_response(304)
-                   s.end_headers()
-                   feedback.finish(responseHeaders)
-                   return               
-           # check request header for If-Modified-Since
-           if ( os.path.isfile(HAPI_HOME + 'info/' + id + '.json' ) ):
-               s.send_response(200)
-               s.send_header("Content-type", "text/csv")
-           else:
-               s.send_response(404)
-           s.send_header("Content-type", "text/csv")
+          ``data['scalar']`` is a NumPy array of shape (N)
 
-        elif ( path=='hapi' ):
-           s.send_response(200)
-           s.send_header("Content-type", "text/html")
+          ``data['vector']`` is a NumPy array of shape (N,3)
 
-        elif ( path=='' ):
-           # allow for a top-level index call
-           s.send_response(200)
-           s.send_header("Content-type", "text/html")
+          ``data['Time']`` is a NumPy array of byte literals with shape (N).
 
-        else:
-           #print("debug: got here,",path);
-           s.send_response(404)
-           s.send_header("Content-type", "application/json")
+          Byte literal times can be converted to Python ``datetimes`` using
 
-        s.send_header("Access-Control-Allow-Origin", "*")
-        s.send_header("Access-Control-Allow-Methods", "GET")
-        s.send_header("Access-Control-Allow-Headers", "Content-Type")
-
-        if ( path=='hapi/data' ):
-            ###from email.utils import formatdate
-            responseHeaders['Last-Modified']=formatdate(
-                timeval=lastModified, localtime=False, usegmt=True ) 
-            
-        for h in responseHeaders:
-            s.send_header(h,responseHeaders[h])
-            
-        try:
-            s.end_headers()
-        except:
-            pass
-
-        #
-        # HTML BODY
-        #
-        if ( path=='hapi/capabilities' ):
-            for l in open( HAPI_HOME + 'capabilities.json' ):
-                s.wfile.write(bytes(l,"utf-8"))
-        elif ( path=='hapi/catalog' ):
-            for l in open( HAPI_HOME + 'catalog.json' ):
-                s.wfile.write(bytes(l,"utf-8"))
-        elif ( path=='hapi/info' ):
-            id= query['id'][0]
-            #for l in open( HAPI_HOME + '/info/' + id + '.json' ):
-            #    s.wfile.write(bytes(l,"utf-8"))
-            parameters= handle_key_parameters(query)
-            do_write_info( s, id, parameters, None )
-        elif ( path=='hapi/data' ):
-            (parameters, xopts, mydata, check_error) = prep_data(query, tags)
-            floc['customOptions'] = handle_customRequestOptions(query, xopts)
-            if check_error > 0:
-                s.do_error(check_error)
-            else:
-                # parameters are valid, so run the query
-                if query.__contains__('include'):
-                    if query['include'][0]=='header':
-                        do_write_info( s, id, parameters, '#' )
-                (stat,mydata)=fetch_info_params(id,False)
-                #
-                # FORMAT HERE IS: id (unique dataset endpoint)
-                #    timemin and timemax (in HAPI format)
-                #    parameters (as a list of parameter names)
-                #    mydata (copy of the full json-parsed parameters spec)
-                #    floc (site-specific required elements from *_config.py)
-                (status,data)=hapi_handler(
-                    id, timemin, timemax, parameters, mydata, floc,
-                    stream_flag, s)
-
-                if status >= 1400:
-                    s.do_error(status)
-                else:
-                    if len(data) == 0 and stream_flag == False:
-                        # likely redundant sanity check
-                        status = 1201
-                    if status == 1201:
-                        # status 1201 is HAPI "OK- no data for time range"
-                        s.do_error(status)
-                    else:
-                        status=1200 # status 1200 is HAPI "OK"
-                    # presumed valid data, so serve it
-                    try:
-                        # note for streaming, data is zero but legit
-                        s.wfile.write(bytes(data,"utf-8"))
-                    except:
-                        # return general 'user input error' code 
-                        s.do_error(1500) # HAPI internal server error
-
-        elif ( path=='hapi' ):
-            print_hapi_intropage(hapi_version, s)
-
-        elif ( path=='' ):
-            print_hapi_index(s)
-
-        else:
-            # looks like error is 'not a known URL'
-            s.do_error(1400)
-
-        feedback.finish(responseHeaders)
-
-class ThreadedHTTPServer( ThreadingMixIn, HTTPServer ):
-   '''Handle requests in a separate thread.'''
-
-
-### AND HERE WE GO!
-
-if __name__ == '__main__':
-    feedback.setup()
-
-    httpd = ThreadedHTTPServer((HOST_NAME, PORT_NUMBER), MyHandler)
-    print(time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER))
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-
-    feedback.destroy()
-
-    httpd.server_close()
-    print(time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER))
-
+          ``dtarray = hapitime2datetime(data['Time'])``
+"""
