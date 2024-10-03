@@ -12,6 +12,7 @@ import sys # only used for command-line arguments
 
 import time
 from time import gmtime, strftime
+from io import StringIO
 # Python2 uses urlparse, Python3 uses urllib.parse
 #import urlparse
 import urllib.parse as urlparse
@@ -47,6 +48,50 @@ class defaultvars():
     hapi_handler = csv_hapireader.do_data_csv
     tags_allowed = [''] # no subparams allowed
     stream_flag = True
+
+
+def test_server():
+    from hapiclient import hapi
+    from hapiplot import hapiplot
+    server     = 'http://localhost:8000/hapi'
+    start      = '2023-12-01T00:00:00Z'
+    stop       = '2023-12-07T00:00:00Z'
+    dataset = "indices_all"
+    parameters="SME,SML"
+    data, meta = hapi(server, dataset, parameters, start, stop)
+    hapiplot(data,meta)
+
+def test_serverless(USE_CASE='supermag',plot=False):
+
+    start      = '2023-12-01T00:00:00Z'
+    stop       = '2023-12-07T00:00:00Z'
+    id = "indices_all"
+    parameters="SME,SML"
+
+    CFG = parse_config(USE_CASE)
+    #xopts=[]
+    CFG.floc['customOptions'] = [] # handle_customRequestOptions(query, xopts)
+    tags = [] # (tags, path) = get_hapi_tags(path,CFG.tags_allowed)
+    
+    (start, stop, errorcode) = clean_query_time(None,timemin=start,timemax=stop)
+    # info call:  id = query['id'][0], parameters = handle_key_parameters(query)
+    # catalog call: for l in open(CFG.HAPI_HOME+'catalog.json'): print(l)
+    # capabilities call: for l in ...capabilities
+
+    # data call:
+    parameters = parameters.split(',')
+    (status, mydata) = fetch_info_params(id,CFG.HAPI_HOME,False)
+    (status, data) = CFG.hapi_handler(id, start, stop, parameters, mydata, CFG.floc, False, None)
+
+    #adata = data.split('\n')
+    fdata = StringIO(data)
+    meta, hapidata = csv_to_hapi_conv(id,parameters,CFG.HAPI_HOME,fdata,True)
+
+    if plot:
+        from hapiplot import hapiplot
+        hapiplot(data,meta)
+        
+    return meta, hapidata
 
 def fetchdata(hapi_handler, id, timemin, timemax, parameters, mydata,
               floc, stream_flag, s):
@@ -474,11 +519,13 @@ def check_v2_v3(query):
         query['time.max']=query['stop']
     return(query)
 
-def clean_query_time(query):
+def clean_query_time(query,timemin=None,timemax=None):
     # TESTED
     errorcode = 0 # assume all is well
-    timemin= query['time.min'][0]
-    timemax= lasthour_mod(query['time.max'][0])
+    if timemin == None:
+        timemin= query['time.min'][0]
+    if timemax == None:
+        timemax= lasthour_mod(query['time.max'][0])
     # right now our parser can only handle format %Y-%m-%dT%H:%MZ
     # so truncatee entries with seconds.milliseconds
     timemin=timemin[0:16]+'Z'
@@ -651,12 +698,21 @@ def fetch_modifiedsince(lms):
 
 
 
-def sampleconv():
+def csv_to_hapi_conv(id='cputemp',
+                     parameters=None,
+                     floc='home_csv/',
+                     finput='home_csv/data/cputemp/2018/cputemp.20180119.csv',
+                     plot=False):
+    """
+    Given a CSV filename or file-like object, returns HAPI-style meta, data
+    includes a test mode using 'cputemp'
+    """
     from hapiclient.hapi import compute_dt
     from hapiclient.util import jsonparse
     import json
-    fname = 'home_csv/info/cputemp.json'
-    with open(fname) as fin:
+    
+    jname = floc+'/info/'+id+'.json'
+    with open(jname) as fin:
         meta = json.load(fin)
     meta.update({"x_server": 'whatever'})
     meta.update({"x_dataset": 'whatever'})
@@ -664,15 +720,25 @@ def sampleconv():
     opts['format'] = 'csv'
     opts['method'] = 'numpynolength'
     dt, cols, psizes, pnames, pytpes, missing_length = compute_dt(meta, opts)
-    fname = 'home_csv/data/cputemp/2018/cputemp.20180119.csv'
-    import numpy as np
-    data = hapi_conv_np(fname,dt)
-    from hapiplot import hapiplot
-    hapiplot(data,meta)
+
+    if parameters != None:
+        dt = [d for d in dt if d[0] in parameters or d[0] == 'Time']
+            
+    try:
+        data = hapi_conv_np_fromtxt(finput,dt)
+    except:
+        print("Error converting data to numpy format, returning raw data instead")
+        return dt, finput
+    
+    if plot:
+        from hapiplot import hapiplot
+        hapiplot(data,meta)
     return meta, data
 
 
-def hapi_conv_np(fnamecsv,dt):
+def hapi_conv_np_fromtxt(fnamecsv,dt):
+    # takes files or list of strings only
+    import numpy as np
     data = np.array([], dtype=dt)
     data = np.genfromtxt(fnamecsv,
                          dtype=dt,
@@ -682,7 +748,18 @@ def hapi_conv_np(fnamecsv,dt):
                          encoding='utf-8')
     return data
     
+def hapi_conv_np_alttxt(sdata,dt):
+    # takes file or list of strings
+    import numpy as np
+    data = np.array([], dtype=dt)
+    data = np.loadtxt(sdata,
+                         dtype=dt,
+                         delimiter=',',
+                         encoding='utf-8')
+    return data
+    
 def hapi_conv_pandas(fnamecsv,dt,df,pnames,psizes,cols):
+    import pandas
     df = pandas.read_csv(fnamecsv,
                          sep=',',
                          header=None,
