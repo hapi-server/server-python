@@ -49,6 +49,8 @@ class defaultvars():
     tags_allowed = [''] # no subparams allowed
     stream_flag = True
 
+def tolist(csvline):
+    return csvline.split(',')
 
 def test_server():
     from hapiclient import hapi
@@ -80,12 +82,12 @@ def test_serverless(USE_CASE='supermag',plot=False):
 
     # data call:
     parameters = parameters.split(',')
-    (status, mydata) = fetch_info_params(id,CFG.HAPI_HOME,False)
-    (status, data) = CFG.hapi_handler(id, start, stop, parameters, mydata, CFG.floc, False, None)
+    (status, jsondata) = fetch_info_params(id,CFG.HAPI_HOME,False)
+    (status, data) = CFG.hapi_handler(id, start, stop, parameters, jsondata, CFG.floc, False, None)
 
     #adata = data.split('\n')
     fdata = StringIO(data)
-    meta, hapidata = csv_to_hapi_conv(id,parameters,CFG.HAPI_HOME,fdata,True)
+    meta, hapidata = csv_to_hapi_conv(id,parameters,CFG.HAPI_HOME,fdata)
 
     if plot:
         from hapiplot import hapiplot
@@ -93,9 +95,9 @@ def test_serverless(USE_CASE='supermag',plot=False):
         
     return meta, hapidata
 
-def fetchdata(hapi_handler, id, timemin, timemax, parameters, mydata,
+def fetchdata(hapi_handler, id, timemin, timemax, parameters, jsondata,
               floc, stream_flag, s):
-    (status, data) = hapi_hander(id, timemin, timemax, parameters, mydata, floc, stream_flag, s)
+    (status, data) = hapi_hander(id, timemin, timemax, parameters, jsondata, floc, stream_flag, s)
     return (status, data)
     
 def parse_config(myname):
@@ -120,6 +122,8 @@ def parse_config(myname):
             hapi_handler = CFG.hapi_handler
             tags_allowed = CFG.tags_allowed
             stream_flag = CFG.stream_flag
+            CFG.floc['customOptions'] = []
+            CFG.tags = []
             if CFG.loaded_config:
                 print("Successfully loaded ",cfile)
         except:
@@ -165,7 +169,7 @@ def fetch_info_params(id, hapihome, isFile):
     # TESTED
     # open the info/[id].json file and return the parameter array
     # set isFile=True if 'id' is a filename, False if 'id' is actually an id
-    # e.g. mydata['startDate'], mydata['stopDate'], etc
+    # e.g. jsondata['startDate'], jsondata['stopDate'], etc
     status=False
     try:
         if isFile:
@@ -174,24 +178,24 @@ def fetch_info_params(id, hapihome, isFile):
         else:
             #print("Debug: id file is ", HAPI_HOME + 'info/' + id + '.json' )
             jo = open( hapihome + 'info/' + id + '.json' )
-        mydata=json.loads(jo.read())
+        jsondata=json.loads(jo.read())
         jo.close()
         status=True
     except:
         #print("debug: could not access file for ",id)
-        mydata={'startDate':'30010101T00:00',
+        jsondata={'startDate':'30010101T00:00',
                 'stopDate':'00010101T00:00',
                 'parameters':{}}
 
     # handle HAPI's in-house 'lasthour' as a proper date
-    if 'stopDate' in mydata.keys():
-        mydata['stopDate'] = lasthour_mod(mydata['stopDate'])
+    if 'stopDate' in jsondata.keys():
+        jsondata['stopDate'] = lasthour_mod(jsondata['stopDate'])
     # added 'limitduration' as a new HAPI keyword that might exist
     # in info/[id].json, units=sec
-    if 'limitduration' not in mydata.keys():
-        mydata['limitduration']=0  # 0 = no limit enforced
+    if 'limitduration' not in jsondata.keys():
+        jsondata['limitduration']=0  # 0 = no limit enforced
     #print("Debug: status on checking limits is: ",status)
-    return(status,mydata)
+    return(status,jsondata)
 
 
 ### Sample generic HAPI formatting utilities for user-made parsers
@@ -233,18 +237,18 @@ def generic_check_error(id, timemin, timemax, parameters, hapihome):
 
     timemax = lasthour_mod(timemax)
     errorcode = 0 # assume all is well
-    (stat,mydata)=fetch_info_params(id,hapihome,False)
+    (stat,jsondata)=fetch_info_params(id,hapihome,False)
     if stat == False:
         errorcode = 1406
         # no valid json exists so 'Bad request - unknown dataset id'
         qtimemin= timemin # no change
         qtimemax= timemax # no change
     else:
-        #print("debug: for id ",id," got ",mydata)
-        limit_duration=mydata['limitduration']
-        archive_startdate=parse(mydata['startDate'],ignoretz=True)
+        #print("debug: for id ",id," got ",jsondata)
+        limit_duration=jsondata['limitduration']
+        archive_startdate=parse(jsondata['startDate'],ignoretz=True)
         # yet more datehandling, for now/lastday/lasthour/etc
-        stopdate=mydata['stopDate']
+        stopdate=jsondata['stopDate']
         if 'now' in stopdate or 'last' in stopdate:
             archive_stopdate=datetime.datetime.now()
         else:
@@ -565,8 +569,8 @@ def prep_data(query, hapihome, tags):
     (check_error,timemin,timemax) = generic_check_error(
         id,timemin,timemax,parameters,hapihome)
     # Two passes here-- first, that no non-HAPI params exist
-    (stat,mydata)=fetch_info_params(id,hapihome,False)
-    allparams = [ item['name'] for item in mydata['parameters'] ]
+    (stat,jsondata)=fetch_info_params(id,hapihome,False)
+    allparams = [ item['name'] for item in jsondata['parameters'] ]
     if parameters != None:
         if 'Time' not in allparams:
             allparams.append('Time') # always make sure this is there
@@ -596,13 +600,13 @@ def prep_data(query, hapihome, tags):
         parameters.extend(tags)
     # returns an array of validated additional query strings
     # (or empty array)
-    if 'x_customRequestOptions' in mydata.keys():
-        xopts = mydata['x_customRequestOptions']
+    if 'x_customRequestOptions' in jsondata.keys():
+        xopts = jsondata['x_customRequestOptions']
     else:
         xopts=[]
     #print("Debug, xopts = ",xopts)
     ##    xopts = jset['x_customRequestOptions']
-    return(parameters, xopts, mydata, check_error)
+    return(parameters, xopts, jsondata, check_error)
 
 def print_hapi_intropage(myname, hapihome):
     # TESTED
@@ -627,17 +631,17 @@ def print_hapi_intropage(myname, hapihome):
     ff= glob.glob( hapihome + 'info/*.json' )
     n= len( hapihome + 'info/' )
     for f in sorted(ff):
-        (stat,mydata)=fetch_info_params(f,hapihome,True)
+        (stat,jsondata)=fetch_info_params(f,hapihome,True)
         u= "/hapi/info?%s=%s" % ( datasetkey, f[n:-5] )
         mystr += "<a href='%s'>%s</a></br>\n" % ( u,u ) 
         # also extract dates etc from file
         #print("debug: checking info file ",f)
-        #print("debug:",mydata)
-        timemin=mydata['startDate']
-        timemax=mydata['stopDate']
+        #print("debug:",jsondata)
+        timemin=jsondata['startDate']
+        timemax=jsondata['stopDate']
         try:
-            timemin=mydata['sampleStartDate']
-            timemax=mydata['sampleStopDate']
+            timemin=jsondata['sampleStartDate']
+            timemax=jsondata['sampleStopDate']
         except:
             pass
         u= "/hapi/data?%s=%s&%s=%s&%s=%s" % (
@@ -646,7 +650,7 @@ def print_hapi_intropage(myname, hapihome):
         mystr += "<a href='%s'>%s</a></br>\n" % ( u,u ) 
         mystr += "Parameters:\n"
         mystr += "<table>"
-        for para in mydata['parameters']:
+        for para in jsondata['parameters']:
             #mystr += "<li>"
             mystr += "<tr>"
             mystr += "<td>%s:</td>" % (para['name'])
@@ -701,8 +705,7 @@ def fetch_modifiedsince(lms):
 def csv_to_hapi_conv(id='cputemp',
                      parameters=None,
                      floc='home_csv/',
-                     finput='home_csv/data/cputemp/2018/cputemp.20180119.csv',
-                     plot=False):
+                     finput='home_csv/data/cputemp/2018/cputemp.20180119.csv'):
     """
     Given a CSV filename or file-like object, returns HAPI-style meta, data
     includes a test mode using 'cputemp'
@@ -723,24 +726,23 @@ def csv_to_hapi_conv(id='cputemp',
 
     if parameters != None:
         dt = [d for d in dt if d[0] in parameters or d[0] == 'Time']
-            
+        meta['parameters'] = [p for p in meta['parameters'] if p['name'] in parameters or p['name'] == 'Time']
     try:
         data = hapi_conv_np_fromtxt(finput,dt)
     except:
         print("Error converting data to numpy format, returning raw data instead")
         return dt, finput
     
-    if plot:
-        from hapiplot import hapiplot
-        hapiplot(data,meta)
     return meta, data
 
 
-def hapi_conv_np_fromtxt(fnamecsv,dt):
+def hapi_conv_np_fromtxt(fname_or_data_csv,dt):
     # takes files or list of strings only
     import numpy as np
     data = np.array([], dtype=dt)
-    data = np.genfromtxt(fnamecsv,
+    if not exists(fname_or_data_csv):
+        fname_or_data_csv = StringIO(fname_or_data_csv)
+    data = np.genfromtxt(fname_or_data_csv,
                          dtype=dt,
                          delimiter=',',
                          replace_space=' ',
