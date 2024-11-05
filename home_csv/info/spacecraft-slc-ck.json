@@ -29,7 +29,7 @@
             "units": "km",
             "fill": null,
             "description": "Spacecraft xyz position (heliocentric)",
-            "size": [2],
+            "size": [3],
             "labels": ["x", "y", "z"]
         },
         {
