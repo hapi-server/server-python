@@ -12,6 +12,9 @@ Good for CSV files in a file tree
 
 import os
 import json
+import math
+import dateutil
+
 
 def do_parameters_map( id, floc, parameters ):
     ff= floc['dir'] + '/info/' + id + '.json'
@@ -19,15 +22,34 @@ def do_parameters_map( id, floc, parameters ):
     jset = json.loads(fin.read())
     fin.close()
     pp = [item['name'] for item in jset['parameters']]
-    result= list (map( pp.index, parameters ))
-    if ( result[0]!=0 ):
-        result.insert(0,0)
-    return result
+
+    curr_col = 0
+    param_dict = {}
+    for idx, param_name in enumerate(pp):
+        # Calculate the number of columns used for this parameter
+        size = jset['parameters'][idx].get('size')
+        if size:
+            ncols = math.prod(size)
+            col_indices = list(range(curr_col, curr_col + ncols))
+            curr_col += ncols
+        else:
+            col_indices = [curr_col]
+            curr_col += 1
+
+        # Filter requested parameters
+        if param_name in parameters:
+            param_dict[idx] = col_indices
+        
+        # Ensure time (index 0) is always present and first
+        if param_dict.get(0) != 0:
+            param_dict = {0: [0]} | param_dict
+
+    return param_dict
 
 
 def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
                  stream_flag, stream):
-    import dateutil
+
     ff= floc['dir'] + '/data/' + id + '/'
     filemin= dateutil.parser.parse( timemin ).strftime('%Y%m%d')
     filemax= dateutil.parser.parse( timemax ).strftime('%Y%m%d')
@@ -36,7 +58,7 @@ def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
     yrmin= int( timemin[0:4] )
     yrmax= int( timemax[0:4] )
     if ( parameters!=None ):
-        mm= do_parameters_map( id, floc, parameters )
+        mm = do_parameters_map( id, floc, parameters )
     else:
         mm= None
 
@@ -48,34 +70,32 @@ def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
         if ( not os.path.exists(ffyr) ): continue
         files= sorted( os.listdir( ffyr ) ) 
         for file in files:
-             ymd= file[-12:-4]
-             if ( filemin<=ymd and ymd<=filemax ):
-                  for rec in open( ffyr + '/' + file ):
-                      ydmhms= rec[0:19]
-                      if ( timemin<=ydmhms and ydmhms<timemax ):
-                          if ( mm!=None ):
-                              ss= rec.split(',')
-                              comma= False
-                              for i in mm:
-                                 if comma:
-                                    datastr += ','
-                                 datastr += ss[i]
-                                 comma=True
-                              if mm[-1]<(len(ss)-1):
-                                 datastr += '\n'
-                          else:
-                              datastr += rec
+            ymd= file[-12:-4]
+            if ( filemin<=ymd and ymd<=filemax ):
+                for rec in open( ffyr + '/' + file ):
+                    ydmhms= rec[0:19]
+                    if ( timemin<=ydmhms and ydmhms<timemax ):
+                        if ( mm!=None ):
+                            ss= rec.split(',')
+                            comma= False
+                            for i in mm:
+                                for li in mm[i]:
+                                    if comma:
+                                        datastr += ','
+                                    datastr += ss[li]
+                                    comma=True
+                            if list(mm.values())[-1][-1]<(len(ss)-1):
+                                datastr += '\n'
+                        else:
+                            datastr += rec
                               
-                          if len(datastr) > 0: status=1200
-                          if stream_flag:
-                              # write then flush
-                              stream.wfile.write(bytes(datastr,"utf-8"))
-                              datastr = ""
+                        if len(datastr) > 0: status=1200
+                        if stream_flag:
+                            # write then flush
+                            stream.wfile.write(bytes(datastr,"utf-8"))
+                            datastr = ""
                               
-                              
-    #s.wfile.write(bytes(datastr,"utf-8"))
     if status != 1200 and len(datastr) == 0:
         status=1201 # status 1200 is HAPI "OK- no data for time range"
 
-    #print("Debug: datastr is ",datastr);
     return(status,datastr)
