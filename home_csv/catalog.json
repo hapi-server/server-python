@@ -10,8 +10,8 @@
             "title": "Temperature of CPU and GPU of Raspberry PI"
         },
         {
-            "id": "spacecraft-slc-ck",
-            "title": "Parker Solar Probe Position and Orientation Data"
+            "id": "spacecraft-spk-ck",
+            "title": "Parker Solar Probe Ephemeris and Orientation Data"
         }
     ],
     "status": {
