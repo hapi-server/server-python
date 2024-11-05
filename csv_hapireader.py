@@ -10,17 +10,18 @@ Good for CSV files in a file tree
  "data/[id]/YYYY/[id].YYYYMMDD.csv
 """
 
-import os
 import json
 import math
+import os
+from pathlib import Path
+
 import dateutil
 
 
 def do_parameters_map(id, floc, parameters):
-    ff = floc["dir"] + "/info/" + id + ".json"
-    fin = open(ff, "r")
-    jset = json.loads(fin.read())
-    fin.close()
+    ff = Path(floc["dir"]) / "info" / f"{id}.json"
+    with open(ff, "r") as fin:
+        jset = json.loads(fin.read())
     pp = [item["name"] for item in jset["parameters"]]
 
     curr_col = 0
@@ -72,29 +73,30 @@ def do_data_csv(id, timemin, timemax, parameters, catalog, floc, stream_flag, st
         for file in files:
             ymd = file[-12:-4]
             if filemin <= ymd <= filemax:
-                for rec in open(ffyr + "/" + file):
-                    ydmhms = rec[0:19]
-                    if timemin <= ydmhms < timemax:
-                        if mm is not None:
-                            ss = rec.split(",")
-                            comma = False
-                            for i in mm:
-                                for li in mm[i]:
-                                    if comma:
-                                        datastr += ","
-                                    datastr += ss[li]
-                                    comma = True
-                            if list(mm.values())[-1][-1] < (len(ss) - 1):
-                                datastr += "\n"
-                        else:
-                            datastr += rec
+                with open(Path(ffyr) / file, "r") as f:
+                    for rec in f:
+                        ydmhms = rec[0:19]
+                        if timemin <= ydmhms < timemax:
+                            if mm is not None:
+                                ss = rec.split(",")
+                                comma = False
+                                for i in mm:
+                                    for li in mm[i]:
+                                        if comma:
+                                            datastr += ","
+                                        datastr += ss[li]
+                                        comma = True
+                                if list(mm.values())[-1][-1] < (len(ss) - 1):
+                                    datastr += "\n"
+                            else:
+                                datastr += rec
 
-                        if len(datastr) > 0:
-                            status = 1200
-                        if stream_flag:
-                            # Write then flush
-                            stream.wfile.write(bytes(datastr, "utf-8"))
-                            datastr = ""
+                            if len(datastr) > 0:
+                                status = 1200
+                            if stream_flag:
+                                # Write then flush
+                                stream.wfile.write(bytes(datastr, "utf-8"))
+                                datastr = ""
 
     if status != 1200 and len(datastr) == 0:
         status = 1201  # status 1200 is HAPI "OK- no data for time range"
