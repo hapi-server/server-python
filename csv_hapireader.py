@@ -79,7 +79,7 @@ def do_data_csv(
     floc: dict,
     stream_flag: bool,
     stream,
-) -> tuple[str, str]:
+) -> tuple[int, str]:
     """
     Retrieves and filters CSV time-series data within a specified date range and parameter list.
 
