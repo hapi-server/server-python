@@ -1,0 +1,45 @@
+{
+    "HAPI": "3.0",
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    },
+    "format": "csv",
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "stopDate": "2024-12-31T00:00:00.000Z",
+    "timeStampLocation": "center",
+    "cadence": "P1D",
+    "sampleStartDate": "2024-01-01T00:00:00.000Z",
+    "sampleStopDate": "2024-03-01T00:00:00.000Z",
+    "description": "Parker Solar Probe spacecraft position and orientation data", 
+    "unitsSchema": "astropy3",
+    "parameters": [
+        {
+            "name": "Time",
+            "type": "isotime",
+            "length": 24,
+            "units": "UTC",
+            "fill": null,
+            "description": "UTC time of observation",
+            "label": "Time"
+        },
+        {
+            "name": "Pos",
+            "type": "double",
+            "units": "km",
+            "fill": null,
+            "description": "Spacecraft xyz position (heliocentric)",
+            "size": [2],
+            "labels": ["x", "y", "z"]
+        },
+        {
+            "name": "Rot",
+            "type": "double",
+            "units": null,
+            "fill": null,
+            "description": "Transformation matrix defining orientation",
+            "size": [3, 3],
+            "labels": [["R11", "R12", "R13"], ["R21", "R22", "R23"], ["R31", "R32", "R33"]]
+        }
+    ]
+}
