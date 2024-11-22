@@ -1,0 +1,36 @@
+{
+    "HAPI": "2.0",
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    },
+    "modificationDate": "lastday",
+    "parameters": [
+        {
+            "length": 24,
+            "name": "Time",
+            "type": "isotime",
+            "units": "UTC",
+            "fill": null
+        },
+	{"name": "SMEr", "type": "double", "units": "nT", "size": [24], "fill": "999999.0"},
+	{"name": "SMLr", "type": "double", "units": "nT", "size": [24], "fill": "999999.0"},
+	{"name": "SMLrmlat", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMLrmlt", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMLrglat", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMLrglon", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMLrstid", "type": "string", "units": null, "length": 3, "size": [24], "fill": "n/a"},
+	{"name": "SMUr", "type": "double", "units": "nT", "size": [24], "fill": "999999.0"},
+	{"name": "SMUrmlat", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMUrmlt", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMUrglat", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMUrglon", "type": "double", "units": "degrees", "size": [24], "fill": "999999.0"},
+	{"name": "SMUrstid", "type": "string", "units": null, "length": 3, "size": [24], "fill": "n/a"},
+	{"name": "NUMr", "type": "double", "units": "nT", "size": [24], "fill": "999999.0"}
+    ],
+    "startDate": "2018-01-01T00:00Z",
+    "stopDate": "lastday-P1D",
+    "sampleStartDate": "2018-01-18T00:00Z",
+    "sampleStopDate": "2018-01-19T00:00Z",
+    "cadence": "PT1M"
+}

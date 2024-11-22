@@ -1,0 +1,845 @@
+{
+	"HAPI": "3.1",
+	"catalog": [
+		{
+			"id": "indices_all",
+			"title": "Data indices for time span, indices_all"
+		},
+		{
+			"id": "indices_base",
+			"title": "Data indices for time span, indices_base"
+		},
+		{
+			"id": "indices_dark",
+			"title": "Data indices for time span, indices_dark"
+		},
+		{
+			"id": "indices_imf",
+			"title": "Data indices for time span, indices_imf"
+		},
+		{
+			"id": "indices_reg",
+			"title": "Data indices for time span, indices_reg"
+		},
+		{
+			"id": "indices_sun",
+			"title": "Data indices for time span, indices_sun"
+		},
+		{
+			"id": "indices_swi",
+			"title": "Data indices for time span, indices_swi"
+		},
+		{
+			"id": "data_AAA",
+			"title": "Data for station AAA"
+		},
+		{
+			"id": "data_AIA",
+			"title": "Data for station AIA"
+		},
+		{
+			"id": "data_AMS",
+			"title": "Data for station AMS"
+		},
+		{
+			"id": "data_AND",
+			"title": "Data for station AND"
+		},
+		{
+			"id": "data_API",
+			"title": "Data for station API"
+		},
+		{
+			"id": "data_ARS",
+			"title": "Data for station ARS"
+		},
+		{
+			"id": "data_ASC",
+			"title": "Data for station ASC"
+		},
+		{
+			"id": "data_ASP",
+			"title": "Data for station ASP"
+		},
+		{
+			"id": "data_BFE",
+			"title": "Data for station BFE"
+		},
+		{
+			"id": "data_BFO",
+			"title": "Data for station BFO"
+		},
+		{
+			"id": "data_BJN",
+			"title": "Data for station BJN"
+		},
+		{
+			"id": "data_BLC",
+			"title": "Data for station BLC"
+		},
+		{
+			"id": "data_BMT",
+			"title": "Data for station BMT"
+		},
+		{
+			"id": "data_BOU",
+			"title": "Data for station BOU"
+		},
+		{
+			"id": "data_BOX",
+			"title": "Data for station BOX"
+		},
+		{
+			"id": "data_BRD",
+			"title": "Data for station BRD"
+		},
+		{
+			"id": "data_BRN",
+			"title": "Data for station BRN"
+		},
+		{
+			"id": "data_BRW",
+			"title": "Data for station BRW"
+		},
+		{
+			"id": "data_BSL",
+			"title": "Data for station BSL"
+		},
+		{
+			"id": "data_C04",
+			"title": "Data for station C04"
+		},
+		{
+			"id": "data_C06",
+			"title": "Data for station C06"
+		},
+		{
+			"id": "data_C08",
+			"title": "Data for station C08"
+		},
+		{
+			"id": "data_C10",
+			"title": "Data for station C10"
+		},
+		{
+			"id": "data_CBB",
+			"title": "Data for station CBB"
+		},
+		{
+			"id": "data_CDC",
+			"title": "Data for station CDC"
+		},
+		{
+			"id": "data_CHC",
+			"title": "Data for station CHC"
+		},
+		{
+			"id": "data_CKI",
+			"title": "Data for station CKI"
+		},
+		{
+			"id": "data_CLF",
+			"title": "Data for station CLF"
+		},
+		{
+			"id": "data_CMO",
+			"title": "Data for station CMO"
+		},
+		{
+			"id": "data_CNB",
+			"title": "Data for station CNB"
+		},
+		{
+			"id": "data_CPS",
+			"title": "Data for station CPS"
+		},
+		{
+			"id": "data_CSY",
+			"title": "Data for station CSY"
+		},
+		{
+			"id": "data_CTA",
+			"title": "Data for station CTA"
+		},
+		{
+			"id": "data_CYG",
+			"title": "Data for station CYG"
+		},
+		{
+			"id": "data_CZT",
+			"title": "Data for station CZT"
+		},
+		{
+			"id": "data_DAW",
+			"title": "Data for station DAW"
+		},
+		{
+			"id": "data_DED",
+			"title": "Data for station DED"
+		},
+		{
+			"id": "data_DIK",
+			"title": "Data for station DIK"
+		},
+		{
+			"id": "data_DLT",
+			"title": "Data for station DLT"
+		},
+		{
+			"id": "data_DMC",
+			"title": "Data for station DMC"
+		},
+		{
+			"id": "data_DMH",
+			"title": "Data for station DMH"
+		},
+		{
+			"id": "data_DOB",
+			"title": "Data for station DOB"
+		},
+		{
+			"id": "data_DON",
+			"title": "Data for station DON"
+		},
+		{
+			"id": "data_DRV",
+			"title": "Data for station DRV"
+		},
+		{
+			"id": "data_DUR",
+			"title": "Data for station DUR"
+		},
+		{
+			"id": "data_EAG",
+			"title": "Data for station EAG"
+		},
+		{
+			"id": "data_EBR",
+			"title": "Data for station EBR"
+		},
+		{
+			"id": "data_ESK",
+			"title": "Data for station ESK"
+		},
+		{
+			"id": "data_EYR",
+			"title": "Data for station EYR"
+		},
+		{
+			"id": "data_FCC",
+			"title": "Data for station FCC"
+		},
+		{
+			"id": "data_FHB",
+			"title": "Data for station FHB"
+		},
+		{
+			"id": "data_FMC",
+			"title": "Data for station FMC"
+		},
+		{
+			"id": "data_FRD",
+			"title": "Data for station FRD"
+		},
+		{
+			"id": "data_FRN",
+			"title": "Data for station FRN"
+		},
+		{
+			"id": "data_FSP",
+			"title": "Data for station FSP"
+		},
+		{
+			"id": "data_GAN",
+			"title": "Data for station GAN"
+		},
+		{
+			"id": "data_GCK",
+			"title": "Data for station GCK"
+		},
+		{
+			"id": "data_GDH",
+			"title": "Data for station GDH"
+		},
+		{
+			"id": "data_GHB",
+			"title": "Data for station GHB"
+		},
+		{
+			"id": "data_GHC",
+			"title": "Data for station GHC"
+		},
+		{
+			"id": "data_GIM",
+			"title": "Data for station GIM"
+		},
+		{
+			"id": "data_GNG",
+			"title": "Data for station GNG"
+		},
+		{
+			"id": "data_GUA",
+			"title": "Data for station GUA"
+		},
+		{
+			"id": "data_GUI",
+			"title": "Data for station GUI"
+		},
+		{
+			"id": "data_HAN",
+			"title": "Data for station HAN"
+		},
+		{
+			"id": "data_HBK",
+			"title": "Data for station HBK"
+		},
+		{
+			"id": "data_HER",
+			"title": "Data for station HER"
+		},
+		{
+			"id": "data_HON",
+			"title": "Data for station HON"
+		},
+		{
+			"id": "data_HRB",
+			"title": "Data for station HRB"
+		},
+		{
+			"id": "data_HUA",
+			"title": "Data for station HUA"
+		},
+		{
+			"id": "data_HYB",
+			"title": "Data for station HYB"
+		},
+		{
+			"id": "data_IGC",
+			"title": "Data for station IGC"
+		},
+		{
+			"id": "data_IQA",
+			"title": "Data for station IQA"
+		},
+		{
+			"id": "data_IRT",
+			"title": "Data for station IRT"
+		},
+		{
+			"id": "data_ISL",
+			"title": "Data for station ISL"
+		},
+		{
+			"id": "data_IVA",
+			"title": "Data for station IVA"
+		},
+		{
+			"id": "data_IZN",
+			"title": "Data for station IZN"
+		},
+		{
+			"id": "data_JAI",
+			"title": "Data for station JAI"
+		},
+		{
+			"id": "data_JAN",
+			"title": "Data for station JAN"
+		},
+		{
+			"id": "data_JCK",
+			"title": "Data for station JCK"
+		},
+		{
+			"id": "data_JCO",
+			"title": "Data for station JCO"
+		},
+		{
+			"id": "data_KAG",
+			"title": "Data for station KAG"
+		},
+		{
+			"id": "data_KAK",
+			"title": "Data for station KAK"
+		},
+		{
+			"id": "data_KAR",
+			"title": "Data for station KAR"
+		},
+		{
+			"id": "data_KDU",
+			"title": "Data for station KDU"
+		},
+		{
+			"id": "data_KEP",
+			"title": "Data for station KEP"
+		},
+		{
+			"id": "data_KEV",
+			"title": "Data for station KEV"
+		},
+		{
+			"id": "data_KHB",
+			"title": "Data for station KHB"
+		},
+		{
+			"id": "data_KIL",
+			"title": "Data for station KIL"
+		},
+		{
+			"id": "data_KIR",
+			"title": "Data for station KIR"
+		},
+		{
+			"id": "data_KLI",
+			"title": "Data for station KLI"
+		},
+		{
+			"id": "data_KNY",
+			"title": "Data for station KNY"
+		},
+		{
+			"id": "data_KOU",
+			"title": "Data for station KOU"
+		},
+		{
+			"id": "data_KUV",
+			"title": "Data for station KUV"
+		},
+		{
+			"id": "data_KZN",
+			"title": "Data for station KZN"
+		},
+		{
+			"id": "data_LER",
+			"title": "Data for station LER"
+		},
+		{
+			"id": "data_LON",
+			"title": "Data for station LON"
+		},
+		{
+			"id": "data_LOZ",
+			"title": "Data for station LOZ"
+		},
+		{
+			"id": "data_LRM",
+			"title": "Data for station LRM"
+		},
+		{
+			"id": "data_LRV",
+			"title": "Data for station LRV"
+		},
+		{
+			"id": "data_LVV",
+			"title": "Data for station LVV"
+		},
+		{
+			"id": "data_LYR",
+			"title": "Data for station LYR"
+		},
+		{
+			"id": "data_MAS",
+			"title": "Data for station MAS"
+		},
+		{
+			"id": "data_MAW",
+			"title": "Data for station MAW"
+		},
+		{
+			"id": "data_MBO",
+			"title": "Data for station MBO"
+		},
+		{
+			"id": "data_MCQ",
+			"title": "Data for station MCQ"
+		},
+		{
+			"id": "data_MEA",
+			"title": "Data for station MEA"
+		},
+		{
+			"id": "data_MEK",
+			"title": "Data for station MEK"
+		},
+		{
+			"id": "data_MGD",
+			"title": "Data for station MGD"
+		},
+		{
+			"id": "data_MHV",
+			"title": "Data for station MHV"
+		},
+		{
+			"id": "data_MMB",
+			"title": "Data for station MMB"
+		},
+		{
+			"id": "data_MNK",
+			"title": "Data for station MNK"
+		},
+		{
+			"id": "data_MSR",
+			"title": "Data for station MSR"
+		},
+		{
+			"id": "data_MUO",
+			"title": "Data for station MUO"
+		},
+		{
+			"id": "data_NAL",
+			"title": "Data for station NAL"
+		},
+		{
+			"id": "data_NAQ",
+			"title": "Data for station NAQ"
+		},
+		{
+			"id": "data_NCK",
+			"title": "Data for station NCK"
+		},
+		{
+			"id": "data_NEW",
+			"title": "Data for station NEW"
+		},
+		{
+			"id": "data_NGK",
+			"title": "Data for station NGK"
+		},
+		{
+			"id": "data_NR2",
+			"title": "Data for station NR2"
+		},
+		{
+			"id": "data_NUR",
+			"title": "Data for station NUR"
+		},
+		{
+			"id": "data_NVS",
+			"title": "Data for station NVS"
+		},
+		{
+			"id": "data_ODE",
+			"title": "Data for station ODE"
+		},
+		{
+			"id": "data_ORC",
+			"title": "Data for station ORC"
+		},
+		{
+			"id": "data_OTT",
+			"title": "Data for station OTT"
+		},
+		{
+			"id": "data_OUJ",
+			"title": "Data for station OUJ"
+		},
+		{
+			"id": "data_PAG",
+			"title": "Data for station PAG"
+		},
+		{
+			"id": "data_PBK",
+			"title": "Data for station PBK"
+		},
+		{
+			"id": "data_PEG",
+			"title": "Data for station PEG"
+		},
+		{
+			"id": "data_PEL",
+			"title": "Data for station PEL"
+		},
+		{
+			"id": "data_PET",
+			"title": "Data for station PET"
+		},
+		{
+			"id": "data_PG1",
+			"title": "Data for station PG1"
+		},
+		{
+			"id": "data_PG5",
+			"title": "Data for station PG5"
+		},
+		{
+			"id": "data_PGC",
+			"title": "Data for station PGC"
+		},
+		{
+			"id": "data_PHU",
+			"title": "Data for station PHU"
+		},
+		{
+			"id": "data_PIL",
+			"title": "Data for station PIL"
+		},
+		{
+			"id": "data_PST",
+			"title": "Data for station PST"
+		},
+		{
+			"id": "data_R04",
+			"title": "Data for station R04"
+		},
+		{
+			"id": "data_RAL",
+			"title": "Data for station RAL"
+		},
+		{
+			"id": "data_RAN",
+			"title": "Data for station RAN"
+		},
+		{
+			"id": "data_RES",
+			"title": "Data for station RES"
+		},
+		{
+			"id": "data_RIK",
+			"title": "Data for station RIK"
+		},
+		{
+			"id": "data_ROE",
+			"title": "Data for station ROE"
+		},
+		{
+			"id": "data_RPB",
+			"title": "Data for station RPB"
+		},
+		{
+			"id": "data_RVK",
+			"title": "Data for station RVK"
+		},
+		{
+			"id": "data_SBA",
+			"title": "Data for station SBA"
+		},
+		{
+			"id": "data_SBL",
+			"title": "Data for station SBL"
+		},
+		{
+			"id": "data_SFS",
+			"title": "Data for station SFS"
+		},
+		{
+			"id": "data_SHU",
+			"title": "Data for station SHU"
+		},
+		{
+			"id": "data_SIT",
+			"title": "Data for station SIT"
+		},
+		{
+			"id": "data_SJG",
+			"title": "Data for station SJG"
+		},
+		{
+			"id": "data_SKT",
+			"title": "Data for station SKT"
+		},
+		{
+			"id": "data_SMI",
+			"title": "Data for station SMI"
+		},
+		{
+			"id": "data_SOD",
+			"title": "Data for station SOD"
+		},
+		{
+			"id": "data_SOL",
+			"title": "Data for station SOL"
+		},
+		{
+			"id": "data_SON",
+			"title": "Data for station SON"
+		},
+		{
+			"id": "data_SOR",
+			"title": "Data for station SOR"
+		},
+		{
+			"id": "data_SPG",
+			"title": "Data for station SPG"
+		},
+		{
+			"id": "data_SPT",
+			"title": "Data for station SPT"
+		},
+		{
+			"id": "data_STF",
+			"title": "Data for station STF"
+		},
+		{
+			"id": "data_STJ",
+			"title": "Data for station STJ"
+		},
+		{
+			"id": "data_SUA",
+			"title": "Data for station SUA"
+		},
+		{
+			"id": "data_SUM",
+			"title": "Data for station SUM"
+		},
+		{
+			"id": "data_SVS",
+			"title": "Data for station SVS"
+		},
+		{
+			"id": "data_T03",
+			"title": "Data for station T03"
+		},
+		{
+			"id": "data_T29",
+			"title": "Data for station T29"
+		},
+		{
+			"id": "data_T31",
+			"title": "Data for station T31"
+		},
+		{
+			"id": "data_T32",
+			"title": "Data for station T32"
+		},
+		{
+			"id": "data_T33",
+			"title": "Data for station T33"
+		},
+		{
+			"id": "data_T36",
+			"title": "Data for station T36"
+		},
+		{
+			"id": "data_T37",
+			"title": "Data for station T37"
+		},
+		{
+			"id": "data_T39",
+			"title": "Data for station T39"
+		},
+		{
+			"id": "data_T40",
+			"title": "Data for station T40"
+		},
+		{
+			"id": "data_T44",
+			"title": "Data for station T44"
+		},
+		{
+			"id": "data_T45",
+			"title": "Data for station T45"
+		},
+		{
+			"id": "data_T46",
+			"title": "Data for station T46"
+		},
+		{
+			"id": "data_T49",
+			"title": "Data for station T49"
+		},
+		{
+			"id": "data_T50",
+			"title": "Data for station T50"
+		},
+		{
+			"id": "data_T52",
+			"title": "Data for station T52"
+		},
+		{
+			"id": "data_TAB",
+			"title": "Data for station TAB"
+		},
+		{
+			"id": "data_TAM",
+			"title": "Data for station TAM"
+		},
+		{
+			"id": "data_TAR",
+			"title": "Data for station TAR"
+		},
+		{
+			"id": "data_TDC",
+			"title": "Data for station TDC"
+		},
+		{
+			"id": "data_THL",
+			"title": "Data for station THL"
+		},
+		{
+			"id": "data_THY",
+			"title": "Data for station THY"
+		},
+		{
+			"id": "data_TIK",
+			"title": "Data for station TIK"
+		},
+		{
+			"id": "data_TOP",
+			"title": "Data for station TOP"
+		},
+		{
+			"id": "data_TRO",
+			"title": "Data for station TRO"
+		},
+		{
+			"id": "data_TSU",
+			"title": "Data for station TSU"
+		},
+		{
+			"id": "data_TTB",
+			"title": "Data for station TTB"
+		},
+		{
+			"id": "data_TUC",
+			"title": "Data for station TUC"
+		},
+		{
+			"id": "data_UMQ",
+			"title": "Data for station UMQ"
+		},
+		{
+			"id": "data_VAL",
+			"title": "Data for station VAL"
+		},
+		{
+			"id": "data_VIC",
+			"title": "Data for station VIC"
+		},
+		{
+			"id": "data_VIZ",
+			"title": "Data for station VIZ"
+		},
+		{
+			"id": "data_VNA",
+			"title": "Data for station VNA"
+		},
+		{
+			"id": "data_VOS",
+			"title": "Data for station VOS"
+		},
+		{
+			"id": "data_VSS",
+			"title": "Data for station VSS"
+		},
+		{
+			"id": "data_WNG",
+			"title": "Data for station WNG"
+		},
+		{
+			"id": "data_Y03",
+			"title": "Data for station Y03"
+		},
+		{
+			"id": "data_YKC",
+			"title": "Data for station YKC"
+		},
+		{
+			"id": "stations",
+			"title": "Data indices for time span, indices_swi"
+		}
+	],
+	"status": {
+		"code": 1200,
+		"message": "OK request successful"
+	}
+}
