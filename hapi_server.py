@@ -288,7 +288,7 @@ class MyHandler(BaseHTTPRequestHandler):
                s.do_error(errorcode)
            lastModified = hp.get_lastModified(CFG.api_datatype, id, CFG.HAPI_HOME, timemin, timemax)
            if ( s.headers.__contains__('If-Modified-Since') ):
-               theyHave = hp.fetch_modifiedsince(s)
+               theyHave = hp.fetch_modifiedsince(s.headers['If-Modified-Since'])
                if ( lastModified <= theyHave ):
                    s.send_response(304)
                    s.end_headers()

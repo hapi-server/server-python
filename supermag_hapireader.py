@@ -29,7 +29,7 @@ import datetime
 
 from supermag_api import *
 
-#https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=antunes&start=2019-10-15T10:40&extent=000000003600&station=HRN&mlt&aacgm&geo&decl&sza       #https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=antunes&start=2019-10-15T10:40&extent=000000003600&station=NCK&mlt&aacgm&geo&decl&sza      
+#https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=superhapi&start=2019-10-15T10:40&extent=000000003600&station=HRN&mlt&aacgm&geo&decl&sza       #https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=superhapi&start=2019-10-15T10:40&extent=000000003600&station=NCK&mlt&aacgm&geo&decl&sza      
 
 def sm_filter_data(magdata, parameters):
     # Handles wonky SuperMAG data_NNN API keys
@@ -414,7 +414,7 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
                      stream_flag, stream):
     #print("debug, got parameters: ",parameters)
     # 'ignore' is because hapi-server uses that only for file-bsaed fetches
-    userid='antunes'  # debug, temporarily for now
+    userid='superhapi'  # debug, temporarily for now
     
     #timenow = datetime.datetime.strptime(timemin,'%Y-%m-%dT%H:%M:%SZ')
     #timeend = datetime.datetime.strptime(timemax,'%Y-%m-%dT%H:%M:%SZ')
