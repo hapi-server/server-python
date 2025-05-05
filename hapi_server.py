@@ -120,7 +120,7 @@ elif LOCALITY == 'https':
 elif LOCALITY == 'custom':
     # this is provided so you can hard-code your own site-specific needs
     HOST_NAME = '0.0.0.0'
-    PORT_NUMBER = 80
+    PORT_NUMBER = 1024
 else:
     # assume localhost
     HOST_NAME = 'localhost'

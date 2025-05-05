@@ -9,10 +9,11 @@ certspec = importlib.util.find_spec("certifi")
 found = certspec is not None
 if found: import certifi
 
-import pandas as pd  # dataframes and also to_datetime
+import datetime
 import json
 import re
-import datetime
+
+import pandas as pd  # dataframes and also to_datetime
 
 globaldebug = True  # False
 
@@ -288,8 +289,10 @@ def sm_GetUrl(fetchurl,fetch='list'):
     except:
       cafile=''
     with urllib.request.urlopen(fetchurl,cafile=cafile) as response:
-      longstring = response.read()
-
+      #longstring = response.read()
+      longstring = response.read().decode('utf-8')
+      # JSON does not allow NaN
+      longstring = re.sub(r'\b(?:NaN|nan|Infinity|inf|-Infinity|-inf)\b', 'null', longstring, flags=re.IGNORECASE)
       if fetch == 'json':
         if len(longstring) > 3:
           #mydata = json.loads(longstring[3:]) # skipping initial OK

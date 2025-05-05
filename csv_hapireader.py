@@ -13,7 +13,7 @@ Good for CSV files in a file tree
 import os
 import json
 
-def do_parameters_map( id, floc, parameters ):
+def delete_do_parameters_map( id, floc, parameters ):
     ff= floc['dir'] + '/info/' + id + '.json'
     fin=open(ff,'r')
     jset = json.loads(fin.read())
@@ -28,6 +28,7 @@ def do_parameters_map( id, floc, parameters ):
 def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
                  stream_flag, stream):
     import dateutil
+    print("debug")
     ff= floc['dir'] + '/data/' + id + '/'
     filemin= dateutil.parser.parse( timemin ).strftime('%Y%m%d')
     filemax= dateutil.parser.parse( timemax ).strftime('%Y%m%d')
@@ -39,7 +40,7 @@ def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
         mm= do_parameters_map( id, floc, parameters )
     else:
         mm= None
-
+    print("debug, parameters are ",mm)
     datastr = ""
     status = 0
     
@@ -63,8 +64,10 @@ def do_data_csv( id, timemin, timemax, parameters, catalog, floc,
                                  comma=True
                               if mm[-1]<(len(ss)-1):
                                  datastr += '\n'
+                                 print("debug ",mm,":",ss,":",datastr)
                           else:
                               datastr += rec
+                              print("debug None:",ss,":",datastr)
                               
                           if len(datastr) > 0: status=1200
                           if stream_flag:
