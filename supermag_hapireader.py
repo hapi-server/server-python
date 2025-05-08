@@ -485,9 +485,9 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
         magdata = unwind_csv_array(magdata) # change [v,v] to just v,v
         status=tf_to_hapicode(status,len(magdata))
 
-    elif id.startswith('data'):
+    elif id.endswith("PT1M/xyz"): # was previously id.startswith('data'):
         # New 'data' code, replaces prior mess
-        (dataword,station)=id.split('_')
+        station = id.split('/')[0] # (dataword,station)=id.split('_')
         if parameters != None:
             flagstring = '&'.join(parameters) # more than needed, will filter later
         else:
@@ -509,53 +509,6 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
         #magdata = magdata.split('\n')# optional, converts csv string to list
         status=tf_to_hapicode(status,len(magdata))
             
-    elif id.startswith('data') and parameters != None:
-        # NOTE THIS NO LONGER GETS CALLED AT ALL, SUBPLANTED BY ABOVE
-        # 'parameters' is the usual HAPI variables to return
-        # station name is encoded in the data_XXX id
-        # (each station is its own endpoint)
-        #print("debug, parameters = ",parameters)
-        flagstring = '&'.join(parameters)
-        (dataword,station)=id.split('_')
-        #print("debug: looking for station ",station)
-        if len(station) != 3 and station != "allstations":
-            status=1400 # 1406 is HAPI "unknown dataset id"
-            magdata="Error, SuperMAG data calls require a station ID"
-            #print("debug, caught lack of station error")
-            # data calls must have a station, so throw error and exit
-        else:
-            # special case, 'data_allstations'
-            sortme = False
-            if station == "allstations":
-                (status,station) = supermag_getinventory(userid,start,extent) # FORMAT='list')
-                sortme = True
-            #print("debug: flags are ",flagstring)
-            (status,magdata)=supermag_getdata(userid,start,extent,flagstring,station,FORMAT='json')
-            # (note we add 'row' because that key is undefined in the dataframe)
-            #print("debug: data is ",magdata)
-            if sortme:
-                # sort dataframe in time order
-                #import pickle
-                #pickle.dump(magdata,open("temp.save","wb"))
-                #print("debug, saved temp.save")
-                magdata.sort_values('tval',inplace=True)
-            
-            #magdata = magdata.to_csv(header=1,index=False)
-            try:
-                magdata['tval'] = magdata['tval'].apply(sm_to_hapitimes)
-            except:
-                pass # pass when there is no valid data to parse
-
-            #if parameters != None:
-            #    # verify and fill if no data exists
-            #    ### NOTE-- removed sm_fill_empty() BECAUSE SuperMAG data is weird
-            #    ###sm_fill_empty(magdata,parameters,catalog['parameters'])
-
-            magdata = magdata.to_csv(header=0,index=False,sep=',')
-            magdata = csv_removekeys(magdata) # change {k:v,k:v} to just [v,v]
-            magdata = unwind_csv_array(magdata) # change [v,v] to just v,v
-            #magdata = magdata.split('\n')# optional, converts csv string to list
-            status=tf_to_hapicode(status,len(magdata))
     else:
         # did not match a SuperMAG-likely keyword, so produce error message
         status=1406 # 1406 is HAPI "unknown dataset id"

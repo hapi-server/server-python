@@ -384,14 +384,6 @@ class MyHandler(BaseHTTPRequestHandler):
                     id, timemin, timemax, parameters, mydata, CFG.floc,
                     CFG.stream_flag, s)
 
-                truestart = data[0:22].split(',')[0]
-                trueend = get_last_line(data).split(',')[0]
-                #print("True limits: ",timemin, truestart, timemax, trueend)
-                # format is fixed at %Y-%m-%dT%H:%MZ
-                #print(hp.compare_times(truestart,timemin))
-                #print(hp.compare_times(trueend,timemax))
-                if hp.compare_times(truestart,timemin) == 'before' or hp.compare_times(trueend, timemax) == 'after':
-                    data = hp.truncate_data(timemin, timemax, data)
                 if status >= 1400:
                     s.do_error(status)
                 else:
@@ -404,6 +396,15 @@ class MyHandler(BaseHTTPRequestHandler):
                     else:
                         status=1200 # status 1200 is HAPI "OK"
                     # presumed valid data, so serve it
+
+                    try:
+                        truestart = data[0:22].split(',')[0]
+                        trueend = get_last_line(data).split(',')[0]
+                        if hp.compare_times(truestart,timemin) == 'before' or hp.compare_times(trueend, timemax) == 'after':
+                            data = hp.truncate_data(timemin, timemax, data)
+                    except:
+                        pass # in case of weird time formats, etc
+                    
                     try:
                         # note for streaming, data is zero but legit
                         s.wfile.write(bytes(data,"utf-8"))

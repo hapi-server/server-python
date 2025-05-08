@@ -590,6 +590,14 @@ def prep_data(query, hapihome, tags):
     ##    xopts = jset['x_customRequestOptions']
     return(parameters, xopts, mydata, check_error)
 
+def get_all_ids(hapihome):
+    ids = []
+    with open(hapihome+"catalog.json") as fin:
+        data = json.load(fin)
+        for ele in data["catalog"]:
+            ids.append(ele["id"])
+    return ids
+
 def print_hapi_intropage(myname, hapihome):
     # TESTED
     mystr = ""
@@ -610,10 +618,15 @@ def print_hapi_intropage(myname, hapihome):
     u= "/hapi/catalog"
     mystr += "<a href='%s'>%s</a></p>\n" % ( u,u ) 
     mystr += "<p>HAPI requests:</p>\n"
-    ff= glob.glob( hapihome + 'info/*.json' )
+
+    ids = get_all_ids(hapihome)
+    ff = [hapihome + 'info/' + id + '.json' for id in ids]
+    #ff= glob.glob( hapihome + 'info/*.json' )
     n= len( hapihome + 'info/' )
-    for f in sorted(ff):
+    for f in ff: # sorted(ff):
         (stat,mydata)=fetch_info_params(f,hapihome,True)
+        if stat == False:
+            continue
         u= "/hapi/info?%s=%s" % ( datasetkey, f[n:-5] )
         mystr += "<a href='%s'>%s</a></br>\n" % ( u,u ) 
         # also extract dates etc from file
