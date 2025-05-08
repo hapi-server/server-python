@@ -120,9 +120,9 @@
             "desc": "Z_nez, Z_geo"
         }
     ],
-    "startDate": "2020-01-01T00:00Z",
-    "stopDate": "lastday-P1D",
-    "sampleStartDate": "2020-01-01T00:00Z",
-    "sampleStopDate": "2020-01-01T01:00Z",
+    "startDate": "2006-01-01T00:00Z",
+    "stopDate": "2018-01-01T00:00Z",
+    "sampleStartDate": "2006-12-01T00:00Z",
+    "sampleStopDate": "2006-12-02T00:00Z",
     "cadence": "PT1M"
 }

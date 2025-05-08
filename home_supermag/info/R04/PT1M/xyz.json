@@ -121,8 +121,8 @@
         }
     ],
     "startDate": "2020-01-01T00:00Z",
-    "stopDate": "lastday-P1D",
-    "sampleStartDate": "2020-01-01T00:00Z",
-    "sampleStopDate": "2020-01-01T01:00Z",
+    "stopDate": "2024-01-01T00:00Z",
+    "sampleStartDate": "2020-12-01T00:00Z",
+    "sampleStopDate": "2020-12-02T00:00Z",
     "cadence": "PT1M"
 }

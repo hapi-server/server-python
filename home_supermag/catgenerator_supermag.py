@@ -1,14 +1,25 @@
 """ Generates the HAPI-format catalog.json from the list of stations
-  as given in SuperMAG_locations.dat
-  also adding in the required indices etc
+  as given in SuperMAG_locations.dat,
+  Then creates the per-station JSON 
+     using 'SuperMAG-Inventory-60s-2025-05-08.csv' (configurable)
+     to find the specific time windows each station is available.
+  Also adding in the required indices to the catalog.json.
+
+  You can update the available windows by downloading a more recent
+  inventory file from https://supermag.jhuapl.edu/inventory/?fidelity=low#
+
 """
 
 import json
 import os
+import pandas as pd
+
+InventoryFile = 'SuperMAG-Inventory-60s-2025-05-08.csv'
+fname = "SuperMAG_locations.dat"
 
 indices = ["indices_all", "indices_base", "indices_dark", "indices_imf", "indices_reg", "indices_sun"]
 
-fname = "SuperMAG_locations.dat"
+
 stationlist = []
 with open(fname) as fin:
     for line in fin.readlines():
@@ -83,10 +94,35 @@ template = {
     "cadence": "PT1M"
 }
 
-    
+# now get time brackets
+df = pd.read_csv(InventoryFile)
+year_columns = [col for col in df.columns if col.isdigit()]
+
+def get_open_years(row):
+    return [year for year in year_columns if row[year] != '0%']
+
+df['Open Years'] = df.apply(get_open_years, axis=1)
+open_years_df = df[['IAGA', 'Open Years']]
+
+def get_year_span(df, iaga_id):
+    row = df[df['IAGA'] == iaga_id]
+    if row.empty:
+        return None, None
+    years = row.iloc[0]['Open Years']
+    if not years:
+        return None, None
+    return min(years), max(years)
+
 for id in stationlist:
+    start, stop = get_year_span(df, id[0])
+    if start == None: continue
     fname = f"info/{id[0]}/PT1M/xyz.json"
     os.makedirs(os.path.dirname(fname),exist_ok=True)
     with open(fname,"w") as fout:
-        json.dump(template, fout, indent=4)
+        template2 = template
+        template2["startDate"] = start + '-01-01T00:00Z'
+        template2["stopDate"] = stop + '-01-01T00:00Z'
+        template2["sampleStartDate"] = start + '-12-01T00:00Z'
+        template2["sampleStopDate"] = start + '-12-02T00:00Z'
+        json.dump(template2, fout, indent=4)
     
