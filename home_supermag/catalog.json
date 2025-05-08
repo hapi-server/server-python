@@ -1,845 +1,2413 @@
 {
-	"HAPI": "3.1",
-	"catalog": [
-		{
-			"id": "indices_all",
-			"title": "Data indices for time span, indices_all"
-		},
-		{
-			"id": "indices_base",
-			"title": "Data indices for time span, indices_base"
-		},
-		{
-			"id": "indices_dark",
-			"title": "Data indices for time span, indices_dark"
-		},
-		{
-			"id": "indices_imf",
-			"title": "Data indices for time span, indices_imf"
-		},
-		{
-			"id": "indices_reg",
-			"title": "Data indices for time span, indices_reg"
-		},
-		{
-			"id": "indices_sun",
-			"title": "Data indices for time span, indices_sun"
-		},
-		{
-			"id": "indices_swi",
-			"title": "Data indices for time span, indices_swi"
-		},
-		{
-			"id": "data_AAA",
-			"title": "Data for station AAA"
-		},
-		{
-			"id": "data_AIA",
-			"title": "Data for station AIA"
-		},
-		{
-			"id": "data_AMS",
-			"title": "Data for station AMS"
-		},
-		{
-			"id": "data_AND",
-			"title": "Data for station AND"
-		},
-		{
-			"id": "data_API",
-			"title": "Data for station API"
-		},
-		{
-			"id": "data_ARS",
-			"title": "Data for station ARS"
-		},
-		{
-			"id": "data_ASC",
-			"title": "Data for station ASC"
-		},
-		{
-			"id": "data_ASP",
-			"title": "Data for station ASP"
-		},
-		{
-			"id": "data_BFE",
-			"title": "Data for station BFE"
-		},
-		{
-			"id": "data_BFO",
-			"title": "Data for station BFO"
-		},
-		{
-			"id": "data_BJN",
-			"title": "Data for station BJN"
-		},
-		{
-			"id": "data_BLC",
-			"title": "Data for station BLC"
-		},
-		{
-			"id": "data_BMT",
-			"title": "Data for station BMT"
-		},
-		{
-			"id": "data_BOU",
-			"title": "Data for station BOU"
-		},
-		{
-			"id": "data_BOX",
-			"title": "Data for station BOX"
-		},
-		{
-			"id": "data_BRD",
-			"title": "Data for station BRD"
-		},
-		{
-			"id": "data_BRN",
-			"title": "Data for station BRN"
-		},
-		{
-			"id": "data_BRW",
-			"title": "Data for station BRW"
-		},
-		{
-			"id": "data_BSL",
-			"title": "Data for station BSL"
-		},
-		{
-			"id": "data_C04",
-			"title": "Data for station C04"
-		},
-		{
-			"id": "data_C06",
-			"title": "Data for station C06"
-		},
-		{
-			"id": "data_C08",
-			"title": "Data for station C08"
-		},
-		{
-			"id": "data_C10",
-			"title": "Data for station C10"
-		},
-		{
-			"id": "data_CBB",
-			"title": "Data for station CBB"
-		},
-		{
-			"id": "data_CDC",
-			"title": "Data for station CDC"
-		},
-		{
-			"id": "data_CHC",
-			"title": "Data for station CHC"
-		},
-		{
-			"id": "data_CKI",
-			"title": "Data for station CKI"
-		},
-		{
-			"id": "data_CLF",
-			"title": "Data for station CLF"
-		},
-		{
-			"id": "data_CMO",
-			"title": "Data for station CMO"
-		},
-		{
-			"id": "data_CNB",
-			"title": "Data for station CNB"
-		},
-		{
-			"id": "data_CPS",
-			"title": "Data for station CPS"
-		},
-		{
-			"id": "data_CSY",
-			"title": "Data for station CSY"
-		},
-		{
-			"id": "data_CTA",
-			"title": "Data for station CTA"
-		},
-		{
-			"id": "data_CYG",
-			"title": "Data for station CYG"
-		},
-		{
-			"id": "data_CZT",
-			"title": "Data for station CZT"
-		},
-		{
-			"id": "data_DAW",
-			"title": "Data for station DAW"
-		},
-		{
-			"id": "data_DED",
-			"title": "Data for station DED"
-		},
-		{
-			"id": "data_DIK",
-			"title": "Data for station DIK"
-		},
-		{
-			"id": "data_DLT",
-			"title": "Data for station DLT"
-		},
-		{
-			"id": "data_DMC",
-			"title": "Data for station DMC"
-		},
-		{
-			"id": "data_DMH",
-			"title": "Data for station DMH"
-		},
-		{
-			"id": "data_DOB",
-			"title": "Data for station DOB"
-		},
-		{
-			"id": "data_DON",
-			"title": "Data for station DON"
-		},
-		{
-			"id": "data_DRV",
-			"title": "Data for station DRV"
-		},
-		{
-			"id": "data_DUR",
-			"title": "Data for station DUR"
-		},
-		{
-			"id": "data_EAG",
-			"title": "Data for station EAG"
-		},
-		{
-			"id": "data_EBR",
-			"title": "Data for station EBR"
-		},
-		{
-			"id": "data_ESK",
-			"title": "Data for station ESK"
-		},
-		{
-			"id": "data_EYR",
-			"title": "Data for station EYR"
-		},
-		{
-			"id": "data_FCC",
-			"title": "Data for station FCC"
-		},
-		{
-			"id": "data_FHB",
-			"title": "Data for station FHB"
-		},
-		{
-			"id": "data_FMC",
-			"title": "Data for station FMC"
-		},
-		{
-			"id": "data_FRD",
-			"title": "Data for station FRD"
-		},
-		{
-			"id": "data_FRN",
-			"title": "Data for station FRN"
-		},
-		{
-			"id": "data_FSP",
-			"title": "Data for station FSP"
-		},
-		{
-			"id": "data_GAN",
-			"title": "Data for station GAN"
-		},
-		{
-			"id": "data_GCK",
-			"title": "Data for station GCK"
-		},
-		{
-			"id": "data_GDH",
-			"title": "Data for station GDH"
-		},
-		{
-			"id": "data_GHB",
-			"title": "Data for station GHB"
-		},
-		{
-			"id": "data_GHC",
-			"title": "Data for station GHC"
-		},
-		{
-			"id": "data_GIM",
-			"title": "Data for station GIM"
-		},
-		{
-			"id": "data_GNG",
-			"title": "Data for station GNG"
-		},
-		{
-			"id": "data_GUA",
-			"title": "Data for station GUA"
-		},
-		{
-			"id": "data_GUI",
-			"title": "Data for station GUI"
-		},
-		{
-			"id": "data_HAN",
-			"title": "Data for station HAN"
-		},
-		{
-			"id": "data_HBK",
-			"title": "Data for station HBK"
-		},
-		{
-			"id": "data_HER",
-			"title": "Data for station HER"
-		},
-		{
-			"id": "data_HON",
-			"title": "Data for station HON"
-		},
-		{
-			"id": "data_HRB",
-			"title": "Data for station HRB"
-		},
-		{
-			"id": "data_HUA",
-			"title": "Data for station HUA"
-		},
-		{
-			"id": "data_HYB",
-			"title": "Data for station HYB"
-		},
-		{
-			"id": "data_IGC",
-			"title": "Data for station IGC"
-		},
-		{
-			"id": "data_IQA",
-			"title": "Data for station IQA"
-		},
-		{
-			"id": "data_IRT",
-			"title": "Data for station IRT"
-		},
-		{
-			"id": "data_ISL",
-			"title": "Data for station ISL"
-		},
-		{
-			"id": "data_IVA",
-			"title": "Data for station IVA"
-		},
-		{
-			"id": "data_IZN",
-			"title": "Data for station IZN"
-		},
-		{
-			"id": "data_JAI",
-			"title": "Data for station JAI"
-		},
-		{
-			"id": "data_JAN",
-			"title": "Data for station JAN"
-		},
-		{
-			"id": "data_JCK",
-			"title": "Data for station JCK"
-		},
-		{
-			"id": "data_JCO",
-			"title": "Data for station JCO"
-		},
-		{
-			"id": "data_KAG",
-			"title": "Data for station KAG"
-		},
-		{
-			"id": "data_KAK",
-			"title": "Data for station KAK"
-		},
-		{
-			"id": "data_KAR",
-			"title": "Data for station KAR"
-		},
-		{
-			"id": "data_KDU",
-			"title": "Data for station KDU"
-		},
-		{
-			"id": "data_KEP",
-			"title": "Data for station KEP"
-		},
-		{
-			"id": "data_KEV",
-			"title": "Data for station KEV"
-		},
-		{
-			"id": "data_KHB",
-			"title": "Data for station KHB"
-		},
-		{
-			"id": "data_KIL",
-			"title": "Data for station KIL"
-		},
-		{
-			"id": "data_KIR",
-			"title": "Data for station KIR"
-		},
-		{
-			"id": "data_KLI",
-			"title": "Data for station KLI"
-		},
-		{
-			"id": "data_KNY",
-			"title": "Data for station KNY"
-		},
-		{
-			"id": "data_KOU",
-			"title": "Data for station KOU"
-		},
-		{
-			"id": "data_KUV",
-			"title": "Data for station KUV"
-		},
-		{
-			"id": "data_KZN",
-			"title": "Data for station KZN"
-		},
-		{
-			"id": "data_LER",
-			"title": "Data for station LER"
-		},
-		{
-			"id": "data_LON",
-			"title": "Data for station LON"
-		},
-		{
-			"id": "data_LOZ",
-			"title": "Data for station LOZ"
-		},
-		{
-			"id": "data_LRM",
-			"title": "Data for station LRM"
-		},
-		{
-			"id": "data_LRV",
-			"title": "Data for station LRV"
-		},
-		{
-			"id": "data_LVV",
-			"title": "Data for station LVV"
-		},
-		{
-			"id": "data_LYR",
-			"title": "Data for station LYR"
-		},
-		{
-			"id": "data_MAS",
-			"title": "Data for station MAS"
-		},
-		{
-			"id": "data_MAW",
-			"title": "Data for station MAW"
-		},
-		{
-			"id": "data_MBO",
-			"title": "Data for station MBO"
-		},
-		{
-			"id": "data_MCQ",
-			"title": "Data for station MCQ"
-		},
-		{
-			"id": "data_MEA",
-			"title": "Data for station MEA"
-		},
-		{
-			"id": "data_MEK",
-			"title": "Data for station MEK"
-		},
-		{
-			"id": "data_MGD",
-			"title": "Data for station MGD"
-		},
-		{
-			"id": "data_MHV",
-			"title": "Data for station MHV"
-		},
-		{
-			"id": "data_MMB",
-			"title": "Data for station MMB"
-		},
-		{
-			"id": "data_MNK",
-			"title": "Data for station MNK"
-		},
-		{
-			"id": "data_MSR",
-			"title": "Data for station MSR"
-		},
-		{
-			"id": "data_MUO",
-			"title": "Data for station MUO"
-		},
-		{
-			"id": "data_NAL",
-			"title": "Data for station NAL"
-		},
-		{
-			"id": "data_NAQ",
-			"title": "Data for station NAQ"
-		},
-		{
-			"id": "data_NCK",
-			"title": "Data for station NCK"
-		},
-		{
-			"id": "data_NEW",
-			"title": "Data for station NEW"
-		},
-		{
-			"id": "data_NGK",
-			"title": "Data for station NGK"
-		},
-		{
-			"id": "data_NR2",
-			"title": "Data for station NR2"
-		},
-		{
-			"id": "data_NUR",
-			"title": "Data for station NUR"
-		},
-		{
-			"id": "data_NVS",
-			"title": "Data for station NVS"
-		},
-		{
-			"id": "data_ODE",
-			"title": "Data for station ODE"
-		},
-		{
-			"id": "data_ORC",
-			"title": "Data for station ORC"
-		},
-		{
-			"id": "data_OTT",
-			"title": "Data for station OTT"
-		},
-		{
-			"id": "data_OUJ",
-			"title": "Data for station OUJ"
-		},
-		{
-			"id": "data_PAG",
-			"title": "Data for station PAG"
-		},
-		{
-			"id": "data_PBK",
-			"title": "Data for station PBK"
-		},
-		{
-			"id": "data_PEG",
-			"title": "Data for station PEG"
-		},
-		{
-			"id": "data_PEL",
-			"title": "Data for station PEL"
-		},
-		{
-			"id": "data_PET",
-			"title": "Data for station PET"
-		},
-		{
-			"id": "data_PG1",
-			"title": "Data for station PG1"
-		},
-		{
-			"id": "data_PG5",
-			"title": "Data for station PG5"
-		},
-		{
-			"id": "data_PGC",
-			"title": "Data for station PGC"
-		},
-		{
-			"id": "data_PHU",
-			"title": "Data for station PHU"
-		},
-		{
-			"id": "data_PIL",
-			"title": "Data for station PIL"
-		},
-		{
-			"id": "data_PST",
-			"title": "Data for station PST"
-		},
-		{
-			"id": "data_R04",
-			"title": "Data for station R04"
-		},
-		{
-			"id": "data_RAL",
-			"title": "Data for station RAL"
-		},
-		{
-			"id": "data_RAN",
-			"title": "Data for station RAN"
-		},
-		{
-			"id": "data_RES",
-			"title": "Data for station RES"
-		},
-		{
-			"id": "data_RIK",
-			"title": "Data for station RIK"
-		},
-		{
-			"id": "data_ROE",
-			"title": "Data for station ROE"
-		},
-		{
-			"id": "data_RPB",
-			"title": "Data for station RPB"
-		},
-		{
-			"id": "data_RVK",
-			"title": "Data for station RVK"
-		},
-		{
-			"id": "data_SBA",
-			"title": "Data for station SBA"
-		},
-		{
-			"id": "data_SBL",
-			"title": "Data for station SBL"
-		},
-		{
-			"id": "data_SFS",
-			"title": "Data for station SFS"
-		},
-		{
-			"id": "data_SHU",
-			"title": "Data for station SHU"
-		},
-		{
-			"id": "data_SIT",
-			"title": "Data for station SIT"
-		},
-		{
-			"id": "data_SJG",
-			"title": "Data for station SJG"
-		},
-		{
-			"id": "data_SKT",
-			"title": "Data for station SKT"
-		},
-		{
-			"id": "data_SMI",
-			"title": "Data for station SMI"
-		},
-		{
-			"id": "data_SOD",
-			"title": "Data for station SOD"
-		},
-		{
-			"id": "data_SOL",
-			"title": "Data for station SOL"
-		},
-		{
-			"id": "data_SON",
-			"title": "Data for station SON"
-		},
-		{
-			"id": "data_SOR",
-			"title": "Data for station SOR"
-		},
-		{
-			"id": "data_SPG",
-			"title": "Data for station SPG"
-		},
-		{
-			"id": "data_SPT",
-			"title": "Data for station SPT"
-		},
-		{
-			"id": "data_STF",
-			"title": "Data for station STF"
-		},
-		{
-			"id": "data_STJ",
-			"title": "Data for station STJ"
-		},
-		{
-			"id": "data_SUA",
-			"title": "Data for station SUA"
-		},
-		{
-			"id": "data_SUM",
-			"title": "Data for station SUM"
-		},
-		{
-			"id": "data_SVS",
-			"title": "Data for station SVS"
-		},
-		{
-			"id": "data_T03",
-			"title": "Data for station T03"
-		},
-		{
-			"id": "data_T29",
-			"title": "Data for station T29"
-		},
-		{
-			"id": "data_T31",
-			"title": "Data for station T31"
-		},
-		{
-			"id": "data_T32",
-			"title": "Data for station T32"
-		},
-		{
-			"id": "data_T33",
-			"title": "Data for station T33"
-		},
-		{
-			"id": "data_T36",
-			"title": "Data for station T36"
-		},
-		{
-			"id": "data_T37",
-			"title": "Data for station T37"
-		},
-		{
-			"id": "data_T39",
-			"title": "Data for station T39"
-		},
-		{
-			"id": "data_T40",
-			"title": "Data for station T40"
-		},
-		{
-			"id": "data_T44",
-			"title": "Data for station T44"
-		},
-		{
-			"id": "data_T45",
-			"title": "Data for station T45"
-		},
-		{
-			"id": "data_T46",
-			"title": "Data for station T46"
-		},
-		{
-			"id": "data_T49",
-			"title": "Data for station T49"
-		},
-		{
-			"id": "data_T50",
-			"title": "Data for station T50"
-		},
-		{
-			"id": "data_T52",
-			"title": "Data for station T52"
-		},
-		{
-			"id": "data_TAB",
-			"title": "Data for station TAB"
-		},
-		{
-			"id": "data_TAM",
-			"title": "Data for station TAM"
-		},
-		{
-			"id": "data_TAR",
-			"title": "Data for station TAR"
-		},
-		{
-			"id": "data_TDC",
-			"title": "Data for station TDC"
-		},
-		{
-			"id": "data_THL",
-			"title": "Data for station THL"
-		},
-		{
-			"id": "data_THY",
-			"title": "Data for station THY"
-		},
-		{
-			"id": "data_TIK",
-			"title": "Data for station TIK"
-		},
-		{
-			"id": "data_TOP",
-			"title": "Data for station TOP"
-		},
-		{
-			"id": "data_TRO",
-			"title": "Data for station TRO"
-		},
-		{
-			"id": "data_TSU",
-			"title": "Data for station TSU"
-		},
-		{
-			"id": "data_TTB",
-			"title": "Data for station TTB"
-		},
-		{
-			"id": "data_TUC",
-			"title": "Data for station TUC"
-		},
-		{
-			"id": "data_UMQ",
-			"title": "Data for station UMQ"
-		},
-		{
-			"id": "data_VAL",
-			"title": "Data for station VAL"
-		},
-		{
-			"id": "data_VIC",
-			"title": "Data for station VIC"
-		},
-		{
-			"id": "data_VIZ",
-			"title": "Data for station VIZ"
-		},
-		{
-			"id": "data_VNA",
-			"title": "Data for station VNA"
-		},
-		{
-			"id": "data_VOS",
-			"title": "Data for station VOS"
-		},
-		{
-			"id": "data_VSS",
-			"title": "Data for station VSS"
-		},
-		{
-			"id": "data_WNG",
-			"title": "Data for station WNG"
-		},
-		{
-			"id": "data_Y03",
-			"title": "Data for station Y03"
-		},
-		{
-			"id": "data_YKC",
-			"title": "Data for station YKC"
-		},
-		{
-			"id": "stations",
-			"title": "Data indices for time span, indices_swi"
-		}
-	],
-	"status": {
-		"code": 1200,
-		"message": "OK request successful"
-	}
+    "HAPI": "3.1",
+    "catalog": [
+        {
+            "id": "indices_all",
+            "title": "Data indices for time span, indices_all"
+        },
+        {
+            "id": "indices_base",
+            "title": "Data indices for time span, indices_base"
+        },
+        {
+            "id": "indices_dark",
+            "title": "Data indices for time span, indices_dark"
+        },
+        {
+            "id": "indices_imf",
+            "title": "Data indices for time span, indices_imf"
+        },
+        {
+            "id": "indices_reg",
+            "title": "Data indices for time span, indices_reg"
+        },
+        {
+            "id": "indices_sun",
+            "title": "Data indices for time span, indices_sun"
+        },
+        {
+            "id": "A01/PT1M/xyz",
+            "title": "Data for station A01 at lat 8.99 lon 7.39\n"
+        },
+        {
+            "id": "A02/PT1M/xyz",
+            "title": "Data for station A02 at lat 36.85 lon 2.93\n"
+        },
+        {
+            "id": "A03/PT1M/xyz",
+            "title": "Data for station A03 at lat 3.87 lon 11.52\n"
+        },
+        {
+            "id": "A04/PT1M/xyz",
+            "title": "Data for station A04 at lat 14.28 lon 39.46\n"
+        },
+        {
+            "id": "A05/PT1M/xyz",
+            "title": "Data for station A05 at lat -19.20 lon 17.58\n"
+        },
+        {
+            "id": "A06/PT1M/xyz",
+            "title": "Data for station A06 at lat 5.33 lon 355.87\n"
+        },
+        {
+            "id": "A07/PT1M/xyz",
+            "title": "Data for station A07 at lat 9.58 lon 346.34\n"
+        },
+        {
+            "id": "A08/PT1M/xyz",
+            "title": "Data for station A08 at lat 7.00 lon 125.40\n"
+        },
+        {
+            "id": "A09/PT1M/xyz",
+            "title": "Data for station A09 at lat 14.58 lon 120.00\n"
+        },
+        {
+            "id": "A10/PT1M/xyz",
+            "title": "Data for station A10 at lat -9.40 lon 319.50\n"
+        },
+        {
+            "id": "A11/PT1M/xyz",
+            "title": "Data for station A11 at lat -1.45 lon 311.55\n"
+        },
+        {
+            "id": "A12/PT1M/xyz",
+            "title": "Data for station A12 at lat 14.08 lon 100.61\n"
+        },
+        {
+            "id": "A13/PT1M/xyz",
+            "title": "Data for station A13 at lat 7.89 lon 98.35\n"
+        },
+        {
+            "id": "AAA/PT1M/xyz",
+            "title": "Data for station AAA at lat 43.25 lon 76.92\n"
+        },
+        {
+            "id": "AAE/PT1M/xyz",
+            "title": "Data for station AAE at lat 9.03 lon 38.77\n"
+        },
+        {
+            "id": "ABG/PT1M/xyz",
+            "title": "Data for station ABG at lat 18.62 lon 72.87\n"
+        },
+        {
+            "id": "ABK/PT1M/xyz",
+            "title": "Data for station ABK at lat 68.35 lon 18.82\n"
+        },
+        {
+            "id": "ADL/PT1M/xyz",
+            "title": "Data for station ADL at lat -34.67 lon 138.65\n"
+        },
+        {
+            "id": "AIA/PT1M/xyz",
+            "title": "Data for station AIA at lat -65.25 lon 295.74\n"
+        },
+        {
+            "id": "ALE/PT1M/xyz",
+            "title": "Data for station ALE at lat 82.50 lon 297.50\n"
+        },
+        {
+            "id": "ALT/PT1M/xyz",
+            "title": "Data for station ALT at lat 69.86 lon 22.96\n"
+        },
+        {
+            "id": "AMA/PT1M/xyz",
+            "title": "Data for station AMA at lat 28.17 lon 129.33\n"
+        },
+        {
+            "id": "AMD/PT1M/xyz",
+            "title": "Data for station AMD at lat 69.60 lon 61.21\n"
+        },
+        {
+            "id": "AMK/PT1M/xyz",
+            "title": "Data for station AMK at lat 65.60 lon 322.37\n"
+        },
+        {
+            "id": "AMS/PT1M/xyz",
+            "title": "Data for station AMS at lat -37.80 lon 77.57\n"
+        },
+        {
+            "id": "AMU/PT1M/xyz",
+            "title": "Data for station AMU at lat 61.24 lon 210.13\n"
+        },
+        {
+            "id": "ANC/PT1M/xyz",
+            "title": "Data for station ANC at lat -11.77 lon 282.85\n"
+        },
+        {
+            "id": "AND/PT1M/xyz",
+            "title": "Data for station AND at lat 69.30 lon 16.03\n"
+        },
+        {
+            "id": "ANT/PT1M/xyz",
+            "title": "Data for station ANT at lat -23.39 lon 289.76\n"
+        },
+        {
+            "id": "API/PT1M/xyz",
+            "title": "Data for station API at lat -13.80 lon 188.22\n"
+        },
+        {
+            "id": "APL/PT1M/xyz",
+            "title": "Data for station APL at lat 39.17 lon 283.12\n"
+        },
+        {
+            "id": "AQU/PT1M/xyz",
+            "title": "Data for station AQU at lat 42.38 lon 13.32\n"
+        },
+        {
+            "id": "ARC/PT1M/xyz",
+            "title": "Data for station ARC at lat 68.12 lon 214.44\n"
+        },
+        {
+            "id": "ARK/PT1M/xyz",
+            "title": "Data for station ARK at lat 64.60 lon 40.50\n"
+        },
+        {
+            "id": "ARS/PT1M/xyz",
+            "title": "Data for station ARS at lat 56.43 lon 58.57\n"
+        },
+        {
+            "id": "ASA/PT1M/xyz",
+            "title": "Data for station ASA at lat -14.28 lon 170.70\n"
+        },
+        {
+            "id": "ASB/PT1M/xyz",
+            "title": "Data for station ASB at lat 43.46 lon 142.17\n"
+        },
+        {
+            "id": "ASC/PT1M/xyz",
+            "title": "Data for station ASC at lat -7.95 lon 345.62\n"
+        },
+        {
+            "id": "ASH/PT1M/xyz",
+            "title": "Data for station ASH at lat 37.95 lon 58.10\n"
+        },
+        {
+            "id": "ASP/PT1M/xyz",
+            "title": "Data for station ASP at lat -23.77 lon 133.88\n"
+        },
+        {
+            "id": "ASW/PT1M/xyz",
+            "title": "Data for station ASW at lat 23.50 lon 32.51\n"
+        },
+        {
+            "id": "ATU/PT1M/xyz",
+            "title": "Data for station ATU at lat 67.93 lon 306.43\n"
+        },
+        {
+            "id": "B01/PT1M/xyz",
+            "title": "Data for station B01 at lat -64.82 lon 296.52\n"
+        },
+        {
+            "id": "B02/PT1M/xyz",
+            "title": "Data for station B02 at lat -66.03 lon 294.00\n"
+        },
+        {
+            "id": "B03/PT1M/xyz",
+            "title": "Data for station B03 at lat -67.57 lon 291.88\n"
+        },
+        {
+            "id": "B04/PT1M/xyz",
+            "title": "Data for station B04 at lat -68.58 lon 41.08\n"
+        },
+        {
+            "id": "B05/PT1M/xyz",
+            "title": "Data for station B05 at lat -69.29 lon 41.32\n"
+        },
+        {
+            "id": "B06/PT1M/xyz",
+            "title": "Data for station B06 at lat -69.67 lon 39.40\n"
+        },
+        {
+            "id": "B07/PT1M/xyz",
+            "title": "Data for station B07 at lat -70.70 lon 44.28\n"
+        },
+        {
+            "id": "B08/PT1M/xyz",
+            "title": "Data for station B08 at lat -72.77 lon 159.03\n"
+        },
+        {
+            "id": "B09/PT1M/xyz",
+            "title": "Data for station B09 at lat -74.01 lon 42.99\n"
+        },
+        {
+            "id": "B10/PT1M/xyz",
+            "title": "Data for station B10 at lat -77.32 lon 39.71\n"
+        },
+        {
+            "id": "B11/PT1M/xyz",
+            "title": "Data for station B11 at lat -77.51 lon 336.58\n"
+        },
+        {
+            "id": "B12/PT1M/xyz",
+            "title": "Data for station B12 at lat -79.08 lon 335.88\n"
+        },
+        {
+            "id": "B13/PT1M/xyz",
+            "title": "Data for station B13 at lat -80.00 lon 77.00\n"
+        },
+        {
+            "id": "B14/PT1M/xyz",
+            "title": "Data for station B14 at lat -80.89 lon 337.74\n"
+        },
+        {
+            "id": "B15/PT1M/xyz",
+            "title": "Data for station B15 at lat -81.49 lon 2.97\n"
+        },
+        {
+            "id": "B16/PT1M/xyz",
+            "title": "Data for station B16 at lat -82.78 lon 347.06\n"
+        },
+        {
+            "id": "B17/PT1M/xyz",
+            "title": "Data for station B17 at lat -82.90 lon 347.76\n"
+        },
+        {
+            "id": "B18/PT1M/xyz",
+            "title": "Data for station B18 at lat -84.35 lon 336.14\n"
+        },
+        {
+            "id": "B19/PT1M/xyz",
+            "title": "Data for station B19 at lat -85.36 lon 2.06\n"
+        },
+        {
+            "id": "B20/PT1M/xyz",
+            "title": "Data for station B20 at lat -85.36 lon 95.98\n"
+        },
+        {
+            "id": "B21/PT1M/xyz",
+            "title": "Data for station B21 at lat -87.00 lon 28.41\n"
+        },
+        {
+            "id": "B22/PT1M/xyz",
+            "title": "Data for station B22 at lat -86.51 lon 68.17\n"
+        },
+        {
+            "id": "B23/PT1M/xyz",
+            "title": "Data for station B23 at lat -88.03 lon 316.13\n"
+        },
+        {
+            "id": "B24/PT1M/xyz",
+            "title": "Data for station B24 at lat -71.67 lon 77.77\n"
+        },
+        {
+            "id": "B27/PT1M/xyz",
+            "title": "Data for station B27 at lat -81.00 lon 3.00\n"
+        },
+        {
+            "id": "BBG/PT1M/xyz",
+            "title": "Data for station BBG at lat 78.06 lon 14.21\n"
+        },
+        {
+            "id": "BCL/PT1M/xyz",
+            "title": "Data for station BCL at lat 9.30 lon 105.71\n"
+        },
+        {
+            "id": "BDV/PT1M/xyz",
+            "title": "Data for station BDV at lat 49.07 lon 14.02\n"
+        },
+        {
+            "id": "BEL/PT1M/xyz",
+            "title": "Data for station BEL at lat 51.83 lon 20.80\n"
+        },
+        {
+            "id": "BET/PT1M/xyz",
+            "title": "Data for station BET at lat 66.90 lon 208.45\n"
+        },
+        {
+            "id": "BEY/PT1M/xyz",
+            "title": "Data for station BEY at lat 73.30 lon 70.00\n"
+        },
+        {
+            "id": "BFE/PT1M/xyz",
+            "title": "Data for station BFE at lat 55.62 lon 11.67\n"
+        },
+        {
+            "id": "BFO/PT1M/xyz",
+            "title": "Data for station BFO at lat 48.33 lon 8.33\n"
+        },
+        {
+            "id": "BGY/PT1M/xyz",
+            "title": "Data for station BGY at lat 31.72 lon 35.09\n"
+        },
+        {
+            "id": "BIK/PT1M/xyz",
+            "title": "Data for station BIK at lat -1.08 lon 136.05\n"
+        },
+        {
+            "id": "BJI/PT1M/xyz",
+            "title": "Data for station BJI at lat 40.06 lon 116.18\n"
+        },
+        {
+            "id": "BJN/PT1M/xyz",
+            "title": "Data for station BJN at lat 74.50 lon 19.20\n"
+        },
+        {
+            "id": "BKL/PT1M/xyz",
+            "title": "Data for station BKL at lat -3.86 lon 102.31\n"
+        },
+        {
+            "id": "BLC/PT1M/xyz",
+            "title": "Data for station BLC at lat 64.32 lon 263.99\n"
+        },
+        {
+            "id": "BMT/PT1M/xyz",
+            "title": "Data for station BMT at lat 40.30 lon 116.20\n"
+        },
+        {
+            "id": "BNG/PT1M/xyz",
+            "title": "Data for station BNG at lat 4.33 lon 18.57\n"
+        },
+        {
+            "id": "BOR/PT1M/xyz",
+            "title": "Data for station BOR at lat 58.03 lon 38.33\n"
+        },
+        {
+            "id": "BOU/PT1M/xyz",
+            "title": "Data for station BOU at lat 40.14 lon 254.76\n"
+        },
+        {
+            "id": "BOX/PT1M/xyz",
+            "title": "Data for station BOX at lat 58.03 lon 38.97\n"
+        },
+        {
+            "id": "BRD/PT1M/xyz",
+            "title": "Data for station BRD at lat 49.87 lon 260.03\n"
+        },
+        {
+            "id": "BRN/PT1M/xyz",
+            "title": "Data for station BRN at lat 47.80 lon 132.41\n"
+        },
+        {
+            "id": "BRW/PT1M/xyz",
+            "title": "Data for station BRW at lat 71.32 lon 203.38\n"
+        },
+        {
+            "id": "BRZ/PT1M/xyz",
+            "title": "Data for station BRZ at lat 56.21 lon 24.75\n"
+        },
+        {
+            "id": "BSL/PT1M/xyz",
+            "title": "Data for station BSL at lat 30.35 lon 270.36\n"
+        },
+        {
+            "id": "BSV/PT1M/xyz",
+            "title": "Data for station BSV at lat -25.54 lon 139.21\n"
+        },
+        {
+            "id": "C01/PT1M/xyz",
+            "title": "Data for station C01 at lat 42.42 lon 276.10\n"
+        },
+        {
+            "id": "C02/PT1M/xyz",
+            "title": "Data for station C02 at lat 57.71 lon 265.79\n"
+        },
+        {
+            "id": "C03/PT1M/xyz",
+            "title": "Data for station C03 at lat 58.77 lon 248.89\n"
+        },
+        {
+            "id": "C04/PT1M/xyz",
+            "title": "Data for station C04 at lat 50.06 lon 251.74\n"
+        },
+        {
+            "id": "C05/PT1M/xyz",
+            "title": "Data for station C05 at lat 52.03 lon 264.54\n"
+        },
+        {
+            "id": "C06/PT1M/xyz",
+            "title": "Data for station C06 at lat 53.35 lon 247.03\n"
+        },
+        {
+            "id": "C07/PT1M/xyz",
+            "title": "Data for station C07 at lat 65.26 lon 233.31\n"
+        },
+        {
+            "id": "C08/PT1M/xyz",
+            "title": "Data for station C08 at lat 45.87 lon 264.92\n"
+        },
+        {
+            "id": "C09/PT1M/xyz",
+            "title": "Data for station C09 at lat 54.93 lon 264.71\n"
+        },
+        {
+            "id": "C10/PT1M/xyz",
+            "title": "Data for station C10 at lat 47.66 lon 245.79\n"
+        },
+        {
+            "id": "C11/PT1M/xyz",
+            "title": "Data for station C11 at lat 48.03 lon 263.64\n"
+        },
+        {
+            "id": "C12/PT1M/xyz",
+            "title": "Data for station C12 at lat 49.69 lon 256.20\n"
+        },
+        {
+            "id": "C13/PT1M/xyz",
+            "title": "Data for station C13 at lat 51.88 lon 239.97\n"
+        },
+        {
+            "id": "CAN/PT1M/xyz",
+            "title": "Data for station CAN at lat -35.31 lon 149.36\n"
+        },
+        {
+            "id": "CBB/PT1M/xyz",
+            "title": "Data for station CBB at lat 69.12 lon 254.97\n"
+        },
+        {
+            "id": "CBI/PT1M/xyz",
+            "title": "Data for station CBI at lat 27.15 lon 142.30\n"
+        },
+        {
+            "id": "CCS/PT1M/xyz",
+            "title": "Data for station CCS at lat 77.72 lon 104.28\n"
+        },
+        {
+            "id": "CDC/PT1M/xyz",
+            "title": "Data for station CDC at lat 64.20 lon 283.40\n"
+        },
+        {
+            "id": "CDO/PT1M/xyz",
+            "title": "Data for station CDO at lat 8.40 lon 124.63\n"
+        },
+        {
+            "id": "CDP/PT1M/xyz",
+            "title": "Data for station CDP at lat 31.00 lon 256.30\n"
+        },
+        {
+            "id": "CEB/PT1M/xyz",
+            "title": "Data for station CEB at lat 10.36 lon 123.91\n"
+        },
+        {
+            "id": "CER/PT1M/xyz",
+            "title": "Data for station CER at lat -33.45 lon 289.40\n"
+        },
+        {
+            "id": "CGO/PT1M/xyz",
+            "title": "Data for station CGO at lat 64.87 lon 212.14\n"
+        },
+        {
+            "id": "CHC/PT1M/xyz",
+            "title": "Data for station CHC at lat 64.35 lon 276.00\n"
+        },
+        {
+            "id": "CHD/PT1M/xyz",
+            "title": "Data for station CHD at lat 70.62 lon 147.89\n"
+        },
+        {
+            "id": "CKA/PT1M/xyz",
+            "title": "Data for station CKA at lat 68.50 lon 73.60\n"
+        },
+        {
+            "id": "CKI/PT1M/xyz",
+            "title": "Data for station CKI at lat -12.19 lon 96.84\n"
+        },
+        {
+            "id": "CKT/PT1M/xyz",
+            "title": "Data for station CKT at lat -15.48 lon 145.25\n"
+        },
+        {
+            "id": "CLF/PT1M/xyz",
+            "title": "Data for station CLF at lat 48.02 lon 2.27\n"
+        },
+        {
+            "id": "CLK/PT1M/xyz",
+            "title": "Data for station CLK at lat 44.70 lon 285.00\n"
+        },
+        {
+            "id": "CMD/PT1M/xyz",
+            "title": "Data for station CMD at lat -34.06 lon 150.67\n"
+        },
+        {
+            "id": "CMO/PT1M/xyz",
+            "title": "Data for station CMO at lat 64.87 lon 212.14\n"
+        },
+        {
+            "id": "CNB/PT1M/xyz",
+            "title": "Data for station CNB at lat -34.10 lon 150.70\n"
+        },
+        {
+            "id": "CNH/PT1M/xyz",
+            "title": "Data for station CNH at lat 44.08 lon 124.86\n"
+        },
+        {
+            "id": "CNL/PT1M/xyz",
+            "title": "Data for station CNL at lat 65.75 lon 248.75\n"
+        },
+        {
+            "id": "CPL/PT1M/xyz",
+            "title": "Data for station CPL at lat 17.30 lon 78.90\n"
+        },
+        {
+            "id": "CPS/PT1M/xyz",
+            "title": "Data for station CPS at lat 68.88 lon 180.63\n"
+        },
+        {
+            "id": "CPY/PT1M/xyz",
+            "title": "Data for station CPY at lat 70.20 lon 235.30\n"
+        },
+        {
+            "id": "CRK/PT1M/xyz",
+            "title": "Data for station CRK at lat 57.09 lon 357.36\n"
+        },
+        {
+            "id": "CRP/PT1M/xyz",
+            "title": "Data for station CRP at lat 10.44 lon 275.09\n"
+        },
+        {
+            "id": "CST/PT1M/xyz",
+            "title": "Data for station CST at lat 46.05 lon 11.65\n"
+        },
+        {
+            "id": "CSY/PT1M/xyz",
+            "title": "Data for station CSY at lat -66.28 lon 110.53\n"
+        },
+        {
+            "id": "CTA/PT1M/xyz",
+            "title": "Data for station CTA at lat -20.10 lon 146.30\n"
+        },
+        {
+            "id": "CUL/PT1M/xyz",
+            "title": "Data for station CUL at lat -30.28 lon 149.58\n"
+        },
+        {
+            "id": "CWE/PT1M/xyz",
+            "title": "Data for station CWE at lat 66.17 lon 190.17\n"
+        },
+        {
+            "id": "CY0/PT1M/xyz",
+            "title": "Data for station CY0 at lat 70.50 lon 291.40\n"
+        },
+        {
+            "id": "CYG/PT1M/xyz",
+            "title": "Data for station CYG at lat 36.37 lon 126.85\n"
+        },
+        {
+            "id": "CZT/PT1M/xyz",
+            "title": "Data for station CZT at lat -46.43 lon 51.87\n"
+        },
+        {
+            "id": "DAL/PT1M/xyz",
+            "title": "Data for station DAL at lat -27.18 lon 151.20\n"
+        },
+        {
+            "id": "DAW/PT1M/xyz",
+            "title": "Data for station DAW at lat 64.05 lon 220.89\n"
+        },
+        {
+            "id": "DED/PT1M/xyz",
+            "title": "Data for station DED at lat 70.36 lon 211.21\n"
+        },
+        {
+            "id": "DES/PT1M/xyz",
+            "title": "Data for station DES at lat -6.46 lon 39.12\n"
+        },
+        {
+            "id": "DIK/PT1M/xyz",
+            "title": "Data for station DIK at lat 73.53 lon 80.70\n"
+        },
+        {
+            "id": "DLR/PT1M/xyz",
+            "title": "Data for station DLR at lat 29.49 lon 259.08\n"
+        },
+        {
+            "id": "DLT/PT1M/xyz",
+            "title": "Data for station DLT at lat 11.94 lon 108.48\n"
+        },
+        {
+            "id": "DMC/PT1M/xyz",
+            "title": "Data for station DMC at lat -75.25 lon 235.83\n"
+        },
+        {
+            "id": "DMH/PT1M/xyz",
+            "title": "Data for station DMH at lat 76.77 lon 341.37\n"
+        },
+        {
+            "id": "DNB/PT1M/xyz",
+            "title": "Data for station DNB at lat 74.30 lon 339.78\n"
+        },
+        {
+            "id": "DOB/PT1M/xyz",
+            "title": "Data for station DOB at lat 62.07 lon 9.11\n"
+        },
+        {
+            "id": "DON/PT1M/xyz",
+            "title": "Data for station DON at lat 66.11 lon 12.50\n"
+        },
+        {
+            "id": "DOU/PT1M/xyz",
+            "title": "Data for station DOU at lat 50.10 lon 4.60\n"
+        },
+        {
+            "id": "DRB/PT1M/xyz",
+            "title": "Data for station DRB at lat -29.48 lon 30.56\n"
+        },
+        {
+            "id": "DRV/PT1M/xyz",
+            "title": "Data for station DRV at lat -66.67 lon 140.01\n"
+        },
+        {
+            "id": "DRW/PT1M/xyz",
+            "title": "Data for station DRW at lat -12.40 lon 130.90\n"
+        },
+        {
+            "id": "DSO/PT1M/xyz",
+            "title": "Data for station DSO at lat 36.25 lon 278.60\n"
+        },
+        {
+            "id": "DUR/PT1M/xyz",
+            "title": "Data for station DUR at lat 41.39 lon 14.28\n"
+        },
+        {
+            "id": "DVS/PT1M/xyz",
+            "title": "Data for station DVS at lat -68.58 lon 77.97\n"
+        },
+        {
+            "id": "E01/PT1M/xyz",
+            "title": "Data for station E01 at lat 41.35 lon 23.86\n"
+        },
+        {
+            "id": "E02/PT1M/xyz",
+            "title": "Data for station E02 at lat 39.45 lon 21.97\n"
+        },
+        {
+            "id": "E03/PT1M/xyz",
+            "title": "Data for station E03 at lat 38.63 lon 24.10\n"
+        },
+        {
+            "id": "E04/PT1M/xyz",
+            "title": "Data for station E04 at lat 38.08 lon 23.93\n"
+        },
+        {
+            "id": "E05/PT1M/xyz",
+            "title": "Data for station E05 at lat 36.72 lon 22.95\n"
+        },
+        {
+            "id": "EAG/PT1M/xyz",
+            "title": "Data for station EAG at lat 64.78 lon 218.84\n"
+        },
+        {
+            "id": "EBR/PT1M/xyz",
+            "title": "Data for station EBR at lat 40.82 lon 0.49\n"
+        },
+        {
+            "id": "EDM/PT1M/xyz",
+            "title": "Data for station EDM at lat 53.30 lon 246.70\n"
+        },
+        {
+            "id": "EKP/PT1M/xyz",
+            "title": "Data for station EKP at lat 61.11 lon 265.95\n"
+        },
+        {
+            "id": "ELT/PT1M/xyz",
+            "title": "Data for station ELT at lat 29.67 lon 34.95\n"
+        },
+        {
+            "id": "ENP/PT1M/xyz",
+            "title": "Data for station ENP at lat -52.13 lon 289.10\n"
+        },
+        {
+            "id": "ESA/PT1M/xyz",
+            "title": "Data for station ESA at lat 39.24 lon 141.36\n"
+        },
+        {
+            "id": "ESC/PT1M/xyz",
+            "title": "Data for station ESC at lat -62.18 lon 301.08\n"
+        },
+        {
+            "id": "ESK/PT1M/xyz",
+            "title": "Data for station ESK at lat 55.32 lon 356.80\n"
+        },
+        {
+            "id": "EUA/PT1M/xyz",
+            "title": "Data for station EUA at lat 80.00 lon 274.10\n"
+        },
+        {
+            "id": "EUS/PT1M/xyz",
+            "title": "Data for station EUS at lat -3.88 lon 321.57\n"
+        },
+        {
+            "id": "EWA/PT1M/xyz",
+            "title": "Data for station EWA at lat 21.32 lon 202.00\n"
+        },
+        {
+            "id": "EYR/PT1M/xyz",
+            "title": "Data for station EYR at lat -43.40 lon 172.40\n"
+        },
+        {
+            "id": "FAR/PT1M/xyz",
+            "title": "Data for station FAR at lat 62.05 lon 352.98\n"
+        },
+        {
+            "id": "FCC/PT1M/xyz",
+            "title": "Data for station FCC at lat 58.76 lon 265.91\n"
+        },
+        {
+            "id": "FHB/PT1M/xyz",
+            "title": "Data for station FHB at lat 62.00 lon 310.32\n"
+        },
+        {
+            "id": "FIT/PT1M/xyz",
+            "title": "Data for station FIT at lat 28.07 lon 279.05\n"
+        },
+        {
+            "id": "FMC/PT1M/xyz",
+            "title": "Data for station FMC at lat 56.66 lon 248.79\n"
+        },
+        {
+            "id": "FRD/PT1M/xyz",
+            "title": "Data for station FRD at lat 38.20 lon 282.63\n"
+        },
+        {
+            "id": "FRN/PT1M/xyz",
+            "title": "Data for station FRN at lat 37.09 lon 240.28\n"
+        },
+        {
+            "id": "FSJ/PT1M/xyz",
+            "title": "Data for station FSJ at lat 56.25 lon 238.15\n"
+        },
+        {
+            "id": "FSP/PT1M/xyz",
+            "title": "Data for station FSP at lat 61.76 lon 238.77\n"
+        },
+        {
+            "id": "FTN/PT1M/xyz",
+            "title": "Data for station FTN at lat 58.90 lon 237.20\n"
+        },
+        {
+            "id": "FUR/PT1M/xyz",
+            "title": "Data for station FUR at lat 48.17 lon 11.28\n"
+        },
+        {
+            "id": "FVE/PT1M/xyz",
+            "title": "Data for station FVE at lat 58.37 lon 243.98\n"
+        },
+        {
+            "id": "FYM/PT1M/xyz",
+            "title": "Data for station FYM at lat 29.18 lon 35.50\n"
+        },
+        {
+            "id": "FYU/PT1M/xyz",
+            "title": "Data for station FYU at lat 66.56 lon 214.78\n"
+        },
+        {
+            "id": "G01/PT1M/xyz",
+            "title": "Data for station G01 at lat -29.72 lon 306.28\n"
+        },
+        {
+            "id": "GAK/PT1M/xyz",
+            "title": "Data for station GAK at lat 62.39 lon 214.87\n"
+        },
+        {
+            "id": "GAN/PT1M/xyz",
+            "title": "Data for station GAN at lat 0.69 lon 73.15\n"
+        },
+        {
+            "id": "GCK/PT1M/xyz",
+            "title": "Data for station GCK at lat 44.63 lon 20.77\n"
+        },
+        {
+            "id": "GDH/PT1M/xyz",
+            "title": "Data for station GDH at lat 69.25 lon 306.47\n"
+        },
+        {
+            "id": "GHB/PT1M/xyz",
+            "title": "Data for station GHB at lat 64.17 lon 308.27\n"
+        },
+        {
+            "id": "GHC/PT1M/xyz",
+            "title": "Data for station GHC at lat 68.63 lon 264.15\n"
+        },
+        {
+            "id": "GIM/PT1M/xyz",
+            "title": "Data for station GIM at lat 56.38 lon 265.36\n"
+        },
+        {
+            "id": "GLK/PT1M/xyz",
+            "title": "Data for station GLK at lat 40.94 lon 44.47\n"
+        },
+        {
+            "id": "GLN/PT1M/xyz",
+            "title": "Data for station GLN at lat 49.65 lon 262.88\n"
+        },
+        {
+            "id": "GML/PT1M/xyz",
+            "title": "Data for station GML at lat 57.16 lon 356.32\n"
+        },
+        {
+            "id": "GNA/PT1M/xyz",
+            "title": "Data for station GNA at lat -31.80 lon 116.00\n"
+        },
+        {
+            "id": "GNG/PT1M/xyz",
+            "title": "Data for station GNG at lat -31.36 lon 115.71\n"
+        },
+        {
+            "id": "GRK/PT1M/xyz",
+            "title": "Data for station GRK at lat 60.27 lon 29.38\n"
+        },
+        {
+            "id": "GSI/PT1M/xyz",
+            "title": "Data for station GSI at lat 1.18 lon 97.34\n"
+        },
+        {
+            "id": "GTF/PT1M/xyz",
+            "title": "Data for station GTF at lat 43.62 lon 288.05\n"
+        },
+        {
+            "id": "GUA/PT1M/xyz",
+            "title": "Data for station GUA at lat 13.59 lon 144.87\n"
+        },
+        {
+            "id": "GUI/PT1M/xyz",
+            "title": "Data for station GUI at lat 28.32 lon 343.57\n"
+        },
+        {
+            "id": "GZH/PT1M/xyz",
+            "title": "Data for station GZH at lat 23.09 lon 113.34\n"
+        },
+        {
+            "id": "HAD/PT1M/xyz",
+            "title": "Data for station HAD at lat 50.98 lon 355.52\n"
+        },
+        {
+            "id": "HAN/PT1M/xyz",
+            "title": "Data for station HAN at lat 62.25 lon 26.60\n"
+        },
+        {
+            "id": "HBK/PT1M/xyz",
+            "title": "Data for station HBK at lat -25.88 lon 27.71\n"
+        },
+        {
+            "id": "HER/PT1M/xyz",
+            "title": "Data for station HER at lat -34.43 lon 19.23\n"
+        },
+        {
+            "id": "HIS/PT1M/xyz",
+            "title": "Data for station HIS at lat 80.62 lon 58.05\n"
+        },
+        {
+            "id": "HLL/PT1M/xyz",
+            "title": "Data for station HLL at lat 63.77 lon 339.44\n"
+        },
+        {
+            "id": "HLM/PT1M/xyz",
+            "title": "Data for station HLM at lat 61.24 lon 210.13\n"
+        },
+        {
+            "id": "HLN/PT1M/xyz",
+            "title": "Data for station HLN at lat 23.90 lon 121.55\n"
+        },
+        {
+            "id": "HLP/PT1M/xyz",
+            "title": "Data for station HLP at lat 54.61 lon 18.82\n"
+        },
+        {
+            "id": "HOB/PT1M/xyz",
+            "title": "Data for station HOB at lat -42.88 lon 147.35\n"
+        },
+        {
+            "id": "HOM/PT1M/xyz",
+            "title": "Data for station HOM at lat 59.70 lon 209.53\n"
+        },
+        {
+            "id": "HON/PT1M/xyz",
+            "title": "Data for station HON at lat 21.32 lon 202.00\n"
+        },
+        {
+            "id": "HOP/PT1M/xyz",
+            "title": "Data for station HOP at lat 76.51 lon 25.01\n"
+        },
+        {
+            "id": "HOR/PT1M/xyz",
+            "title": "Data for station HOR at lat 77.00 lon 15.60\n"
+        },
+        {
+            "id": "HOV/PT1M/xyz",
+            "title": "Data for station HOV at lat 61.50 lon 353.20\n"
+        },
+        {
+            "id": "HRB/PT1M/xyz",
+            "title": "Data for station HRB at lat 47.86 lon 18.19\n"
+        },
+        {
+            "id": "HRN/PT1M/xyz",
+            "title": "Data for station HRN at lat 77.00 lon 15.60\n"
+        },
+        {
+            "id": "HRP/PT1M/xyz",
+            "title": "Data for station HRP at lat 49.20 lon 275.30\n"
+        },
+        {
+            "id": "HTY/PT1M/xyz",
+            "title": "Data for station HTY at lat 33.12 lon 139.80\n"
+        },
+        {
+            "id": "HUA/PT1M/xyz",
+            "title": "Data for station HUA at lat -12.05 lon 284.67\n"
+        },
+        {
+            "id": "HVD/PT1M/xyz",
+            "title": "Data for station HVD at lat 48.01 lon 91.67\n"
+        },
+        {
+            "id": "HYB/PT1M/xyz",
+            "title": "Data for station HYB at lat 17.40 lon 78.60\n"
+        },
+        {
+            "id": "ICA/PT1M/xyz",
+            "title": "Data for station ICA at lat -14.08 lon 284.25\n"
+        },
+        {
+            "id": "IGC/PT1M/xyz",
+            "title": "Data for station IGC at lat 69.30 lon 278.20\n"
+        },
+        {
+            "id": "ILR/PT1M/xyz",
+            "title": "Data for station ILR at lat 8.50 lon 4.68\n"
+        },
+        {
+            "id": "INK/PT1M/xyz",
+            "title": "Data for station INK at lat 68.41 lon 226.23\n"
+        },
+        {
+            "id": "IPM/PT1M/xyz",
+            "title": "Data for station IPM at lat -27.20 lon 250.58\n"
+        },
+        {
+            "id": "IQA/PT1M/xyz",
+            "title": "Data for station IQA at lat 63.75 lon 291.48\n"
+        },
+        {
+            "id": "IRT/PT1M/xyz",
+            "title": "Data for station IRT at lat 52.17 lon 104.45\n"
+        },
+        {
+            "id": "ISK/PT1M/xyz",
+            "title": "Data for station ISK at lat 41.07 lon 29.06\n"
+        },
+        {
+            "id": "ISL/PT1M/xyz",
+            "title": "Data for station ISL at lat 53.86 lon 265.34\n"
+        },
+        {
+            "id": "IVA/PT1M/xyz",
+            "title": "Data for station IVA at lat 68.56 lon 27.29\n"
+        },
+        {
+            "id": "IZN/PT1M/xyz",
+            "title": "Data for station IZN at lat 40.50 lon 29.73\n"
+        },
+        {
+            "id": "JAI/PT1M/xyz",
+            "title": "Data for station JAI at lat 26.92 lon 75.80\n"
+        },
+        {
+            "id": "JAN/PT1M/xyz",
+            "title": "Data for station JAN at lat 70.90 lon 351.30\n"
+        },
+        {
+            "id": "JAX/PT1M/xyz",
+            "title": "Data for station JAX at lat 30.35 lon 278.40\n"
+        },
+        {
+            "id": "JCK/PT1M/xyz",
+            "title": "Data for station JCK at lat 66.40 lon 16.98\n"
+        },
+        {
+            "id": "JCO/PT1M/xyz",
+            "title": "Data for station JCO at lat 70.36 lon 211.20\n"
+        },
+        {
+            "id": "JRS/PT1M/xyz",
+            "title": "Data for station JRS at lat 0.00 lon 281.70\n"
+        },
+        {
+            "id": "JYP/PT1M/xyz",
+            "title": "Data for station JYP at lat 2.51 lon 140.70\n"
+        },
+        {
+            "id": "KAG/PT1M/xyz",
+            "title": "Data for station KAG at lat 31.48 lon 130.72\n"
+        },
+        {
+            "id": "KAK/PT1M/xyz",
+            "title": "Data for station KAK at lat 36.23 lon 140.18\n"
+        },
+        {
+            "id": "KAR/PT1M/xyz",
+            "title": "Data for station KAR at lat 59.21 lon 5.24\n"
+        },
+        {
+            "id": "KAT/PT1M/xyz",
+            "title": "Data for station KAT at lat -33.68 lon 117.62\n"
+        },
+        {
+            "id": "KAU/PT1M/xyz",
+            "title": "Data for station KAU at lat 69.02 lon 23.05\n"
+        },
+        {
+            "id": "KAV/PT1M/xyz",
+            "title": "Data for station KAV at lat 70.14 lon 216.35\n"
+        },
+        {
+            "id": "KDU/PT1M/xyz",
+            "title": "Data for station KDU at lat -12.69 lon 132.47\n"
+        },
+        {
+            "id": "KEP/PT1M/xyz",
+            "title": "Data for station KEP at lat -54.28 lon 323.51\n"
+        },
+        {
+            "id": "KEV/PT1M/xyz",
+            "title": "Data for station KEV at lat 69.76 lon 27.01\n"
+        },
+        {
+            "id": "KGD/PT1M/xyz",
+            "title": "Data for station KGD at lat 49.82 lon 73.08\n"
+        },
+        {
+            "id": "KHB/PT1M/xyz",
+            "title": "Data for station KHB at lat 47.61 lon 134.69\n"
+        },
+        {
+            "id": "KHS/PT1M/xyz",
+            "title": "Data for station KHS at lat 71.16 lon 66.83\n"
+        },
+        {
+            "id": "KIL/PT1M/xyz",
+            "title": "Data for station KIL at lat 69.06 lon 20.77\n"
+        },
+        {
+            "id": "KIR/PT1M/xyz",
+            "title": "Data for station KIR at lat 67.84 lon 20.42\n"
+        },
+        {
+            "id": "KIV/PT1M/xyz",
+            "title": "Data for station KIV at lat 50.72 lon 30.30\n"
+        },
+        {
+            "id": "KLD/PT1M/xyz",
+            "title": "Data for station KLD at lat 54.50 lon 20.20\n"
+        },
+        {
+            "id": "KLI/PT1M/xyz",
+            "title": "Data for station KLI at lat 60.86 lon 39.52\n"
+        },
+        {
+            "id": "KMH/PT1M/xyz",
+            "title": "Data for station KMH at lat -26.54 lon 18.11\n"
+        },
+        {
+            "id": "KNY/PT1M/xyz",
+            "title": "Data for station KNY at lat 31.42 lon 130.88\n"
+        },
+        {
+            "id": "KNZ/PT1M/xyz",
+            "title": "Data for station KNZ at lat 55.83 lon 48.85\n"
+        },
+        {
+            "id": "KOR/PT1M/xyz",
+            "title": "Data for station KOR at lat 7.33 lon 134.50\n"
+        },
+        {
+            "id": "KOT/PT1M/xyz",
+            "title": "Data for station KOT at lat 66.88 lon 197.40\n"
+        },
+        {
+            "id": "KOU/PT1M/xyz",
+            "title": "Data for station KOU at lat 5.21 lon 307.27\n"
+        },
+        {
+            "id": "KPG/PT1M/xyz",
+            "title": "Data for station KPG at lat -10.20 lon 123.40\n"
+        },
+        {
+            "id": "KRT/PT1M/xyz",
+            "title": "Data for station KRT at lat 15.33 lon 32.32\n"
+        },
+        {
+            "id": "KTB/PT1M/xyz",
+            "title": "Data for station KTB at lat -0.20 lon 100.32\n"
+        },
+        {
+            "id": "KTN/PT1M/xyz",
+            "title": "Data for station KTN at lat 75.94 lon 137.71\n"
+        },
+        {
+            "id": "KUJ/PT1M/xyz",
+            "title": "Data for station KUJ at lat 33.06 lon 131.23\n"
+        },
+        {
+            "id": "KUV/PT1M/xyz",
+            "title": "Data for station KUV at lat 74.57 lon 302.82\n"
+        },
+        {
+            "id": "KVI/PT1M/xyz",
+            "title": "Data for station KVI at lat 59.50 lon 17.63\n"
+        },
+        {
+            "id": "KZN/PT1M/xyz",
+            "title": "Data for station KZN at lat 55.93 lon 48.74\n"
+        },
+        {
+            "id": "LAG/PT1M/xyz",
+            "title": "Data for station LAG at lat 6.48 lon 3.27\n"
+        },
+        {
+            "id": "LAN/PT1M/xyz",
+            "title": "Data for station LAN at lat 54.01 lon 357.23\n"
+        },
+        {
+            "id": "LCL/PT1M/xyz",
+            "title": "Data for station LCL at lat 51.00 lon 252.90\n"
+        },
+        {
+            "id": "LEK/PT1M/xyz",
+            "title": "Data for station LEK at lat 68.13 lon 13.54\n"
+        },
+        {
+            "id": "LEM/PT1M/xyz",
+            "title": "Data for station LEM at lat -42.30 lon 147.50\n"
+        },
+        {
+            "id": "LER/PT1M/xyz",
+            "title": "Data for station LER at lat 60.13 lon 358.82\n"
+        },
+        {
+            "id": "LET/PT1M/xyz",
+            "title": "Data for station LET at lat 49.64 lon 247.13\n"
+        },
+        {
+            "id": "LGZ/PT1M/xyz",
+            "title": "Data for station LGZ at lat 13.10 lon 123.74\n"
+        },
+        {
+            "id": "LIV/PT1M/xyz",
+            "title": "Data for station LIV at lat -62.66 lon 299.61\n"
+        },
+        {
+            "id": "LKW/PT1M/xyz",
+            "title": "Data for station LKW at lat 6.30 lon 99.78\n"
+        },
+        {
+            "id": "LMM/PT1M/xyz",
+            "title": "Data for station LMM at lat -25.92 lon 32.58\n"
+        },
+        {
+            "id": "LNN/PT1M/xyz",
+            "title": "Data for station LNN at lat 59.95 lon 30.70\n"
+        },
+        {
+            "id": "LNP/PT1M/xyz",
+            "title": "Data for station LNP at lat 25.00 lon 121.17\n"
+        },
+        {
+            "id": "LON/PT1M/xyz",
+            "title": "Data for station LON at lat 45.41 lon 16.66\n"
+        },
+        {
+            "id": "LOP/PT1M/xyz",
+            "title": "Data for station LOP at lat 68.25 lon 33.08\n"
+        },
+        {
+            "id": "LOV/PT1M/xyz",
+            "title": "Data for station LOV at lat 59.35 lon 17.83\n"
+        },
+        {
+            "id": "LOZ/PT1M/xyz",
+            "title": "Data for station LOZ at lat 67.97 lon 35.02\n"
+        },
+        {
+            "id": "LRM/PT1M/xyz",
+            "title": "Data for station LRM at lat -21.00 lon 115.00\n"
+        },
+        {
+            "id": "LRV/PT1M/xyz",
+            "title": "Data for station LRV at lat 64.18 lon 338.30\n"
+        },
+        {
+            "id": "LSK/PT1M/xyz",
+            "title": "Data for station LSK at lat -15.23 lon 28.19\n"
+        },
+        {
+            "id": "LVV/PT1M/xyz",
+            "title": "Data for station LVV at lat 49.90 lon 23.75\n"
+        },
+        {
+            "id": "LWA/PT1M/xyz",
+            "title": "Data for station LWA at lat -5.02 lon 104.06\n"
+        },
+        {
+            "id": "LYC/PT1M/xyz",
+            "title": "Data for station LYC at lat 64.61 lon 18.75\n"
+        },
+        {
+            "id": "LYR/PT1M/xyz",
+            "title": "Data for station LYR at lat 78.20 lon 15.83\n"
+        },
+        {
+            "id": "LZH/PT1M/xyz",
+            "title": "Data for station LZH at lat 36.09 lon 103.85\n"
+        },
+        {
+            "id": "M01/PT1M/xyz",
+            "title": "Data for station M01 at lat 46.87 lon 263.55\n"
+        },
+        {
+            "id": "M02/PT1M/xyz",
+            "title": "Data for station M02 at lat 45.56 lon 266.75\n"
+        },
+        {
+            "id": "M03/PT1M/xyz",
+            "title": "Data for station M03 at lat 43.60 lon 264.40\n"
+        },
+        {
+            "id": "M04/PT1M/xyz",
+            "title": "Data for station M04 at lat 41.36 lon 263.84\n"
+        },
+        {
+            "id": "M05/PT1M/xyz",
+            "title": "Data for station M05 at lat 38.50 lon 263.70\n"
+        },
+        {
+            "id": "M06/PT1M/xyz",
+            "title": "Data for station M06 at lat 35.00 lon 262.60\n"
+        },
+        {
+            "id": "M07/PT1M/xyz",
+            "title": "Data for station M07 at lat 32.98 lon 263.25\n"
+        },
+        {
+            "id": "M08/PT1M/xyz",
+            "title": "Data for station M08 at lat 29.44 lon 261.39\n"
+        },
+        {
+            "id": "M09/PT1M/xyz",
+            "title": "Data for station M09 at lat 26.40 lon 262.20\n"
+        },
+        {
+            "id": "M10/PT1M/xyz",
+            "title": "Data for station M10 at lat 24.80 lon 260.40\n"
+        },
+        {
+            "id": "M11/PT1M/xyz",
+            "title": "Data for station M11 at lat 20.70 lon 256.90\n"
+        },
+        {
+            "id": "MAB/PT1M/xyz",
+            "title": "Data for station MAB at lat 50.30 lon 5.68\n"
+        },
+        {
+            "id": "MAS/PT1M/xyz",
+            "title": "Data for station MAS at lat 69.46 lon 23.70\n"
+        },
+        {
+            "id": "MAW/PT1M/xyz",
+            "title": "Data for station MAW at lat -67.61 lon 62.88\n"
+        },
+        {
+            "id": "MBC/PT1M/xyz",
+            "title": "Data for station MBC at lat 76.32 lon 240.64\n"
+        },
+        {
+            "id": "MBO/PT1M/xyz",
+            "title": "Data for station MBO at lat 14.38 lon 343.03\n"
+        },
+        {
+            "id": "MCE/PT1M/xyz",
+            "title": "Data for station MCE at lat 72.40 lon 326.10\n"
+        },
+        {
+            "id": "MCG/PT1M/xyz",
+            "title": "Data for station MCG at lat 72.60 lon 321.65\n"
+        },
+        {
+            "id": "MCM/PT1M/xyz",
+            "title": "Data for station MCM at lat -77.85 lon 166.67\n"
+        },
+        {
+            "id": "MCN/PT1M/xyz",
+            "title": "Data for station MCN at lat 73.93 lon 322.38\n"
+        },
+        {
+            "id": "MCQ/PT1M/xyz",
+            "title": "Data for station MCQ at lat -54.50 lon 158.95\n"
+        },
+        {
+            "id": "MCR/PT1M/xyz",
+            "title": "Data for station MCR at lat 66.48 lon 313.71\n"
+        },
+        {
+            "id": "MCW/PT1M/xyz",
+            "title": "Data for station MCW at lat 72.00 lon 317.41\n"
+        },
+        {
+            "id": "MEA/PT1M/xyz",
+            "title": "Data for station MEA at lat 54.62 lon 246.65\n"
+        },
+        {
+            "id": "MEK/PT1M/xyz",
+            "title": "Data for station MEK at lat 62.77 lon 30.97\n"
+        },
+        {
+            "id": "MGD/PT1M/xyz",
+            "title": "Data for station MGD at lat 59.97 lon 150.86\n"
+        },
+        {
+            "id": "MHV/PT1M/xyz",
+            "title": "Data for station MHV at lat 54.94 lon 37.73\n"
+        },
+        {
+            "id": "MID/PT1M/xyz",
+            "title": "Data for station MID at lat 28.21 lon 182.62\n"
+        },
+        {
+            "id": "MIR/PT1M/xyz",
+            "title": "Data for station MIR at lat -66.55 lon 93.02\n"
+        },
+        {
+            "id": "MIZ/PT1M/xyz",
+            "title": "Data for station MIZ at lat 39.11 lon 141.20\n"
+        },
+        {
+            "id": "MLB/PT1M/xyz",
+            "title": "Data for station MLB at lat -38.36 lon 145.18\n"
+        },
+        {
+            "id": "MLT/PT1M/xyz",
+            "title": "Data for station MLT at lat 29.52 lon 30.89\n"
+        },
+        {
+            "id": "MMB/PT1M/xyz",
+            "title": "Data for station MMB at lat 43.91 lon 144.19\n"
+        },
+        {
+            "id": "MND/PT1M/xyz",
+            "title": "Data for station MND at lat 1.44 lon 124.84\n"
+        },
+        {
+            "id": "MNK/PT1M/xyz",
+            "title": "Data for station MNK at lat 54.50 lon 27.88\n"
+        },
+        {
+            "id": "MOS/PT1M/xyz",
+            "title": "Data for station MOS at lat 55.48 lon 37.31\n"
+        },
+        {
+            "id": "MSH/PT1M/xyz",
+            "title": "Data for station MSH at lat 42.60 lon 288.52\n"
+        },
+        {
+            "id": "MSK/PT1M/xyz",
+            "title": "Data for station MSK at lat 52.69 lon 34.52\n"
+        },
+        {
+            "id": "MSR/PT1M/xyz",
+            "title": "Data for station MSR at lat 44.37 lon 142.27\n"
+        },
+        {
+            "id": "MUO/PT1M/xyz",
+            "title": "Data for station MUO at lat 68.02 lon 23.53\n"
+        },
+        {
+            "id": "MUT/PT1M/xyz",
+            "title": "Data for station MUT at lat 14.37 lon 121.02\n"
+        },
+        {
+            "id": "MZH/PT1M/xyz",
+            "title": "Data for station MZH at lat 49.60 lon 117.40\n"
+        },
+        {
+            "id": "NAB/PT1M/xyz",
+            "title": "Data for station NAB at lat -1.16 lon 36.48\n"
+        },
+        {
+            "id": "NAD/PT1M/xyz",
+            "title": "Data for station NAD at lat 65.53 lon 72.51\n"
+        },
+        {
+            "id": "NAL/PT1M/xyz",
+            "title": "Data for station NAL at lat 78.92 lon 11.95\n"
+        },
+        {
+            "id": "NAN/PT1M/xyz",
+            "title": "Data for station NAN at lat 56.40 lon 298.30\n"
+        },
+        {
+            "id": "NAQ/PT1M/xyz",
+            "title": "Data for station NAQ at lat 61.16 lon 314.56\n"
+        },
+        {
+            "id": "NCK/PT1M/xyz",
+            "title": "Data for station NCK at lat 47.63 lon 16.72\n"
+        },
+        {
+            "id": "NEW/PT1M/xyz",
+            "title": "Data for station NEW at lat 48.27 lon 242.88\n"
+        },
+        {
+            "id": "NGK/PT1M/xyz",
+            "title": "Data for station NGK at lat 52.07 lon 12.68\n"
+        },
+        {
+            "id": "NKK/PT1M/xyz",
+            "title": "Data for station NKK at lat 45.77 lon 62.12\n"
+        },
+        {
+            "id": "NMP/PT1M/xyz",
+            "title": "Data for station NMP at lat -15.09 lon 39.25\n"
+        },
+        {
+            "id": "NOK/PT1M/xyz",
+            "title": "Data for station NOK at lat 69.40 lon 88.10\n"
+        },
+        {
+            "id": "NOR/PT1M/xyz",
+            "title": "Data for station NOR at lat 71.09 lon 25.79\n"
+        },
+        {
+            "id": "NR2/PT1M/xyz",
+            "title": "Data for station NR2 at lat 60.50 lon 24.65\n"
+        },
+        {
+            "id": "NRD/PT1M/xyz",
+            "title": "Data for station NRD at lat 81.60 lon 343.33\n"
+        },
+        {
+            "id": "NUR/PT1M/xyz",
+            "title": "Data for station NUR at lat 60.50 lon 24.65\n"
+        },
+        {
+            "id": "NVL/PT1M/xyz",
+            "title": "Data for station NVL at lat -70.78 lon 11.83\n"
+        },
+        {
+            "id": "NVS/PT1M/xyz",
+            "title": "Data for station NVS at lat 55.03 lon 82.90\n"
+        },
+        {
+            "id": "ODE/PT1M/xyz",
+            "title": "Data for station ODE at lat 46.78 lon 30.88\n"
+        },
+        {
+            "id": "OHI/PT1M/xyz",
+            "title": "Data for station OHI at lat -63.32 lon 302.10\n"
+        },
+        {
+            "id": "ONW/PT1M/xyz",
+            "title": "Data for station ONW at lat 38.43 lon 141.47\n"
+        },
+        {
+            "id": "ORC/PT1M/xyz",
+            "title": "Data for station ORC at lat -60.74 lon 315.26\n"
+        },
+        {
+            "id": "OSO/PT1M/xyz",
+            "title": "Data for station OSO at lat -40.34 lon 286.91\n"
+        },
+        {
+            "id": "OTT/PT1M/xyz",
+            "title": "Data for station OTT at lat 45.40 lon 284.45\n"
+        },
+        {
+            "id": "OUJ/PT1M/xyz",
+            "title": "Data for station OUJ at lat 64.52 lon 27.23\n"
+        },
+        {
+            "id": "OUL/PT1M/xyz",
+            "title": "Data for station OUL at lat 65.10 lon 25.85\n"
+        },
+        {
+            "id": "P01/PT1M/xyz",
+            "title": "Data for station P01 at lat 45.41 lon 16.66\n"
+        },
+        {
+            "id": "PAC/PT1M/xyz",
+            "title": "Data for station PAC at lat -40.34 lon 289.91\n"
+        },
+        {
+            "id": "PAF/PT1M/xyz",
+            "title": "Data for station PAF at lat -49.35 lon 70.26\n"
+        },
+        {
+            "id": "PAG/PT1M/xyz",
+            "title": "Data for station PAG at lat 47.49 lon 24.18\n"
+        },
+        {
+            "id": "PAL/PT1M/xyz",
+            "title": "Data for station PAL at lat -64.77 lon 295.95\n"
+        },
+        {
+            "id": "PBC/PT1M/xyz",
+            "title": "Data for station PBC at lat 68.50 lon 270.30\n"
+        },
+        {
+            "id": "PBK/PT1M/xyz",
+            "title": "Data for station PBK at lat 70.08 lon 170.90\n"
+        },
+        {
+            "id": "PBQ/PT1M/xyz",
+            "title": "Data for station PBQ at lat 55.28 lon 282.26\n"
+        },
+        {
+            "id": "PEG/PT1M/xyz",
+            "title": "Data for station PEG at lat 38.10 lon 23.90\n"
+        },
+        {
+            "id": "PEL/PT1M/xyz",
+            "title": "Data for station PEL at lat 66.90 lon 24.08\n"
+        },
+        {
+            "id": "PET/PT1M/xyz",
+            "title": "Data for station PET at lat 52.97 lon 158.25\n"
+        },
+        {
+            "id": "PG0/PT1M/xyz",
+            "title": "Data for station PG0 at lat -83.67 lon 88.68\n"
+        },
+        {
+            "id": "PG1/PT1M/xyz",
+            "title": "Data for station PG1 at lat -85.50 lon 77.20\n"
+        },
+        {
+            "id": "PG2/PT1M/xyz",
+            "title": "Data for station PG2 at lat -84.42 lon 57.96\n"
+        },
+        {
+            "id": "PG3/PT1M/xyz",
+            "title": "Data for station PG3 at lat -84.81 lon 37.63\n"
+        },
+        {
+            "id": "PG4/PT1M/xyz",
+            "title": "Data for station PG4 at lat -83.34 lon 12.25\n"
+        },
+        {
+            "id": "PG5/PT1M/xyz",
+            "title": "Data for station PG5 at lat -81.96 lon 5.71\n"
+        },
+        {
+            "id": "PGC/PT1M/xyz",
+            "title": "Data for station PGC at lat 66.10 lon 294.20\n"
+        },
+        {
+            "id": "PHU/PT1M/xyz",
+            "title": "Data for station PHU at lat 21.03 lon 105.95\n"
+        },
+        {
+            "id": "PIL/PT1M/xyz",
+            "title": "Data for station PIL at lat -31.40 lon 294.47\n"
+        },
+        {
+            "id": "PIN/PT1M/xyz",
+            "title": "Data for station PIN at lat 50.20 lon 263.96\n"
+        },
+        {
+            "id": "PKR/PT1M/xyz",
+            "title": "Data for station PKR at lat 65.12 lon 212.57\n"
+        },
+        {
+            "id": "PKS/PT1M/xyz",
+            "title": "Data for station PKS at lat 52.50 lon 252.80\n"
+        },
+        {
+            "id": "PNL/PT1M/xyz",
+            "title": "Data for station PNL at lat -16.68 lon 303.83\n"
+        },
+        {
+            "id": "PNT/PT1M/xyz",
+            "title": "Data for station PNT at lat -53.20 lon 289.10\n"
+        },
+        {
+            "id": "POD/PT1M/xyz",
+            "title": "Data for station POD at lat 61.58 lon 90.03\n"
+        },
+        {
+            "id": "PPI/PT1M/xyz",
+            "title": "Data for station PPI at lat 42.98 lon 131.73\n"
+        },
+        {
+            "id": "PPT/PT1M/xyz",
+            "title": "Data for station PPT at lat -17.57 lon 210.42\n"
+        },
+        {
+            "id": "PRG/PT1M/xyz",
+            "title": "Data for station PRG at lat -69.23 lon 76.23\n"
+        },
+        {
+            "id": "PRP/PT1M/xyz",
+            "title": "Data for station PRP at lat -3.60 lon 119.40\n"
+        },
+        {
+            "id": "PST/PT1M/xyz",
+            "title": "Data for station PST at lat -51.70 lon 302.11\n"
+        },
+        {
+            "id": "PTK/PT1M/xyz",
+            "title": "Data for station PTK at lat 52.94 lon 158.25\n"
+        },
+        {
+            "id": "PTN/PT1M/xyz",
+            "title": "Data for station PTN at lat -0.05 lon 109.25\n"
+        },
+        {
+            "id": "PUT/PT1M/xyz",
+            "title": "Data for station PUT at lat -18.33 lon 290.50\n"
+        },
+        {
+            "id": "QSB/PT1M/xyz",
+            "title": "Data for station QSB at lat 33.87 lon 35.64\n"
+        },
+        {
+            "id": "R01/PT1M/xyz",
+            "title": "Data for station R01 at lat 38.90 lon 267.78\n"
+        },
+        {
+            "id": "R02/PT1M/xyz",
+            "title": "Data for station R02 at lat 38.68 lon 282.22\n"
+        },
+        {
+            "id": "R03/PT1M/xyz",
+            "title": "Data for station R03 at lat 44.90 lon 266.27\n"
+        },
+        {
+            "id": "R04/PT1M/xyz",
+            "title": "Data for station R04 at lat 40.01 lon 254.76\n"
+        },
+        {
+            "id": "R05/PT1M/xyz",
+            "title": "Data for station R05 at lat 41.58 lon 275.83\n"
+        },
+        {
+            "id": "R06/PT1M/xyz",
+            "title": "Data for station R06 at lat 31.84 lon 257.68\n"
+        },
+        {
+            "id": "R07/PT1M/xyz",
+            "title": "Data for station R07 at lat 47.13 lon 266.34\n"
+        },
+        {
+            "id": "R08/PT1M/xyz",
+            "title": "Data for station R08 at lat 44.33 lon 286.44\n"
+        },
+        {
+            "id": "R09/PT1M/xyz",
+            "title": "Data for station R09 at lat 41.65 lon 287.28\n"
+        },
+        {
+            "id": "R10/PT1M/xyz",
+            "title": "Data for station R10 at lat 42.61 lon 288.52\n"
+        },
+        {
+            "id": "R11/PT1M/xyz",
+            "title": "Data for station R11 at lat 44.30 lon 290.40\n"
+        },
+        {
+            "id": "R12/PT1M/xyz",
+            "title": "Data for station R12 at lat 47.50 lon 242.30\n"
+        },
+        {
+            "id": "R13/PT1M/xyz",
+            "title": "Data for station R13 at lat 40.20 lon 256.30\n"
+        },
+        {
+            "id": "RAL/PT1M/xyz",
+            "title": "Data for station RAL at lat 58.22 lon 256.32\n"
+        },
+        {
+            "id": "RAN/PT1M/xyz",
+            "title": "Data for station RAN at lat 62.82 lon 267.89\n"
+        },
+        {
+            "id": "RED/PT1M/xyz",
+            "title": "Data for station RED at lat 52.14 lon 246.16\n"
+        },
+        {
+            "id": "RES/PT1M/xyz",
+            "title": "Data for station RES at lat 74.69 lon 265.11\n"
+        },
+        {
+            "id": "RIK/PT1M/xyz",
+            "title": "Data for station RIK at lat 43.48 lon 143.76\n"
+        },
+        {
+            "id": "RNC/PT1M/xyz",
+            "title": "Data for station RNC at lat 43.97 lon 12.08\n"
+        },
+        {
+            "id": "ROC/PT1M/xyz",
+            "title": "Data for station ROC at lat -23.19 lon 150.31\n"
+        },
+        {
+            "id": "ROE/PT1M/xyz",
+            "title": "Data for station ROE at lat 55.17 lon 8.55\n"
+        },
+        {
+            "id": "ROT/PT1M/xyz",
+            "title": "Data for station ROT at lat 51.07 lon 245.87\n"
+        },
+        {
+            "id": "RPB/PT1M/xyz",
+            "title": "Data for station RPB at lat 66.52 lon 273.77\n"
+        },
+        {
+            "id": "RSV/PT1M/xyz",
+            "title": "Data for station RSV at lat 55.85 lon 12.45\n"
+        },
+        {
+            "id": "RVK/PT1M/xyz",
+            "title": "Data for station RVK at lat 64.94 lon 10.99\n"
+        },
+        {
+            "id": "S01/PT1M/xyz",
+            "title": "Data for station S01 at lat 64.37 lon 13.36\n"
+        },
+        {
+            "id": "SAH/PT1M/xyz",
+            "title": "Data for station SAH at lat 71.98 lon 234.77\n"
+        },
+        {
+            "id": "SAS/PT1M/xyz",
+            "title": "Data for station SAS at lat 52.80 lon 253.60\n"
+        },
+        {
+            "id": "SBA/PT1M/xyz",
+            "title": "Data for station SBA at lat -77.85 lon 166.78\n"
+        },
+        {
+            "id": "SBH/PT1M/xyz",
+            "title": "Data for station SBH at lat 6.02 lon 116.07\n"
+        },
+        {
+            "id": "SBL/PT1M/xyz",
+            "title": "Data for station SBL at lat 43.93 lon 299.99\n"
+        },
+        {
+            "id": "SCN/PT1M/xyz",
+            "title": "Data for station SCN at lat -0.55 lon 100.30\n"
+        },
+        {
+            "id": "SCO/PT1M/xyz",
+            "title": "Data for station SCO at lat 70.48 lon 338.03\n"
+        },
+        {
+            "id": "SER/PT1M/xyz",
+            "title": "Data for station SER at lat -30.00 lon 288.87\n"
+        },
+        {
+            "id": "SFS/PT1M/xyz",
+            "title": "Data for station SFS at lat 36.67 lon 354.06\n"
+        },
+        {
+            "id": "SHE/PT1M/xyz",
+            "title": "Data for station SHE at lat -15.95 lon 354.27\n"
+        },
+        {
+            "id": "SHU/PT1M/xyz",
+            "title": "Data for station SHU at lat 55.35 lon 199.54\n"
+        },
+        {
+            "id": "SIT/PT1M/xyz",
+            "title": "Data for station SIT at lat 57.06 lon 224.67\n"
+        },
+        {
+            "id": "SJG/PT1M/xyz",
+            "title": "Data for station SJG at lat 18.11 lon 293.85\n"
+        },
+        {
+            "id": "SKD/PT1M/xyz",
+            "title": "Data for station SKD at lat 66.57 lon 66.78\n"
+        },
+        {
+            "id": "SKT/PT1M/xyz",
+            "title": "Data for station SKT at lat 65.42 lon 307.10\n"
+        },
+        {
+            "id": "SMA/PT1M/xyz",
+            "title": "Data for station SMA at lat 36.99 lon 334.87\n"
+        },
+        {
+            "id": "SMI/PT1M/xyz",
+            "title": "Data for station SMI at lat 60.03 lon 248.07\n"
+        },
+        {
+            "id": "SOD/PT1M/xyz",
+            "title": "Data for station SOD at lat 67.37 lon 26.63\n"
+        },
+        {
+            "id": "SOL/PT1M/xyz",
+            "title": "Data for station SOL at lat 61.08 lon 4.84\n"
+        },
+        {
+            "id": "SON/PT1M/xyz",
+            "title": "Data for station SON at lat 25.12 lon 66.44\n"
+        },
+        {
+            "id": "SOR/PT1M/xyz",
+            "title": "Data for station SOR at lat 70.54 lon 22.22\n"
+        },
+        {
+            "id": "SPA/PT1M/xyz",
+            "title": "Data for station SPA at lat -90.00 lon 0.00\n"
+        },
+        {
+            "id": "SPG/PT1M/xyz",
+            "title": "Data for station SPG at lat 60.54 lon 29.72\n"
+        },
+        {
+            "id": "SPT/PT1M/xyz",
+            "title": "Data for station SPT at lat 39.55 lon 355.65\n"
+        },
+        {
+            "id": "STF/PT1M/xyz",
+            "title": "Data for station STF at lat 67.02 lon 309.28\n"
+        },
+        {
+            "id": "STJ/PT1M/xyz",
+            "title": "Data for station STJ at lat 47.60 lon 307.32\n"
+        },
+        {
+            "id": "SUA/PT1M/xyz",
+            "title": "Data for station SUA at lat 45.32 lon 26.25\n"
+        },
+        {
+            "id": "SUM/PT1M/xyz",
+            "title": "Data for station SUM at lat 72.30 lon 321.70\n"
+        },
+        {
+            "id": "SUT/PT1M/xyz",
+            "title": "Data for station SUT at lat -32.40 lon 20.67\n"
+        },
+        {
+            "id": "SUW/PT1M/xyz",
+            "title": "Data for station SUW at lat 54.01 lon 23.18\n"
+        },
+        {
+            "id": "SVS/PT1M/xyz",
+            "title": "Data for station SVS at lat 76.02 lon 294.90\n"
+        },
+        {
+            "id": "SZC/PT1M/xyz",
+            "title": "Data for station SZC at lat 52.91 lon 19.61\n"
+        },
+        {
+            "id": "T03/PT1M/xyz",
+            "title": "Data for station T03 at lat 50.37 lon 247.02\n"
+        },
+        {
+            "id": "T15/PT1M/xyz",
+            "title": "Data for station T15 at lat 46.48 lon 275.31\n"
+        },
+        {
+            "id": "T16/PT1M/xyz",
+            "title": "Data for station T16 at lat 39.19 lon 240.20\n"
+        },
+        {
+            "id": "T17/PT1M/xyz",
+            "title": "Data for station T17 at lat 44.95 lon 287.87\n"
+        },
+        {
+            "id": "T18/PT1M/xyz",
+            "title": "Data for station T18 at lat 46.09 lon 259.32\n"
+        },
+        {
+            "id": "T19/PT1M/xyz",
+            "title": "Data for station T19 at lat 47.61 lon 245.33\n"
+        },
+        {
+            "id": "T20/PT1M/xyz",
+            "title": "Data for station T20 at lat 40.18 lon 281.62\n"
+        },
+        {
+            "id": "T21/PT1M/xyz",
+            "title": "Data for station T21 at lat 43.08 lon 257.41\n"
+        },
+        {
+            "id": "T22/PT1M/xyz",
+            "title": "Data for station T22 at lat 56.81 lon 227.05\n"
+        },
+        {
+            "id": "T23/PT1M/xyz",
+            "title": "Data for station T23 at lat 43.66 lon 274.86\n"
+        },
+        {
+            "id": "T24/PT1M/xyz",
+            "title": "Data for station T24 at lat 44.82 lon 271.30\n"
+        },
+        {
+            "id": "T25/PT1M/xyz",
+            "title": "Data for station T25 at lat 45.14 lon 241.07\n"
+        },
+        {
+            "id": "T26/PT1M/xyz",
+            "title": "Data for station T26 at lat 34.20 lon 242.15\n"
+        },
+        {
+            "id": "T27/PT1M/xyz",
+            "title": "Data for station T27 at lat 34.38 lon 242.32\n"
+        },
+        {
+            "id": "T28/PT1M/xyz",
+            "title": "Data for station T28 at lat 53.30 lon 299.54\n"
+        },
+        {
+            "id": "T29/PT1M/xyz",
+            "title": "Data for station T29 at lat 58.10 lon 291.60\n"
+        },
+        {
+            "id": "T30/PT1M/xyz",
+            "title": "Data for station T30 at lat 49.81 lon 285.58\n"
+        },
+        {
+            "id": "T31/PT1M/xyz",
+            "title": "Data for station T31 at lat 56.50 lon 280.80\n"
+        },
+        {
+            "id": "T32/PT1M/xyz",
+            "title": "Data for station T32 at lat 49.39 lon 277.68\n"
+        },
+        {
+            "id": "T33/PT1M/xyz",
+            "title": "Data for station T33 at lat 53.99 lon 259.06\n"
+        },
+        {
+            "id": "T34/PT1M/xyz",
+            "title": "Data for station T34 at lat 64.73 lon 249.33\n"
+        },
+        {
+            "id": "T35/PT1M/xyz",
+            "title": "Data for station T35 at lat 63.60 lon 249.14\n"
+        },
+        {
+            "id": "T36/PT1M/xyz",
+            "title": "Data for station T36 at lat 54.71 lon 246.69\n"
+        },
+        {
+            "id": "T37/PT1M/xyz",
+            "title": "Data for station T37 at lat 53.81 lon 237.17\n"
+        },
+        {
+            "id": "T38/PT1M/xyz",
+            "title": "Data for station T38 at lat 61.01 lon 224.78\n"
+        },
+        {
+            "id": "T39/PT1M/xyz",
+            "title": "Data for station T39 at lat 62.24 lon 209.58\n"
+        },
+        {
+            "id": "T40/PT1M/xyz",
+            "title": "Data for station T40 at lat 62.95 lon 204.40\n"
+        },
+        {
+            "id": "T41/PT1M/xyz",
+            "title": "Data for station T41 at lat 66.97 lon 199.56\n"
+        },
+        {
+            "id": "T42/PT1M/xyz",
+            "title": "Data for station T42 at lat 55.20 lon 254.74\n"
+        },
+        {
+            "id": "T43/PT1M/xyz",
+            "title": "Data for station T43 at lat 50.87 lon 245.70\n"
+        },
+        {
+            "id": "T44/PT1M/xyz",
+            "title": "Data for station T44 at lat 58.47 lon 281.92\n"
+        },
+        {
+            "id": "T45/PT1M/xyz",
+            "title": "Data for station T45 at lat 55.28 lon 282.24\n"
+        },
+        {
+            "id": "T46/PT1M/xyz",
+            "title": "Data for station T46 at lat 60.05 lon 282.71\n"
+        },
+        {
+            "id": "T47/PT1M/xyz",
+            "title": "Data for station T47 at lat 62.20 lon 284.35\n"
+        },
+        {
+            "id": "T48/PT1M/xyz",
+            "title": "Data for station T48 at lat 54.80 lon 293.19\n"
+        },
+        {
+            "id": "T49/PT1M/xyz",
+            "title": "Data for station T49 at lat 50.22 lon 293.73\n"
+        },
+        {
+            "id": "T50/PT1M/xyz",
+            "title": "Data for station T50 at lat 48.65 lon 287.55\n"
+        },
+        {
+            "id": "T51/PT1M/xyz",
+            "title": "Data for station T51 at lat 48.05 lon 282.22\n"
+        },
+        {
+            "id": "T52/PT1M/xyz",
+            "title": "Data for station T52 at lat 53.79 lon 282.38\n"
+        },
+        {
+            "id": "T53/PT1M/xyz",
+            "title": "Data for station T53 at lat 60.82 lon 281.85\n"
+        },
+        {
+            "id": "T54/PT1M/xyz",
+            "title": "Data for station T54 at lat 39.10 lon 283.15\n"
+        },
+        {
+            "id": "T55/PT1M/xyz",
+            "title": "Data for station T55 at lat 60.55 lon 208.74\n"
+        },
+        {
+            "id": "T56/PT1M/xyz",
+            "title": "Data for station T56 at lat 45.59 lon 267.03\n"
+        },
+        {
+            "id": "T57/PT1M/xyz",
+            "title": "Data for station T57 at lat 38.25 lon 255.39\n"
+        },
+        {
+            "id": "T58/PT1M/xyz",
+            "title": "Data for station T58 at lat 37.42 lon 237.83\n"
+        },
+        {
+            "id": "T59/PT1M/xyz",
+            "title": "Data for station T59 at lat 57.79 lon 207.60\n"
+        },
+        {
+            "id": "T60/PT1M/xyz",
+            "title": "Data for station T60 at lat 66.63 lon 210.40\n"
+        },
+        {
+            "id": "T61/PT1M/xyz",
+            "title": "Data for station T61 at lat 37.88 lon 284.56\n"
+        },
+        {
+            "id": "T62/PT1M/xyz",
+            "title": "Data for station T62 at lat 65.90 lon 26.41\n"
+        },
+        {
+            "id": "TAB/PT1M/xyz",
+            "title": "Data for station TAB at lat 76.54 lon 291.18\n"
+        },
+        {
+            "id": "TAL/PT1M/xyz",
+            "title": "Data for station TAL at lat 69.54 lon 266.45\n"
+        },
+        {
+            "id": "TAM/PT1M/xyz",
+            "title": "Data for station TAM at lat 22.79 lon 5.53\n"
+        },
+        {
+            "id": "TAN/PT1M/xyz",
+            "title": "Data for station TAN at lat -18.92 lon 47.55\n"
+        },
+        {
+            "id": "TAR/PT1M/xyz",
+            "title": "Data for station TAR at lat 58.26 lon 26.46\n"
+        },
+        {
+            "id": "TDC/PT1M/xyz",
+            "title": "Data for station TDC at lat -37.10 lon 347.69\n"
+        },
+        {
+            "id": "TEO/PT1M/xyz",
+            "title": "Data for station TEO at lat 19.75 lon 260.82\n"
+        },
+        {
+            "id": "TGG/PT1M/xyz",
+            "title": "Data for station TGG at lat 17.66 lon 121.76\n"
+        },
+        {
+            "id": "THL/PT1M/xyz",
+            "title": "Data for station THL at lat 77.47 lon 290.77\n"
+        },
+        {
+            "id": "THY/PT1M/xyz",
+            "title": "Data for station THY at lat 46.90 lon 17.54\n"
+        },
+        {
+            "id": "TIK/PT1M/xyz",
+            "title": "Data for station TIK at lat 71.59 lon 128.92\n"
+        },
+        {
+            "id": "TIR/PT1M/xyz",
+            "title": "Data for station TIR at lat 8.48 lon 76.95\n"
+        },
+        {
+            "id": "TKT/PT1M/xyz",
+            "title": "Data for station TKT at lat 41.33 lon 69.62\n"
+        },
+        {
+            "id": "TLK/PT1M/xyz",
+            "title": "Data for station TLK at lat 63.30 lon 209.90\n"
+        },
+        {
+            "id": "TND/PT1M/xyz",
+            "title": "Data for station TND at lat 1.29 lon 124.95\n"
+        },
+        {
+            "id": "TOL/PT1M/xyz",
+            "title": "Data for station TOL at lat 39.88 lon 355.95\n"
+        },
+        {
+            "id": "TOP/PT1M/xyz",
+            "title": "Data for station TOP at lat 56.09 lon 13.18\n"
+        },
+        {
+            "id": "TRO/PT1M/xyz",
+            "title": "Data for station TRO at lat 69.66 lon 18.94\n"
+        },
+        {
+            "id": "TRP/PT1M/xyz",
+            "title": "Data for station TRP at lat 62.67 lon 150.24\n"
+        },
+        {
+            "id": "TRW/PT1M/xyz",
+            "title": "Data for station TRW at lat -43.25 lon 294.68\n"
+        },
+        {
+            "id": "TSU/PT1M/xyz",
+            "title": "Data for station TSU at lat -19.22 lon 17.70\n"
+        },
+        {
+            "id": "TTB/PT1M/xyz",
+            "title": "Data for station TTB at lat -1.21 lon 311.49\n"
+        },
+        {
+            "id": "TUC/PT1M/xyz",
+            "title": "Data for station TUC at lat 32.17 lon 249.27\n"
+        },
+        {
+            "id": "TUL/PT1M/xyz",
+            "title": "Data for station TUL at lat 35.92 lon 264.22\n"
+        },
+        {
+            "id": "TWN/PT1M/xyz",
+            "title": "Data for station TWN at lat -19.27 lon 146.82\n"
+        },
+        {
+            "id": "UMQ/PT1M/xyz",
+            "title": "Data for station UMQ at lat 70.68 lon 307.87\n"
+        },
+        {
+            "id": "UPN/PT1M/xyz",
+            "title": "Data for station UPN at lat 72.78 lon 303.85\n"
+        },
+        {
+            "id": "UPS/PT1M/xyz",
+            "title": "Data for station UPS at lat 59.90 lon 17.35\n"
+        },
+        {
+            "id": "USC/PT1M/xyz",
+            "title": "Data for station USC at lat 33.34 lon 278.54\n"
+        },
+        {
+            "id": "VAL/PT1M/xyz",
+            "title": "Data for station VAL at lat 51.93 lon 349.75\n"
+        },
+        {
+            "id": "VIC/PT1M/xyz",
+            "title": "Data for station VIC at lat 48.52 lon 236.58\n"
+        },
+        {
+            "id": "VIZ/PT1M/xyz",
+            "title": "Data for station VIZ at lat 79.30 lon 76.54\n"
+        },
+        {
+            "id": "VLD/PT1M/xyz",
+            "title": "Data for station VLD at lat -39.48 lon 286.86\n"
+        },
+        {
+            "id": "VLO/PT1M/xyz",
+            "title": "Data for station VLO at lat 48.19 lon 282.24\n"
+        },
+        {
+            "id": "VNA/PT1M/xyz",
+            "title": "Data for station VNA at lat -70.70 lon 351.70\n"
+        },
+        {
+            "id": "VOS/PT1M/xyz",
+            "title": "Data for station VOS at lat -78.45 lon 106.87\n"
+        },
+        {
+            "id": "VRE/PT1M/xyz",
+            "title": "Data for station VRE at lat -17.28 lon 292.38\n"
+        },
+        {
+            "id": "VSS/PT1M/xyz",
+            "title": "Data for station VSS at lat -22.40 lon 316.35\n"
+        },
+        {
+            "id": "VYH/PT1M/xyz",
+            "title": "Data for station VYH at lat 48.49 lon 18.84\n"
+        },
+        {
+            "id": "W01/PT1M/xyz",
+            "title": "Data for station W01 at lat -41.55 lon 147.21\n"
+        },
+        {
+            "id": "W02/PT1M/xyz",
+            "title": "Data for station W02 at lat -29.03 lon 167.97\n"
+        },
+        {
+            "id": "W03/PT1M/xyz",
+            "title": "Data for station W03 at lat -2.70 lon 141.30\n"
+        },
+        {
+            "id": "W04/PT1M/xyz",
+            "title": "Data for station W04 at lat -66.28 lon 111.53\n"
+        },
+        {
+            "id": "W05/PT1M/xyz",
+            "title": "Data for station W05 at lat -68.58 lon 77.96\n"
+        },
+        {
+            "id": "WAD/PT1M/xyz",
+            "title": "Data for station WAD at lat 51.90 lon 256.10\n"
+        },
+        {
+            "id": "WEP/PT1M/xyz",
+            "title": "Data for station WEP at lat -12.68 lon 141.88\n"
+        },
+        {
+            "id": "WEW/PT1M/xyz",
+            "title": "Data for station WEW at lat -3.55 lon 143.62\n"
+        },
+        {
+            "id": "WHS/PT1M/xyz",
+            "title": "Data for station WHS at lat 60.70 lon 224.90\n"
+        },
+        {
+            "id": "WIC/PT1M/xyz",
+            "title": "Data for station WIC at lat 47.55 lon 15.52\n"
+        },
+        {
+            "id": "WMQ/PT1M/xyz",
+            "title": "Data for station WMQ at lat 43.81 lon 87.71\n"
+        },
+        {
+            "id": "WNG/PT1M/xyz",
+            "title": "Data for station WNG at lat 53.75 lon 9.07\n"
+        },
+        {
+            "id": "WSE/PT1M/xyz",
+            "title": "Data for station WSE at lat 66.55 lon 33.10\n"
+        },
+        {
+            "id": "WTK/PT1M/xyz",
+            "title": "Data for station WTK at lat -7.56 lon 112.63\n"
+        },
+        {
+            "id": "Y01/PT1M/xyz",
+            "title": "Data for station Y01 at lat -31.80 lon 290.71\n"
+        },
+        {
+            "id": "Y02/PT1M/xyz",
+            "title": "Data for station Y02 at lat -26.84 lon 294.77\n"
+        },
+        {
+            "id": "Y03/PT1M/xyz",
+            "title": "Data for station Y03 at lat -15.56 lon 303.93\n"
+        },
+        {
+            "id": "Y04/PT1M/xyz",
+            "title": "Data for station Y04 at lat -2.59 lon 315.79\n"
+        },
+        {
+            "id": "Y05/PT1M/xyz",
+            "title": "Data for station Y05 at lat -4.19 lon 290.06\n"
+        },
+        {
+            "id": "Y06/PT1M/xyz",
+            "title": "Data for station Y06 at lat -12.59 lon 290.81\n"
+        },
+        {
+            "id": "Y07/PT1M/xyz",
+            "title": "Data for station Y07 at lat -11.95 lon 283.12\n"
+        },
+        {
+            "id": "Y08/PT1M/xyz",
+            "title": "Data for station Y08 at lat -11.78 lon 282.85\n"
+        },
+        {
+            "id": "Y09/PT1M/xyz",
+            "title": "Data for station Y09 at lat -16.47 lon 288.51\n"
+        },
+        {
+            "id": "Y10/PT1M/xyz",
+            "title": "Data for station Y10 at lat -11.95 lon 283.12\n"
+        },
+        {
+            "id": "Y11/PT1M/xyz",
+            "title": "Data for station Y11 at lat -11.95 lon 283.12\n"
+        },
+        {
+            "id": "Y12/PT1M/xyz",
+            "title": "Data for station Y12 at lat -12.04 lon 284.68\n"
+        },
+        {
+            "id": "Y13/PT1M/xyz",
+            "title": "Data for station Y13 at lat -12.04 lon 284.68\n"
+        },
+        {
+            "id": "Y14/PT1M/xyz",
+            "title": "Data for station Y14 at lat -14.09 lon 284.27\n"
+        },
+        {
+            "id": "Y15/PT1M/xyz",
+            "title": "Data for station Y15 at lat -11.95 lon 283.12\n"
+        },
+        {
+            "id": "Y16/PT1M/xyz",
+            "title": "Data for station Y16 at lat -14.83 lon 285.08\n"
+        },
+        {
+            "id": "Y17/PT1M/xyz",
+            "title": "Data for station Y17 at lat -5.17 lon 279.36\n"
+        },
+        {
+            "id": "Y18/PT1M/xyz",
+            "title": "Data for station Y18 at lat -6.50 lon 283.64\n"
+        },
+        {
+            "id": "YAK/PT1M/xyz",
+            "title": "Data for station YAK at lat 60.02 lon 129.72\n"
+        },
+        {
+            "id": "YAP/PT1M/xyz",
+            "title": "Data for station YAP at lat 9.30 lon 138.50\n"
+        },
+        {
+            "id": "YKC/PT1M/xyz",
+            "title": "Data for station YKC at lat 62.48 lon 245.52\n"
+        },
+        {
+            "id": "YMK/PT1M/xyz",
+            "title": "Data for station YMK at lat 31.19 lon 130.62\n"
+        },
+        {
+            "id": "YOR/PT1M/xyz",
+            "title": "Data for station YOR at lat 53.95 lon 358.95\n"
+        },
+        {
+            "id": "YSS/PT1M/xyz",
+            "title": "Data for station YSS at lat 46.95 lon 142.72\n"
+        },
+        {
+            "id": "ZAG/PT1M/xyz",
+            "title": "Data for station ZAG at lat 50.28 lon 20.58\n"
+        },
+        {
+            "id": "ZGN/PT1M/xyz",
+            "title": "Data for station ZGN at lat 66.75 lon 123.26\n"
+        },
+        {
+            "id": "ZYK/PT1M/xyz",
+            "title": "Data for station ZYK at lat 65.75 lon 150.78\n"
+        }
+    ],
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    }
 }
