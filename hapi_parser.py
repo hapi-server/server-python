@@ -474,6 +474,39 @@ def check_v2_v3(query):
         query['time.max']=query['stop']
     return(query)
 
+def truncate_data(timemin, timemax, data):
+    # for data that is larger than given window, truncate it
+    checkstart = True
+    datalines = data.split('/n')
+    truestart = 0
+    trueend = len(datalines)
+    for i in range(len(datalines)):
+        timestamp = datalines[i].split(',')[0]
+        if checkstart:
+            if compare_time(timestamp, timemin) == 'before':
+                truestart = i
+            else:
+                checkstart = False
+        if compare_time(timestamp, timemax) == 'after':
+            trueend = i
+            break
+    if truestart == 0 and trueend == len(datelines):
+        return data
+    else:
+        return '\n'.join(data[truestart:trueend])
+
+def compare_times(t1: str, t2: str) -> str:
+    # as per clean_query_time, compares formats of %Y-%m-%dT%H:%MZ
+    fmt = "%Y-%m-%dT%H:%MZ"
+    dt1 = datetime.datetime.strptime(t1, fmt)
+    dt2 = datetime.datetime.strptime(t2, fmt)
+    if dt1 < dt2:
+        return "before"
+    elif dt1 > dt2:
+        return "after"
+    else:
+        return "equal"
+
 def clean_query_time(query):
     # TESTED
     errorcode = 0 # assume all is well

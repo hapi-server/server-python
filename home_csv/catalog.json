@@ -8,7 +8,12 @@
         {
             "id": "cputemp",
             "title": "Temperature of CPU and GPU of Raspberry PI"
+        },
+	{
+            "id": "cpu2d",
+            "title": "Temperatures as a 2x"
         }
+
     ],
     "status": {
         "code": 1200,

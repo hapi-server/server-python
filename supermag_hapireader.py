@@ -415,12 +415,11 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
     #print("debug, got parameters: ",parameters)
     # 'ignore' is because hapi-server uses that only for file-bsaed fetches
     userid='superhapi'  # debug, temporarily for now
-    
+
     #timenow = datetime.datetime.strptime(timemin,'%Y-%m-%dT%H:%M:%SZ')
     #timeend = datetime.datetime.strptime(timemax,'%Y-%m-%dT%H:%M:%SZ')
     start = datetime.datetime.strptime(timemin,'%Y-%m-%dT%H:%MZ')
     timeend = datetime.datetime.strptime(timemax,'%Y-%m-%dT%H:%MZ')
-
     delta=timeend-start
     extent = delta.total_seconds()
 

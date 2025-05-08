@@ -4,7 +4,6 @@
         "code": 1200,
         "message": "OK request successful"
     },
-    "modificationDate": "lastday",
     "x_customRequestOptions": [
 	{ "name": "baseline",
 	  "description": "Changing the baseline subtraction from the default",
@@ -44,6 +43,6 @@
     "startDate": "2020-01-01T00:00Z",
     "stopDate": "lastday-P1D",
     "sampleStartDate": "2020-01-01T00:00Z",
-    "sampleStopDate": "2020-02-01T00:00Z",
+    "sampleStopDate": "2020-01-01T01:00Z",
     "cadence": "PT1M"
 }

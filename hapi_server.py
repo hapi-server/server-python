@@ -229,6 +229,19 @@ def get_forwarded(headers):
     else:
         return None 
 
+def get_last_line(s: str) -> str:
+    # Strip any trailing newlines (\n, \r\n, or combos)
+    i = len(s) - 1
+    while i >= 0 and s[i] in ('\n', '\r'):
+        i -= 1
+    if i < 0:
+        return ''
+    # Now search backwards for the previous newline
+    j = i
+    while j >= 0 and s[j] not in ('\n', '\r'):
+        j -= 1
+    return s[j + 1:i + 1]
+
 ### THE HAPI SERVER ###
     
 class MyHandler(BaseHTTPRequestHandler):
@@ -371,6 +384,14 @@ class MyHandler(BaseHTTPRequestHandler):
                     id, timemin, timemax, parameters, mydata, CFG.floc,
                     CFG.stream_flag, s)
 
+                truestart = data[0:22].split(',')[0]
+                trueend = get_last_line(data).split(',')[0]
+                #print("True limits: ",timemin, truestart, timemax, trueend)
+                # format is fixed at %Y-%m-%dT%H:%MZ
+                #print(hp.compare_times(truestart,timemin))
+                #print(hp.compare_times(trueend,timemax))
+                if hp.compare_times(truestart,timemin) == 'before' or hp.compare_times(trueend, timemax) == 'after':
+                    data = hp.truncate_data(timemin, timemax, data)
                 if status >= 1400:
                     s.do_error(status)
                 else:
