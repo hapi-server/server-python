@@ -80,7 +80,6 @@ template = {
         {"name": "ext", "type": "double", "units": "seconds", "fill": "60.0"},
         {"name": "iaga", "type": "string", "units": "TLA", "length": 3, "fill": "n/a"},
         {"name": "geo", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "glon, glat"},
-        {"name": "mag", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "mlon, mlat"},
         {"name": "mlt", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "mlt, mcolat"},
         {"name": "sza", "type": "double", "units": "degrees", "fill": "0"},
         {"name": "N", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "N_nez, N_geo"},

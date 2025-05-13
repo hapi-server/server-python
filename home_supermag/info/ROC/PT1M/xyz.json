@@ -64,16 +64,6 @@
             "desc": "glon, glat"
         },
         {
-            "name": "mag",
-            "type": "double",
-            "units": "degrees",
-            "fill": "0",
-            "size": [
-                2
-            ],
-            "desc": "mlon, mlat"
-        },
-        {
             "name": "mlt",
             "type": "double",
             "units": "degrees",

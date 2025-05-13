@@ -259,7 +259,7 @@ class MyHandler(BaseHTTPRequestHandler):
     
     def do_HEAD(s):
         s.send_response(200)
-        s.send_header("Content-type", "application/json")
+        s.send_header("Content-Type", "application/json")
         s.end_headers()
 
     def do_GET(s):
@@ -279,11 +279,11 @@ class MyHandler(BaseHTTPRequestHandler):
         #
         if ( path=='hapi/capabilities' ):                
            s.send_response(200)
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         elif ( path=='hapi/catalog' ):
            s.send_response(200)
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         elif ( path=='hapi/info' ):
            id= query['id'][0]
@@ -292,7 +292,7 @@ class MyHandler(BaseHTTPRequestHandler):
            else:
                #s.send_response(404)
                s.do_error(1406,404)   # 'unknown dataset id'
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         elif ( path=='hapi/data' ):
            id= query['id'][0]
@@ -310,24 +310,23 @@ class MyHandler(BaseHTTPRequestHandler):
            # check request header for If-Modified-Since
            if ( os.path.isfile(CFG.HAPI_HOME + 'info/' + id + '.json' ) ):
                s.send_response(200)
-               s.send_header("Content-type", "text/csv")
+               s.send_header("Content-Type", "text/csv")
            else:
                s.send_response(404)
-           s.send_header("Content-type", "text/csv")
 
         elif ( path=='hapi' ):
            s.send_response(200)
-           s.send_header("Content-type", "text/html")
+           s.send_header("Content-Type", "text/html")
 
         elif ( path=='' ):
            # allow for a top-level index call
            s.send_response(200)
-           s.send_header("Content-type", "text/html")
+           s.send_header("Content-Type", "text/html")
 
         else:
            #print("debug: got here,",path);
            s.send_response(404)
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         s.send_header("Access-Control-Allow-Origin", "*")
         s.send_header("Access-Control-Allow-Methods", "GET")
@@ -341,10 +340,7 @@ class MyHandler(BaseHTTPRequestHandler):
         for h in responseHeaders:
             s.send_header(h,responseHeaders[h])
             
-        try:
-            s.end_headers()
-        except:
-            pass
+        s.end_headers()
 
         #
         # HTML BODY
