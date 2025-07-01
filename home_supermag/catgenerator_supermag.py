@@ -12,6 +12,7 @@
 
 import json
 import os
+import zipfile
 import pandas as pd
 
 InventoryFile = 'SuperMAG-Inventory-60s-2025-05-08.csv'
@@ -43,6 +44,17 @@ data["catalog"].extend(station_entries)
 with open("catalog.json","w") as fout:
     json.dump(data, fout, indent=4)
 
+""" Also generate data_stations.json and indices_*.json """
+zip_path = 'info_jsons.zip'
+extract_to = '.'
+if os.path.isfile(zip_path):
+    with zipfile.ZipFile(zip_path,'r') as zip_ref:
+        zip_ref.extractall(extract_to)
+    print(f"{zip_path} unzipped successfully")
+else:
+    print(f"{zip_path} not found")
+
+    
 """ Also generate each station's .json file """
 
 template = {
@@ -123,3 +135,4 @@ for baseline in baselines:
             ]
 
             json.dump(template2, fout, indent=4)
+print(f"{len(stationlist)*len(baselines)} station info files created successfully.")
