@@ -23,10 +23,10 @@ indices = ["indices_all", "indices_base", "indices_dark", "indices_imf", "indice
 stationlist = []
 with open(fname) as fin:
     for line in fin.readlines():
-        stationlist.append(line.split(',')) # is station, lat, lon
+        stationlist.append(line.rstrip().split(',')) # is station, lat, lon
 
 catalog_entries = [{"id": index, "title": f"Data indices for time span, {index}"} for index in indices]
-station_entries = [{"id": f"{index[0]}/PT1M/xyz", "title": f"Data for station {index[0]} at lat {index[1]} lon {index[2]}"} for index in stationlist]
+station_entries = [{"id": f"{index[0].lower()}/PT1M/xyz", "title": f"Data for station {index[0]} at lat {index[1]} lon {index[2]}"} for index in stationlist]
 
 data = {
     "HAPI": "3.1",
@@ -51,47 +51,37 @@ template = {
         "code": 1200,
         "message": "OK request successful"
     },
-    "x_customRequestOptions": [
-        { "name": "baseline",
-          "description": "Changing the baseline subtraction from the default",
-          "type": "string",
-          "constraint": {
-              "enum": ["system","yearly","none"]
-          },
-          "default": "system"
-        },
-        { "name": "delta",
-          "description": "Changing the delta subtraction from the default",
-          "type": "string",
-          "constraint": {
-              "enum": ["system","none","start"]
-          },
-          "default": "system"
-        }
-    ],
     "parameters": [
         {
             "length": 24,
             "name": "Time",
             "type": "isotime",
-            "fill": 999999.0,
             "units": "UTC"
         },
-        {"name": "ext", "type": "double", "units": "seconds", "fill": "60.0"},
-        {"name": "iaga", "type": "string", "units": "TLA", "length": 3, "fill": "n/a"},
-        {"name": "geo", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "glon, glat"},
-        {"name": "mlt", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "mlt, mcolat"},
+        {"name": "mlt", "type": "double", "units": ["hours","degrees"], "fill": ["0","0"], "size": [2], "desc": "The Magnetic local time and colatitude, mlt, mcolat"},
+        {"name": "mag", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "The Magnetic coordinates of the station, mlat, mlon"},
         {"name": "sza", "type": "double", "units": "degrees", "fill": "0"},
-        {"name": "N", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "N_nez, N_geo"},
-        {"name": "E", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "E_nez, E_geo"},
-        {"name": "Z", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "Z_nez, Z_geo"}
+        {"name": "decl", "type": "double", "units": "degrees", "fill": "0"},
+        {"name": "Field_Vector", "type": "double", "units": "degrees", "size": [3], "desc": "N_geo, E_geo, Z_geo"},
+        {"name": "N_geo", "type": "double", "units": "nT", "fill": "0", "desc": "N_geo"},
+        {"name": "E_geo", "type": "double", "units": "nT", "fill": "0", "desc": "E_geo"},
+        {"name": "Z_geo", "type": "double", "units": "nT", "fill": "0", "desc": "Z_geo"}
     ],
     "startDate": "2020-01-01T00:00Z",
     "stopDate": "lastday-P1D",
     "sampleStartDate": "2020-01-01T00:00Z",
     "sampleStopDate": "2020-01-01T01:00Z",
+    "maxRequestDuration": "P1Y",
     "cadence": "PT1M"
 }
+
+"""
+used to be nez & geo, now returning just geo
+        {"name": "N", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "N_nez, N_geo"},
+        {"name": "E", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "E_nez, E_geo"},
+        {"name": "Z", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "Z_nez, Z_geo"}
+"""
+
 
 # now get time brackets
 df = pd.read_csv(InventoryFile)
@@ -112,16 +102,24 @@ def get_year_span(df, iaga_id):
         return None, None
     return min(years), max(years)
 
-for id in stationlist:
-    start, stop = get_year_span(df, id[0])
-    if start == None: continue
-    fname = f"info/{id[0]}/PT1M/xyz.json"
-    os.makedirs(os.path.dirname(fname),exist_ok=True)
-    with open(fname,"w") as fout:
-        template2 = template
-        template2["startDate"] = start + '-01-01T00:00Z'
-        template2["stopDate"] = stop + '-01-01T00:00Z'
-        template2["sampleStartDate"] = start + '-12-01T00:00Z'
-        template2["sampleStopDate"] = start + '-12-02T00:00Z'
-        json.dump(template2, fout, indent=4)
-    
+baselines = ['baseline_all','baseline_yearly','baseline_none']
+
+for baseline in baselines:
+    for id in stationlist:
+        start, stop = get_year_span(df, id[0])
+        if start == None: continue
+        fname = f"info/{id[0].lower()}/PT1M/{baseline}.json"
+        os.makedirs(os.path.dirname(fname),exist_ok=True)
+        with open(fname,"w") as fout:
+            template2 = template
+            template2["startDate"] = start + '-01-01T00:00Z'
+            template2["stopDate"] = stop + '-01-01T00:00Z'
+            template2["sampleStartDate"] = start + '-12-01T00:00Z'
+            template2["sampleStopDate"] = start + '-12-02T00:00Z'
+            template2["additionalMetadata"] = [
+                { "name": "iaga", "content": id[0]},
+                { "name": "x_latitude", "content": id[1]},
+                { "name": "x_longitude", "content": id[2]}
+            ]
+
+            json.dump(template2, fout, indent=4)

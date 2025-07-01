@@ -34,6 +34,15 @@ from supermag_api import *
 def sm_filter_data(magdata, parameters):
     # Handles wonky SuperMAG data_NNN API keys
     # because all queries return ext, iaga, and the NEZ set
+    if 'Field_Vector' in parameters:
+        magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'][0], row['E'][0], row['Z'][0]], axis=1)
+    if 'N_geo' in parameters:
+        magdata['N_geo'] = magdata['N'].apply(lambda x: x[0])
+    if 'E_geo' in parameters:
+        magdata['E_geo'] = magdata['E'].apply(lambda x: x[0])
+    if 'Z_geo' in parameters:
+        magdata['Z_geo'] = magdata['Z'].apply(lambda x: x[0])
+        
     allparams = ['ext','iaga','N','E','Z']
     dropme = []
     for para in allparams:
@@ -485,14 +494,26 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
         magdata = unwind_csv_array(magdata) # change [v,v] to just v,v
         status=tf_to_hapicode(status,len(magdata))
 
-    elif id.endswith("PT1M/xyz"): # was previously id.startswith('data'):
+    elif "PT1M/baseline" in id: # was previously id.startswith('data'):
         # New 'data' code, replaces prior mess
         station = id.split('/')[0] # (dataword,station)=id.split('_')
+        baseline = id.split('/')[-1].split('_')[-1]
         if parameters != None:
-            flagstring = '&'.join(parameters) # more than needed, will filter later
+            if 'Field_Vector' in parameters:
+                parameters.extend(['N','E','Z'])
+            if 'N_geo' in parameters:
+                parameters[parameters.index('N_geo')] = 'N'
+            if 'E_geo' in parameters:
+                parameters[parameters.index('E_geo')] = 'E'
+            if 'Z_geo' in parameters:
+                parameters[parameters.index('Z_geo')] = 'Z'
         else:
-            flagstring = "&mlt&mag&geo&decl&sza"
-            
+            #flagstring = "&mlt&mag&geo&decl&sza"
+            parameters = ['mlt','mag','sza','decl','N','E','Z']
+        flagstring = '&'.join(parameters) # more than needed, will filter later
+        flagstring.replace("&Field_Vector","")
+
+        flagstring += f"&baseline='{baseline}'"
         (status,magdata)=supermag_getdata(userid,start,extent,flagstring,station,FORMAT='json')
         try:
             magdata['tval'] = magdata['tval'].apply(sm_to_hapitimes)
@@ -500,8 +521,7 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
             pass # pass when there is no valid data to parse
 
         # Massive filtering needed to match parameters requested
-        if parameters != None:
-            magdata=sm_filter_data(magdata,parameters)
+        magdata=sm_filter_data(magdata,parameters)
 
         magdata = magdata.to_csv(header=0,index=False,sep=',')
         magdata = csv_removekeys(magdata) # change {k:v,k:v} to just [v,v]
