@@ -9,11 +9,10 @@
             "id": "cputemp",
             "title": "Temperature of CPU and GPU of Raspberry PI"
         },
-	{
-            "id": "cpu2d",
-            "title": "Temperatures as a 2x"
+        {
+            "id": "spacecraft-spk-ck",
+            "title": "Parker Solar Probe Ephemeris and Orientation Data"
         }
-
     ],
     "status": {
         "code": 1200,
