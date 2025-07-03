@@ -1,0 +1,29 @@
+{
+    "HAPI": "2.0",
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    },
+    "parameters": [
+        {
+            "length": 24,
+            "name": "Time",
+            "type": "isotime",
+            "fill": null,            
+            "units": "UTC"
+        },
+        {
+            "description": "temperatures",
+            "fill": "-1e31",
+            "name": "GPUTemperature",
+            "type": "double",
+	    "size": [2],
+            "units": "deg C"
+        }
+    ],
+   "startDate": "2018-01-09T00:00Z",
+    "stopDate": "2018-01-22T00:00Z",
+    "sampleStartDate": "2018-01-19T00:00Z",
+    "sampleStopDate": "2018-01-21T00:00Z",
+    "cadence": "PT1M"
+}

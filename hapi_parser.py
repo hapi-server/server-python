@@ -252,7 +252,7 @@ def do_write_info(id, parameters, hapi_home, prefix ):
             mystr += l
             mystr += '\n'
     except:
-        mystry = send_exception('Not Found')
+        mystr = '{"HAPI": "3.1","status":{"code":1500,"message":"Not Found"} }'
     return mystr
 
 def get_last_modified( id, hapi_home, timemin, timemax ):
@@ -474,6 +474,39 @@ def check_v2_v3(query):
         query['time.max']=query['stop']
     return(query)
 
+def truncate_data(timemin, timemax, data):
+    # for data that is larger than given window, truncate it
+    checkstart = True
+    datalines = data.split('/n')
+    truestart = 0
+    trueend = len(datalines)
+    for i in range(len(datalines)):
+        timestamp = datalines[i].split(',')[0]
+        if checkstart:
+            if compare_time(timestamp, timemin) == 'before':
+                truestart = i
+            else:
+                checkstart = False
+        if compare_time(timestamp, timemax) == 'after':
+            trueend = i
+            break
+    if truestart == 0 and trueend == len(datelines):
+        return data
+    else:
+        return '\n'.join(data[truestart:trueend])
+
+def compare_times(t1: str, t2: str) -> str:
+    # as per clean_query_time, compares formats of %Y-%m-%dT%H:%MZ
+    fmt = "%Y-%m-%dT%H:%MZ"
+    dt1 = datetime.datetime.strptime(t1, fmt)
+    dt2 = datetime.datetime.strptime(t2, fmt)
+    if dt1 < dt2:
+        return "before"
+    elif dt1 > dt2:
+        return "after"
+    else:
+        return "equal"
+
 def clean_query_time(query):
     # TESTED
     errorcode = 0 # assume all is well
@@ -557,6 +590,14 @@ def prep_data(query, hapihome, tags):
     ##    xopts = jset['x_customRequestOptions']
     return(parameters, xopts, mydata, check_error)
 
+def get_all_ids(hapihome):
+    ids = []
+    with open(hapihome+"catalog.json") as fin:
+        data = json.load(fin)
+        for ele in data["catalog"]:
+            ids.append(ele["id"])
+    return ids
+
 def print_hapi_intropage(myname, hapihome):
     # TESTED
     mystr = ""
@@ -577,10 +618,15 @@ def print_hapi_intropage(myname, hapihome):
     u= "/hapi/catalog"
     mystr += "<a href='%s'>%s</a></p>\n" % ( u,u ) 
     mystr += "<p>HAPI requests:</p>\n"
-    ff= glob.glob( hapihome + 'info/*.json' )
+
+    ids = get_all_ids(hapihome)
+    ff = [hapihome + 'info/' + id + '.json' for id in ids]
+    #ff= glob.glob( hapihome + 'info/*.json' )
     n= len( hapihome + 'info/' )
-    for f in sorted(ff):
+    for f in ff: # sorted(ff):
         (stat,mydata)=fetch_info_params(f,hapihome,True)
+        if stat == False:
+            continue
         u= "/hapi/info?%s=%s" % ( datasetkey, f[n:-5] )
         mystr += "<a href='%s'>%s</a></br>\n" % ( u,u ) 
         # also extract dates etc from file

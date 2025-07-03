@@ -1,0 +1,16 @@
+0) Test it
+git clone https://github.com/hapi-server/server-python.git
+cd server-python
+git switch supermag
+python hapi_server.py supermag localhost
+(in browser, localhost:8000)
+
+1) Release pass-thru as is (making a ‘hapi’ userid for tracking)
+open a port on your machines, alias it, done!
+
+2) Improve network efficiency to #1
+	run a parallel supermag.jhuapl.edu server on localhost
+	point ‘hapi_server’ to _that_ instead of the external one
+
+3) Shift from pass-thru to  library
+	refactor your supermag.jhuapl.edu server code to be either a callable function that returns data, or alt we look at clever socket work instead of https

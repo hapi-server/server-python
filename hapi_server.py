@@ -120,11 +120,14 @@ elif LOCALITY == 'https':
 elif LOCALITY == 'custom':
     # this is provided so you can hard-code your own site-specific needs
     HOST_NAME = '0.0.0.0'
-    PORT_NUMBER = 80
-else:
+    PORT_NUMBER = 1024
+elif LOCALITY == 'localhost':
     # assume localhost
     HOST_NAME = 'localhost'
     PORT_NUMBER = 8000
+else:
+    print(f"Error, no known port {LOCALITY}, exiting")
+    exit()
 print("Running in",LOCALITY,"mode, initializing for",USE_CASE)
 
 ### GET AND PARSE CONFIG FILE ###
@@ -218,7 +221,7 @@ else:
 ### HAPI required error and support utilities
 
 def send_exception( w, msg ):
-    myjson = '{"HAPI": "2.0","status":{"code":1500,"message":"%s"} }' % msg
+    myjson = '{"HAPI": "3.1","status":{"code":1500,"message":"%s"} }' % msg
     w.write(bytes(myjson,"utf-8"))
     
 def get_forwarded(headers):
@@ -228,6 +231,19 @@ def get_forwarded(headers):
         return headers.get('x-forwarded-server')
     else:
         return None 
+
+def get_last_line(s: str) -> str:
+    # Strip any trailing newlines (\n, \r\n, or combos)
+    i = len(s) - 1
+    while i >= 0 and s[i] in ('\n', '\r'):
+        i -= 1
+    if i < 0:
+        return ''
+    # Now search backwards for the previous newline
+    j = i
+    while j >= 0 and s[j] not in ('\n', '\r'):
+        j -= 1
+    return s[j + 1:i + 1]
 
 ### THE HAPI SERVER ###
     
@@ -246,31 +262,33 @@ class MyHandler(BaseHTTPRequestHandler):
     
     def do_HEAD(s):
         s.send_response(200)
-        s.send_header("Content-type", "application/json")
+        s.send_header("Content-Type", "application/json")
         s.end_headers()
 
     def do_GET(s):
+        #print(f"Received GET request from {s.client_address}")
         ###import time
         feedback.start(s.headers)
         responseHeaders= {}
         path= s.path
         pp= urlparse.urlparse(s.path)
         path = hp.clean_hapi_path(path)
+        #print('superhapi',path,pp)
         # allows for keywords to be placed before 'hapi/', hapi-server3d.py
         (tags,path) = hp.get_hapi_tags(path,CFG.tags_allowed)
         query= urlparse.parse_qs( pp.query )
         query = hp.check_v2_v3(query)
-        
+        #print('superhapi',query,path)
         #
         # HTML HEADERS
         #
         if ( path=='hapi/capabilities' ):                
            s.send_response(200)
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         elif ( path=='hapi/catalog' ):
            s.send_response(200)
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         elif ( path=='hapi/info' ):
            id= query['id'][0]
@@ -279,16 +297,17 @@ class MyHandler(BaseHTTPRequestHandler):
            else:
                #s.send_response(404)
                s.do_error(1406,404)   # 'unknown dataset id'
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         elif ( path=='hapi/data' ):
            id= query['id'][0]
            (timemin, timemax, errorcode) = hp.clean_query_time(query)
+           #print('superhapi',timemin,timemax,errorcode,id,query)
            if errorcode > 0:
                s.do_error(errorcode)
            lastModified = hp.get_lastModified(CFG.api_datatype, id, CFG.HAPI_HOME, timemin, timemax)
            if ( s.headers.__contains__('If-Modified-Since') ):
-               theyHave = hp.fetch_modifiedsince(s)
+               theyHave = hp.fetch_modifiedsince(s.headers['If-Modified-Since'])
                if ( lastModified <= theyHave ):
                    s.send_response(304)
                    s.end_headers()
@@ -297,24 +316,23 @@ class MyHandler(BaseHTTPRequestHandler):
            # check request header for If-Modified-Since
            if ( os.path.isfile(CFG.HAPI_HOME + 'info/' + id + '.json' ) ):
                s.send_response(200)
-               s.send_header("Content-type", "text/csv")
+               s.send_header("Content-Type", "text/csv")
            else:
                s.send_response(404)
-           s.send_header("Content-type", "text/csv")
 
         elif ( path=='hapi' ):
            s.send_response(200)
-           s.send_header("Content-type", "text/html")
+           s.send_header("Content-Type", "text/html")
 
         elif ( path=='' ):
            # allow for a top-level index call
            s.send_response(200)
-           s.send_header("Content-type", "text/html")
+           s.send_header("Content-Type", "text/html")
 
         else:
            #print("debug: got here,",path);
            s.send_response(404)
-           s.send_header("Content-type", "application/json")
+           s.send_header("Content-Type", "application/json")
 
         s.send_header("Access-Control-Allow-Origin", "*")
         s.send_header("Access-Control-Allow-Methods", "GET")
@@ -328,10 +346,7 @@ class MyHandler(BaseHTTPRequestHandler):
         for h in responseHeaders:
             s.send_header(h,responseHeaders[h])
             
-        try:
-            s.end_headers()
-        except:
-            pass
+        s.end_headers()
 
         #
         # HTML BODY
@@ -352,6 +367,7 @@ class MyHandler(BaseHTTPRequestHandler):
         elif ( path=='hapi/data' ):
             (parameters, xopts, mydata, check_error) = hp.prep_data(query, CFG.HAPI_HOME, tags)
             CFG.floc['customOptions'] = hp.handle_customRequestOptions(query, xopts)
+            #print('superhapi',xopts,mydata,check_error,parameters,query)
             if check_error > 0:
                 s.do_error(check_error)
             else:
@@ -361,7 +377,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         info = hp.do_write_info(id, parameters, CFG.HAPI_HOME, '#' )
                         s.wfile.write(bytes(info,"utf-8"))
                 (stat,mydata)=hp.fetch_info_params(id,CFG.HAPI_HOME,False)
-                #
+                #print('superhapi',stat,mydata)
                 # FORMAT HERE IS: id (unique dataset endpoint)
                 #    timemin and timemax (in HAPI format)
                 #    parameters (as a list of parameter names)
@@ -370,7 +386,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 (status,data)=CFG.hapi_handler(
                     id, timemin, timemax, parameters, mydata, CFG.floc,
                     CFG.stream_flag, s)
-
+                #print('superhapi',status,data)
                 if status >= 1400:
                     s.do_error(status)
                 else:
@@ -383,6 +399,15 @@ class MyHandler(BaseHTTPRequestHandler):
                     else:
                         status=1200 # status 1200 is HAPI "OK"
                     # presumed valid data, so serve it
+
+                    try:
+                        truestart = data[0:22].split(',')[0]
+                        trueend = get_last_line(data).split(',')[0]
+                        if hp.compare_times(truestart,timemin) == 'before' or hp.compare_times(trueend, timemax) == 'after':
+                            data = hp.truncate_data(timemin, timemax, data)
+                    except:
+                        pass # in case of weird time formats, etc
+                    
                     try:
                         # note for streaming, data is zero but legit
                         s.wfile.write(bytes(data,"utf-8"))
@@ -419,7 +444,7 @@ if __name__ == '__main__':
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
-
+    #httpd.serve_forever()
     feedback.destroy()
 
     httpd.server_close()
