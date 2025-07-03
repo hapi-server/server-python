@@ -15,7 +15,7 @@ import re
 
 import pandas as pd  # dataframes and also to_datetime
 
-globaldebug = True  # False
+globaldebug = False  # False
 
 """
 ;supermag-api.py

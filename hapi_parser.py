@@ -252,7 +252,7 @@ def do_write_info(id, parameters, hapi_home, prefix ):
             mystr += l
             mystr += '\n'
     except:
-        mystry = send_exception('Not Found')
+        mystr = '{"HAPI": "3.1","status":{"code":1500,"message":"Not Found"} }'
     return mystr
 
 def get_last_modified( id, hapi_home, timemin, timemax ):

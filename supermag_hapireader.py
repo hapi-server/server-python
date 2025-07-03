@@ -14,6 +14,7 @@
 #import netCDF4 as nc
 #import numpy as np
 #import pandas as pd
+import copy
 import xarray as xr
 import pandas as pd
 import time
@@ -35,15 +36,18 @@ def sm_filter_data(magdata, parameters):
     # Handles wonky SuperMAG data_NNN API keys
     # because all queries return ext, iaga, and the NEZ set
     if 'Field_Vector' in parameters:
-        magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'][0], row['E'][0], row['Z'][0]], axis=1)
+        magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'].get('geo'), row['E'].get('geo'), row['Z'].get('geo')], axis=1)
     if 'N_geo' in parameters:
-        magdata['N_geo'] = magdata['N'].apply(lambda x: x[0])
+        magdata['N_geo'] = magdata['N'].apply(lambda x: x.get('geo'))
     if 'E_geo' in parameters:
-        magdata['E_geo'] = magdata['E'].apply(lambda x: x[0])
+        magdata['E_geo'] = magdata['E'].apply(lambda x: x.get('geo'))
     if 'Z_geo' in parameters:
-        magdata['Z_geo'] = magdata['Z'].apply(lambda x: x[0])
+        magdata['Z_geo'] = magdata['Z'].apply(lambda x: x.get('geo'))
+
+    if 'mlt' in parameters:
+        magdata['mlt'] = magdata.apply(lambda row: [row['mlt'], row['mcolat']], axis=1)
         
-    allparams = ['ext','iaga','N','E','Z']
+    allparams = ['ext','iaga','N','E','Z','mcolat']
     dropme = []
     for para in allparams:
         if para not in parameters:
@@ -54,6 +58,12 @@ def sm_filter_data(magdata, parameters):
     if dropme != None:
         magdata=magdata.drop(columns=dropme,errors='ignore')
     #print("Debug, magdata after delete is ",magdata)
+
+    # reorder to match original request (handles any bad munging)
+    parameters_munged = copy.deepcopy(parameters)
+    if 'Time' in parameters_munged:
+        parameters_munged[parameters_munged.index('Time')] = 'tval'
+    magdata = magdata[parameters_munged]
 
     return(magdata)
         
@@ -385,8 +395,6 @@ sout='filehandle to be defined later'
 myjson=do_data_supermag('inventory',timemin,timemax,parameters,sout,null)
 
 
-TBD: 1) return json, not bytes, also 2) verify mod to 'supermag_api.py' for adding **kwargs to supermag_getinventory did not break anything by re-rerunning test scripts.
-
 """
 
 """
@@ -446,6 +454,12 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
 
     #print("debug: id is ",id)
     if id.startswith("stations"):
+        """ note this is NOT a proper HAPI function so we do not use it
+            as it only returns a list of stations, not a time-ordered
+            function
+            To get a list of stations, construct a URL akin to:
+        https://supermag.jhuapl.edu/services/inventory.php?python&nohead&start=2018-01-18T00:00&logon=superhapi&extent=000000086400
+        """
         # no 'parameters' used by this
         #print("Debug:",userid,start,extent)
         (status,magdata) = supermag_getinventory(userid,start,extent) # FORMAT='list')
@@ -498,19 +512,36 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
         # New 'data' code, replaces prior mess
         station = id.split('/')[0] # (dataword,station)=id.split('_')
         baseline = id.split('/')[-1].split('_')[-1]
-        if parameters != None:
+        """ The SuperMAG Python API expects flags N, E, Z but our
+            SuperHAPI spec renames to N_geo, E_geo, Z_geo and also
+            defaults to providing a Field_Vector = [N_geo, E_geo, Z_geo]
+            so the following code translates this, later sm_filter_data
+            will handle the returned pandas array to match the HAPI request
+        """
+        if 'Time' not in parameters: parameters.insert(0, 'tval')
+        parameters_munged = copy.deepcopy(parameters)
+        if parameters_munged != None:
             if 'Field_Vector' in parameters:
-                parameters.extend(['N','E','Z'])
-            if 'N_geo' in parameters:
-                parameters[parameters.index('N_geo')] = 'N'
-            if 'E_geo' in parameters:
-                parameters[parameters.index('E_geo')] = 'E'
-            if 'Z_geo' in parameters:
-                parameters[parameters.index('Z_geo')] = 'Z'
+                parameters_munged.extend(['N','E','Z'])
+                parameters_munged.remove('Field_Vector')
+            if 'N_geo' in parameters and 'N' not in parameters_munged:
+                parameters_munged[parameters_munged.index('N_geo')] = 'N'
+            if 'E_geo' in parameters and 'E' not in parameters_munged:
+                parameters_munged[parameters_munged.index('E_geo')] = 'E'
+            if 'Z_geo' in parameters and 'Z' not in parameters_munged:
+                parameters_munged[parameters_munged.index('Z_geo')] = 'Z'
+            if 'N_geo' in parameters_munged: parameters_munged.remove('N_geo')
+            if 'E_geo' in parameters_munged: parameters_munged.remove('E_geo')
+            if 'Z_geo' in parameters_munged: parameters_munged.remove('Z_geo')
+            if 'mlt' in parameters_munged:
+                i=parameters_munged.index('mlt')
+                parameters_munged[i:i+1] = ['mlt','mcolat']
         else:
-            #flagstring = "&mlt&mag&geo&decl&sza"
-            parameters = ['mlt','mag','sza','decl','N','E','Z']
-        flagstring = '&'.join(parameters) # more than needed, will filter later
+            #flagstring = "&mlt&mcolat&geo&decl&sza"
+            parameters_munged = ['tval','Field_Vector','mlt','mcolat','sza','decl','N','E','Z']
+        if 'Time' in parameters_munged:
+            parameters_munged[parameters_munged.index('Time')] = 'tval'
+        flagstring = '&'.join(parameters_munged) # more than needed, will filter later
         flagstring.replace("&Field_Vector","")
 
         flagstring += f"&baseline='{baseline}'"
