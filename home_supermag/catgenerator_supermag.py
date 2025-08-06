@@ -10,6 +10,7 @@
 
 """
 
+import copy
 import json
 import os
 import zipfile
@@ -27,7 +28,7 @@ basetext['baseline_all'] = "Subtract the daily variations and yearly trend (usin
 basetext['baseline_yearly'] = "Subtract only the yearly trend (using Gjerloev, 2012)"
 basetext['baseline_none'] = "Do not subtract any baseline"
 
-
+vectors = ["XYZ","NEZ"]
 
 stationlist = []
 with open(fname) as fin:
@@ -37,8 +38,10 @@ with open(fname) as fin:
 catalog_entries = [{"id": index, "title": f"Data indices for time span, {index}"} for index in indices]
 
 station_entries = []
+""" spec data/iaga/baseline_[all/yearly/none]/PT1M/[XYZ/NEZ].json """
 for baseline in baselines:
-    station_entries.extend([{"id": f"{index[0].lower()}/PT1M/{baseline}", "title": f"Data for station {index[0]} at lat {index[1]} lon {index[2]} using baseline choice of {baseline}"} for index in stationlist])
+    for vectortype in vectors:
+        station_entries.extend([{"id": f"{index[0].lower()}/{baseline}/PT1M/{vectortype}", "title": f"IAGA {index[0]} ({index[1]},{index[2]}) {baseline}"} for index in stationlist])
 
 data = {
     "HAPI": "3.2",
@@ -69,8 +72,8 @@ else:
     
 """ Also generate each station's .json file """
 
-template = {
-    "HAPI": "3.1",
+template_xyz = {
+    "HAPI": "3.2",
     "status": {
         "code": 1200,
         "message": "OK request successful"
@@ -82,13 +85,10 @@ template = {
             "type": "isotime",
             "units": "UTC"
         },
-        {"name": "Field_Vector", "type": "double", "units": "nT", "size": [3], "desc": "N_geo, E_geo, Z_geo aka the N, E, A vector components in geographic mapping"},
-        {"name": "mlt", "type": "double", "units": ["hours","degrees"], "fill": ["0","0"], "size": [2], "desc": "The Magnetic local time and colatitude, mlt, mcolat, in hours, degrees"},
-        {"name": "sza", "type": "double", "units": "degrees", "fill": "0", "desc": "The solar zenith angle, in degrees"},
-        {"name": "decl", "type": "double", "units": "degrees", "fill": "0", "desc": "The Declination from IGRF Model, in degrees"},
-        {"name": "N_geo", "type": "double", "units": "nT", "fill": "0", "desc": "N_geo, the N vector component in geographic mapping."},
-        {"name": "E_geo", "type": "double", "units": "nT", "fill": "0", "desc": "E_geo, the E vector component in geographic mapping."},
-        {"name": "Z_geo", "type": "double", "units": "nT", "fill": "0", "desc": "Z_geo, the A vector component in geographic mapping."}
+        {"name": "Field_Vector", "type": "double", "units": "nT", "size": [3], "description": "N_geo, E_geo, Z_geo aka the N, E, Z vector components in geographic mapping"},
+        {"name": "mlt", "type": "double", "units": ["hours","degrees"], "fill": null, "size": [2], "description": "The Magnetic local time and colatitude, mlt, mcolat, in hours, degrees"},
+        {"name": "sza", "type": "double", "units": "degrees", "fill": null, "description": "The solar zenith angle, in degrees"},
+        {"name": "decl", "type": "double", "units": "degrees", "fill": "0", "description": "The Declination from IGRF Model, in degrees"}
     ],
     "startDate": "2020-01-01T00:00Z",
     "stopDate": "lastday-P1D",
@@ -98,6 +98,53 @@ template = {
     "cadence": "PT1M",
     "citation": "https://supermag.jhuapl.edu/info/?page=rulesoftheroad",
     "description": """The SuperMAG data processing technique, J. W. Gjerloev, https://doi.org/10.1029/2012JA017683
+
+    Field_Vector (geographic) XYZ state components are
+    X-direction is geographic north,
+    Y-direction is geographic east, and
+    Z-direction is vertically down.
+    
+    Baseline Determination
+SuperMAG HAPI provides three options for the user:
+
+1. Subtract the daily variations and yearly trend (using Gjerloev, 2012)
+2. Subtract only the yearly trend (using Gjerloev, 2012)
+3. Do not subtract any baseline
+
+SuperMAG thus provides 3 different solutions. The user should use the appropriate dataset for the study. As an example a study of the Sq current or the equatorial electrojet should not subtract the daily variations since this will remove part of this signal.For more details, see https://supermag.jhuapl.edu/mag/?fidelity=low&tab=description"""
+}
+
+template_nez = {
+    "HAPI": "3.2",
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    },
+    "parameters": [
+        {
+            "length": 24,
+            "name": "Time",
+            "type": "isotime",
+            "units": "UTC"
+        },
+        {"name": "Field_Vector", "type": "double", "units": "nT", "size": [3], "description": "N_nez, E_nez, Z_nez aka the N, E, Z vector components in magnetic mapping"},
+        {"name": "mlt", "type": "double", "units": ["hours","degrees"], "fill": "0", "size": [2], "description": "The Magnetic local time and colatitude, mlt, mcolat, in hours, degrees"},
+        {"name": "sza", "type": "double", "units": "degrees", "fill": "0", "description": "The solar zenith angle, in degrees"},
+        {"name": "decl", "type": "double", "units": "degrees", "fill": "0", "description": "The Declination from IGRF Model, in degrees"}
+    ],
+    "startDate": "2020-01-01T00:00Z",
+    "stopDate": "lastday-P1D",
+    "sampleStartDate": "2020-01-01T00:00Z",
+    "sampleStopDate": "2020-01-01T01:00Z",
+    "maxRequestDuration": "P1Y",
+    "cadence": "PT1M",
+    "citation": "https://supermag.jhuapl.edu/info/?page=rulesoftheroad",
+    "description": """The SuperMAG data processing technique, J. W. Gjerloev, https://doi.org/10.1029/2012JA017683
+
+    Field_Vector (magnetic) NEZ state components are
+        N-direction is local magnetic north,
+        E-direction is local magnetic east, and
+        Z-direction is vertically down.
 
     Baseline Determination
 SuperMAG HAPI provides three options for the user:
@@ -110,11 +157,7 @@ SuperMAG thus provides 3 different solutions. The user should use the appropriat
 }
 
 """
-used to be nez & geo, now returning just geo
-        {"name": "N", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "N_nez, N_geo"},
-        {"name": "E", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "E_nez, E_geo"},
-        {"name": "Z", "type": "double", "units": "nT", "fill": "0", "size": [2], "desc": "Z_nez, Z_geo"}
-Also dropped 'mag' because their API gateway wasn't returning it,
+Dropped 'mag' because their API gateway wasn't returning it,
         {"name": "mag", "type": "double", "units": "degrees", "fill": "0", "size": [2], "desc": "The Magnetic coordinates of the station, mlat, mlon"},
 
 """
@@ -140,23 +183,27 @@ def get_year_span(df, iaga_id):
     return min(years), max(years)
 
 for baseline in baselines:
-    for id in stationlist:
-        start, stop = get_year_span(df, id[0])
-        if start == None: continue
-        fname = f"info/{id[0].lower()}/PT1M/{baseline}.json"
-        os.makedirs(os.path.dirname(fname),exist_ok=True)
-        with open(fname,"w") as fout:
-            template2 = template
-            template2["startDate"] = start + '-01-01T00:00Z'
-            template2["stopDate"] = stop + '-01-01T00:00Z'
-            template2["sampleStartDate"] = start + '-12-01T00:00Z'
-            template2["sampleStopDate"] = start + '-12-02T00:00Z'
-            template2["additionalMetadata"] = [
-                { "name": "iaga", "content": id[0]},
-                { "name": "x_latitude", "content": id[1]},
-                { "name": "x_longitude", "content": id[2]},
-                { "name": "baselines", "contentURL": "https://supermag.jhuapl.edu/mag/?fidelity=low&tab=description", "content": basetext[baseline]}
-            ]
-
-            json.dump(template2, fout, indent=4)
+    for vectortype in vectors:
+        for id in stationlist:
+            start, stop = get_year_span(df, id[0])
+            if start == None: continue
+            fname = f"info/{id[0].lower()}/{baseline}/PT1M/{vectortype}.json"
+            os.makedirs(os.path.dirname(fname),exist_ok=True)
+            with open(fname,"w") as fout:
+                if vectortype == "NEZ":
+                    template2 = copy.deepcopy(template_nez)
+                else:
+                    template2 = copy.deepcopy(template_xyz)
+                template2["startDate"] = start + '-01-01T00:00Z'
+                template2["stopDate"] = stop + '-01-01T00:00Z'
+                template2["sampleStartDate"] = start + '-12-01T00:00Z'
+                template2["sampleStopDate"] = start + '-12-02T00:00Z'
+                template2["additionalMetadata"] = [
+                    { "name": "iaga", "content": id[0]},
+                    { "name": "x_latitude", "content": id[1]},
+                    { "name": "x_longitude", "content": id[2]},
+                    { "name": "baselines", "contentURL": "https://supermag.jhuapl.edu/mag/?fidelity=low&tab=description", "content": basetext[baseline]}
+                ]
+                
+                json.dump(template2, fout, indent=4)
 print(f"{len(stationlist)*len(baselines)} station info files created successfully.")

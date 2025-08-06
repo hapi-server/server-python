@@ -32,17 +32,20 @@ from supermag_api import *
 
 #https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=superhapi&start=2019-10-15T10:40&extent=000000003600&station=HRN&mlt&aacgm&geo&decl&sza       #https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=superhapi&start=2019-10-15T10:40&extent=000000003600&station=NCK&mlt&aacgm&geo&decl&sza      
 
-def sm_filter_data(magdata, parameters):
+def sm_filter_data(magdata, parameters, vectortype):
     # Handles wonky SuperMAG data_NNN API keys
     # because all queries return ext, iaga, and the NEZ set
     if 'Field_Vector' in parameters:
-        magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'].get('geo'), row['E'].get('geo'), row['Z'].get('geo')], axis=1)
-    if 'N_geo' in parameters:
-        magdata['N_geo'] = magdata['N'].apply(lambda x: x.get('geo'))
-    if 'E_geo' in parameters:
-        magdata['E_geo'] = magdata['E'].apply(lambda x: x.get('geo'))
-    if 'Z_geo' in parameters:
-        magdata['Z_geo'] = magdata['Z'].apply(lambda x: x.get('geo'))
+        if vectortype == 'NEZ':
+            magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'].get('nez'), row['E'].get('nez'), row['Z'].get('nez')], axis=1)
+        else:
+            magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'].get('geo'), row['E'].get('geo'), row['Z'].get('geo')], axis=1)
+    #if 'N_geo' in parameters:
+    #    magdata['N_geo'] = magdata['N'].apply(lambda x: x.get('geo'))
+    #if 'E_geo' in parameters:
+    #    magdata['E_geo'] = magdata['E'].apply(lambda x: x.get('geo'))
+    #if 'Z_geo' in parameters:
+    #    magdata['Z_geo'] = magdata['Z'].apply(lambda x: x.get('geo'))
 
     if 'mlt' in parameters:
         magdata['mlt'] = magdata.apply(lambda row: [row['mlt'], row['mcolat']], axis=1)
@@ -508,15 +511,24 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
         magdata = unwind_csv_array(magdata) # change [v,v] to just v,v
         status=tf_to_hapicode(status,len(magdata))
 
-    elif "PT1M/baseline" in id: # was previously id.startswith('data'):
+    elif "/baseline_" in id: # was previously id.startswith('data'):
+        """ spec data/iaga/baseline_[all/yearly/none]/PT1M/[XYX/NEZ].json """
         # New 'data' code, replaces prior mess
+        if "NEZ" in id:
+            vectortype = 'NEZ'
+        else:
+            vectortype = 'GEO'
         station = id.split('/')[0] # (dataword,station)=id.split('_')
-        baseline = id.split('/')[-1].split('_')[-1]
+        pattern = r'baseline_[^/]+'
+        match = re.search(pattern, id)
+        baseline = match.group()
         """ The SuperMAG Python API expects flags N, E, Z but our
             SuperHAPI spec renames to N_geo, E_geo, Z_geo and also
             defaults to providing a Field_Vector = [N_geo, E_geo, Z_geo]
             so the following code translates this, later sm_filter_data
-            will handle the returned pandas array to match the HAPI request
+            will handle the returned pandas array to match the HAPI request.
+            The geomagnetic set is [N_nez, E_nez, Z_nez] in geomagnetic coords.
+            We also removed fetching individual N, E, Z in favor of the vector.
         """
         if 'Time' not in parameters: parameters.insert(0, 'tval')
         parameters_munged = copy.deepcopy(parameters)
@@ -524,15 +536,15 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
             if 'Field_Vector' in parameters:
                 parameters_munged.extend(['N','E','Z'])
                 parameters_munged.remove('Field_Vector')
-            if 'N_geo' in parameters and 'N' not in parameters_munged:
-                parameters_munged[parameters_munged.index('N_geo')] = 'N'
-            if 'E_geo' in parameters and 'E' not in parameters_munged:
-                parameters_munged[parameters_munged.index('E_geo')] = 'E'
-            if 'Z_geo' in parameters and 'Z' not in parameters_munged:
-                parameters_munged[parameters_munged.index('Z_geo')] = 'Z'
-            if 'N_geo' in parameters_munged: parameters_munged.remove('N_geo')
-            if 'E_geo' in parameters_munged: parameters_munged.remove('E_geo')
-            if 'Z_geo' in parameters_munged: parameters_munged.remove('Z_geo')
+            #if 'N_geo' in parameters and 'N' not in parameters_munged:
+            #    parameters_munged[parameters_munged.index('N_geo')] = 'N'
+            #if 'E_geo' in parameters and 'E' not in parameters_munged:
+            #    parameters_munged[parameters_munged.index('E_geo')] = 'E'
+            #if 'Z_geo' in parameters and 'Z' not in parameters_munged:
+            #    parameters_munged[parameters_munged.index('Z_geo')] = 'Z'
+            #if 'N_geo' in parameters_munged: parameters_munged.remove('N_geo')
+            #if 'E_geo' in parameters_munged: parameters_munged.remove('E_geo')
+            #if 'Z_geo' in parameters_munged: parameters_munged.remove('Z_geo')
             if 'mlt' in parameters_munged:
                 i=parameters_munged.index('mlt')
                 parameters_munged[i:i+1] = ['mlt','mcolat']
@@ -552,7 +564,7 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
             pass # pass when there is no valid data to parse
 
         # Massive filtering needed to match parameters requested
-        magdata=sm_filter_data(magdata,parameters)
+        magdata=sm_filter_data(magdata, parameters, vectortype)
 
         magdata = magdata.to_csv(header=0,index=False,sep=',')
         magdata = csv_removekeys(magdata) # change {k:v,k:v} to just [v,v]
