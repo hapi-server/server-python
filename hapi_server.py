@@ -416,7 +416,7 @@ class MyHandler(BaseHTTPRequestHandler):
                         s.do_error(1500) # HAPI internal server error
 
         elif ( path=='hapi' ):
-            page = hp.print_hapi_intropage(USE_CASE, CFG.HAPI_HOME)
+            page = hp.print_hapi_intropage(USE_CASE, CFG.HAPI_HOME, CFG.title)
             s.wfile.write(bytes(page,"utf-8"))
             
         elif ( path=='' ):

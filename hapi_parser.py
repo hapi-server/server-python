@@ -39,7 +39,8 @@ import sys
 class defaultvars():
     # TESTED
     #import csv_hapireader
-    HAPI_HOME= 'home_csv/'
+    HAPI_HOME = 'home_csv/'
+    title = 'Python HAPI Server'
     api_datatype = 'file'
     floc={}
     reader_name = "csv_hapireader"
@@ -70,6 +71,10 @@ def parse_config(myname):
             # verify all required elements exist by making local copy
             # so the try/except will fail if a variable is missing
             HAPI_HOME = CFG.HAPI_HOME
+            try:
+                title = CFG.title
+            except:
+                title = 'Python HAPI Server'
             api_datatype=CFG.api_datatype
             floc = CFG.floc
             hapi_handler = CFG.hapi_handler
@@ -598,8 +603,10 @@ def get_all_ids(hapihome):
             ids.append(ele["id"])
     return ids
 
-def print_hapi_intropage(myname, hapihome):
+def print_hapi_intropage(myname, hapihome, title=None):
     # TESTED
+    if title == None:
+        title = "Python HAPI Server"
     mystr = ""
     hapi_version = get_hapiversion(hapihome)
     if hapi_version >= 3:
@@ -611,7 +618,7 @@ def print_hapi_intropage(myname, hapihome):
         datasetkey = 'id'
         startkey = 'time.min'
         stopkey = 'time.max'
-    mystr += "<html><head><title>Python HAPI Server</title></head>\n"
+    mystr += f"<html><head><title>{title}</title></head>\n"
     mystr += "<body>\n"
     # a simple info/demo page
     mystr += "<p>"+myname+" Catalogs:\n"

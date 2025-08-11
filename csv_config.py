@@ -13,7 +13,8 @@
 
 
 import csv_hapireader
-HAPI_HOME= 'home_csv/'
+HAPI_HOME = 'home_csv/'
+title = 'HAPI CSV Server'
 api_datatype = 'file'
 floc={'dir':'home_csv'}
 hapi_handler = csv_hapireader.do_data_csv

@@ -13,6 +13,7 @@ from netcdf_hapireader import *
 api_datatype = 'file'
 floc={'dir':'home_netcdf/rawdata/'} # location of data, with a closing /
 HAPI_HOME= 'home_netcdf/'
+title = 'HAPI NetCDF Server'
 hapi_handler = do_data_netcdf
 tags_allowed = ['testme=true'] # no subparams allowed
 loaded_config = True # required, used to verify config variables exists on load

@@ -13,6 +13,7 @@ from supermag_hapireader import * # APL includes 'do_data_supermag'
 api_datatype = 'web' # added here in case I later add files too
 floc={}
 HAPI_HOME= 'home_supermag/'
+title = 'SuperMAG HAPI server'
 hapi_handler = do_data_supermag
 tags_allowed = ['delta=default','delta=start','baseline=yearly','baseline=none','baseline=default'] # allowed subparams
 loaded_config =	True # required, used to verify config variables exists on load
