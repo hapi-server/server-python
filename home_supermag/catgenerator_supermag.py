@@ -86,8 +86,8 @@ template_xyz = {
             "units": "UTC"
         },
         {"name": "Field_Vector", "type": "double", "units": "nT", "size": [3], "description": "N_geo, E_geo, Z_geo aka the N, E, Z vector components in geographic mapping"},
-        {"name": "mlt", "type": "double", "units": ["hours","degrees"], "fill": null, "size": [2], "description": "The Magnetic local time and colatitude, mlt, mcolat, in hours, degrees"},
-        {"name": "sza", "type": "double", "units": "degrees", "fill": null, "description": "The solar zenith angle, in degrees"},
+        {"name": "mlt", "type": "double", "units": ["hours","degrees"], "fill": None, "size": [2], "description": "The Magnetic local time and colatitude, mlt, mcolat, in hours, degrees"},
+        {"name": "sza", "type": "double", "units": "degrees", "fill": None, "description": "The solar zenith angle, in degrees"},
         {"name": "decl", "type": "double", "units": "degrees", "fill": "0", "description": "The Declination from IGRF Model, in degrees"}
     ],
     "startDate": "2020-01-01T00:00Z",

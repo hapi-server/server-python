@@ -2,7 +2,7 @@ from hapiclient import hapi
 from hapiplot import hapiplot
 
 server = "http://localhost:8000/hapi"
-dataset = "ttb/PT1M/baseline_none"
+dataset = "ttb/baseline_none/PT1M/XYZ"
 start = "2020-05-10T00:00Z"
 stop = "2020-05-14T00:00Z"
 parameters = ''
