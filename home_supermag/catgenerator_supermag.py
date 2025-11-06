@@ -64,7 +64,7 @@ template_xyz = {
     "stopDate": "lastday-P1D",
     "sampleStartDate": "2020-01-01T00:00Z",
     "sampleStopDate": "2020-01-01T01:00Z",
-    "geolocation": ["0","0"],
+    "geoLocation": ["0","0"],
     "maxRequestDuration": "P1Y",
     "cadence": "PT1M",
     "datasetCitation": "https://supermag.jhuapl.edu/info/?page=rulesoftheroad",
