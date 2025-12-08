@@ -64,7 +64,7 @@ template_xyz = {
     "stopDate": "lastday-P1D",
     "sampleStartDate": "2020-01-01T00:00Z",
     "sampleStopDate": "2020-01-01T01:00Z",
-    "geolocation": ["0","0"],
+    "geoLocation": [0,0],
     "maxRequestDuration": "P1Y",
     "cadence": "PT1M",
     "datasetCitation": "https://supermag.jhuapl.edu/info/?page=rulesoftheroad",
@@ -144,7 +144,7 @@ for baseline in baselines:
                 template2["stopDate"] = stop + '-01-01T00:00Z'
                 template2["sampleStartDate"] = start + '-12-01T00:00Z'
                 template2["sampleStopDate"] = start + '-12-02T00:00Z'
-                template2["geolocation"] = [id[2],id[1]]
+                template2["geoLocation"] = [float(id[2]),float(id[1])]
                 template2["additionalMetadata"] = [
                     { "name": "iaga", "content": id[0]},
                     { "name": "baselines", "contentURL": "https://supermag.jhuapl.edu/mag/?fidelity=low&tab=description", "content": basetext[baseline]}
