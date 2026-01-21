@@ -1,0 +1,13 @@
+{
+    "HAPI": "3.3",
+    "catalog": [
+        {
+            "id": "trajectory",
+            "title": "Parker Solar Probe trajectory"
+        }
+    ],
+    "status": {
+        "code": 1200,
+        "message": "OK request successful"
+    }
+}

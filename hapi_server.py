@@ -102,7 +102,7 @@ try:
     USE_CASE = str(sys.argv[1])
 except:
     USE_CASE = 'csv'
-    # APL choices are 'csv', 'guvi', 'guviaws', or 'supermag'
+    # APL choices are 'csv', 'guvi', 'guviaws', or 'supermag', or 'psp'
 
 # Arg 2 can be 'localhost', 'http', 'https', or 'custom'
 # Use 'custom' if need you need to mod this code to define a non-standard port
@@ -282,7 +282,10 @@ class MyHandler(BaseHTTPRequestHandler):
         #
         # HTML HEADERS
         #
-        if ( path=='hapi/capabilities' ):                
+        if ( path=='hapi/about' ):                
+           s.send_response(200)
+           s.send_header("Content-Type", "application/json")
+        elif ( path=='hapi/capabilities' ):                
            s.send_response(200)
            s.send_header("Content-Type", "application/json")
 
@@ -351,7 +354,10 @@ class MyHandler(BaseHTTPRequestHandler):
         #
         # HTML BODY
         #
-        if ( path=='hapi/capabilities' ):
+        if ( path=='hapi/about' ):
+            for l in open( CFG.HAPI_HOME + 'about.json' ):
+                s.wfile.write(bytes(l,"utf-8"))
+        elif ( path=='hapi/capabilities' ):
             for l in open( CFG.HAPI_HOME + 'capabilities.json' ):
                 s.wfile.write(bytes(l,"utf-8"))
         elif ( path=='hapi/catalog' ):
