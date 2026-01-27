@@ -4,6 +4,6 @@
     "id": "PSP",
     "title": "Parker Solar Probe Trajectory Data via HAPI",
     "contact": "eric.winter@jhuapl.edu",
-    "citation": "https://psp-gateway.jhuapl.edu/website/Ancillary/SclkFiles/",
+    "citation": "http://yoyodyne.jhuapl.edu:8080/swagger",
     "description": "This HAPI server provides trajectory data from SPICE kernels for the Parker Solar Probe mission."
 }

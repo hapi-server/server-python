@@ -11,12 +11,13 @@ Lisa Knowles
 
 
 # Standard modules
-
+import urllib.request
+from datetime import datetime
 
 # Third-party modules
 
-
 # Project modules
+import psp_query
 
 
 # #import netCDF4 as nc
@@ -38,528 +39,220 @@ Lisa Knowles
 
 # from supermag_api import *
 
-# ----------------------------------------------------------------------------
 
+# Module constants
 
-def hapi_about(hapi_request: str):
-    """Process a HAPI "about" request.
-
-    Process a HAPI "about" request.
-
-    Parameters
-    ----------
-    hapi_request : str
-        HAPI re uest string.
-
-    Returns
-    -------
-    hapi_result : str
-        Result of HAPI request.
-
-    Raises
-    ------
-    None
-    """
-    hapi_result = "ABOUT"
-    return hapi_result
-
-
-def hapi_capabilities(hapi_request: str):
-    """Process a HAPI "about" request.
-
-    Process a HAPI "about" request.
-
-    Parameters
-    ----------
-    hapi_request : str
-        HAPI request URL string.
-
-    Returns
-    -------
-    hapi_result : str
-        Result of HAPI request.
-
-    Raises
-    ------
-    None
-    """
-    hapi_result = ""
-    return hapi_result
-
-
-def hapi_catalog(hapi_request: str):
-    """Process a HAPI "catalog" request.
-
-    Process a HAPI "catalog" request.
-
-    Parameters
-    ----------
-    hapi_request : str
-        HAPI request URL string.
-
-    Returns
-    -------
-    hapi_result : str
-        Result of HAPI request.
-
-    Raises
-    ------
-    None
-    """
-    hapi_result = ""
-    return hapi_result
-
-
-def hapi_info(hapi_request: str):
-    """Process a HAPI "info" request.
-
-    Process a HAPI "info" request.
-
-    Parameters
-    ----------
-    hapi_request : str
-        HAPI request URL string.
-
-    Returns
-    -------
-    hapi_result : str
-        Result of HAPI request.
-
-    Raises
-    ------
-    None
-    """
-    hapi_result = ""
-    return hapi_result
-
-
-def hapi_data(hapi_request: str):
-    """Process a HAPI "data" request.
-
-    Process a HAPI "data" request.
-
-    Parameters
-    ----------
-    hapi_request : str
-        HAPI request URL string.
-
-    Returns
-    -------
-    hapi_result : str
-        Result of HAPI request.
-
-    Raises
-    ------
-    None
-    """
-    hapi_result = ""
-    return hapi_result
-
+# datetime-style format strings for HAPI and PSP dates.
+HAPI_DATETIME_FORMAT = '%Y-%m-%dT%H:%MZ'
+PSP_DATETIME_FORMAT =  '%Y-%jT%H:%M:%S.%f'
 
 # ----------------------------------------------------------------------------
 
-# # hapi supermag test routines (and general python testing)
 
+# def handle_hapi_request(
+#         id, timemin, timemax, parameters, catalog, floc, stream_flag, stream
+# ):
+#     """Process a HAPI request.
 
-# #https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=superhapi&start=2019-10-15T10:40&extent=000000003600&station=HRN&mlt&aacgm&geo&decl&sza       #https://supermag.jhuapl.edu/services/data-api.php?fmt=json&logon=superhapi&start=2019-10-15T10:40&extent=000000003600&station=NCK&mlt&aacgm&geo&decl&sza      
+#     Process a HAPI request.
 
-# def sm_filter_data(magdata, parameters, vectortype):
-#     # Handles wonky SuperMAG data_NNN API keys
-#     # because all queries return ext, iaga, and the NEZ set
-#     if 'Field_Vector' in parameters:
-#         if vectortype == 'NEZ':
-#             magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'].get('nez'), row['E'].get('nez'), row['Z'].get('nez')], axis=1)
-#         else:
-#             magdata['Field_Vector'] = magdata.apply(lambda row: [row['N'].get('geo'), row['E'].get('geo'), row['Z'].get('geo')], axis=1)
-#     #if 'N_geo' in parameters:
-#     #    magdata['N_geo'] = magdata['N'].apply(lambda x: x.get('geo'))
-#     #if 'E_geo' in parameters:
-#     #    magdata['E_geo'] = magdata['E'].apply(lambda x: x.get('geo'))
-#     #if 'Z_geo' in parameters:
-#     #    magdata['Z_geo'] = magdata['Z'].apply(lambda x: x.get('geo'))
+#     Parameters
+#     ----------
+#     id : str
+#         Identifier string for requested dataset.
+#     timemin : str
+#         Start datetime string for request, format 'YYYY-MM-DDThh:mmZ'.
+#     timemax : str
+#         End datetime string for request, format 'YYYY-MM-DDThh:mmZ'.
+#     parameters : list of str
+#         List of strings specifying requested parameters.
+#     catalog : dict
+#         Dataset information from catalog JSON file.
+#     floc : dict
+#         Site-specific information from *_config.py
+#     stream_flag : bool
+#         True if results should be streamed back to requestor.
+#     stream : MyHandler object
+#         Handler object for HAPI request.
 
-#     #if 'mlt' in parameters:
-#     #    magdata['mlt'] = magdata.apply(lambda row: [row['mlt'], row['mcolat']], axis=1)
-        
-#     allparams = ['ext','iaga','N','E','Z','mlt','mcolat']
-#     dropme = []
-#     for para in allparams:
-#         if para not in parameters:
-#             dropme.append(para)
-#     #print("Debug, magdata pre-delete is ",magdata)
-#     #print("Debug, desired parameters are ",parameters)
-#     #print("Debug, deleting: ",dropme)
-#     if dropme != None:
-#         magdata=magdata.drop(columns=dropme,errors='ignore')
-#     #print("Debug, magdata after delete is ",magdata)
+#     Returns
+#     -------
+#     hapi_status, hapi_result_str : int, str
+#         HAPI status code, and result of HAPI request.
 
-#     # reorder to match original request (handles any bad munging)
-#     parameters_munged = copy.deepcopy(parameters)
-#     if 'Time' in parameters_munged:
-#         parameters_munged[parameters_munged.index('Time')] = 'tval'
-#     magdata = magdata[parameters_munged]
-
-#     return(magdata)
-        
-
-# def sm_lookup(parameters):
-#     # converts HAPI 'parameters' into keywords expected by API call
-#     # for data that requires 2 API keywords, gives them here
-#     clean_out_later=[] # for storing 'excess' data items temp needed
-#     #parameters = [x.lower() for x in parameters]
-#     x_apikeys = {'SMLmlat':['sml','mlat'],
-#                  'SMLmlt':['sml','mlt'],
-#                  'SMLglon':['sml','glon'],
-#                  'SMLstid':['sml','stid'],
-#                  'SMLglat':['sml','glat'],
-#                  'SMLstid':['sml','stid'],
-#                  'SMUmlat':['smu','mlat'],
-#                  'SMUmlt':['smu','mlt'],
-#                  'SMUglon':['smu','glon'],
-#                  'SMUstid':['smu','stid'],
-#                  'SMUglat':['smu','glat'],
-#                  'SMUstid':['smu','stid'],
-
-#                  'SMLsmlat':['smls','mlats'],
-#                  'SMLsmlt':['smls','mlts'],
-#                  'SMLsglon':['smls','glons'],
-#                  'SMLsstid':['smls','stids'],
-#                  'SMLsglat':['smls','glats'],
-#                  'SMLsstid':['smls','stids'],
-#                  'SMUsmlat':['smus','mlats'],
-#                  'SMUsmlt':['smus','mlts'],
-#                  'SMUsglon':['smus','glons'],
-#                  'SMUsstid':['smus','stids'],
-#                  'SMUsglat':['smus','glats'],
-#                  'SMUsstid':['smus','stids'],
-
-#                  'SMLdmlat':['smld','mlatd'],
-#                  'SMLdmlt':['smld','mltd'],
-#                  'SMLdglon':['smld','glond'],
-#                  'SMLdstid':['smld','stidd'],
-#                  'SMLdglat':['smld','glatd'],
-#                  'SMLdstid':['smld','stidd'],
-#                  'SMUdmlat':['smud','mlatd'],
-#                  'SMUdmlt':['smud','mltd'],
-#                  'SMUdglon':['smud','glond'],
-#                  'SMUdstid':['smud','stidd'],
-#                  'SMUdglat':['smud','glatd'],
-#                  'SMUdstid':['smud','stidd'],
-
-#                  'SMLrmlat':['smlr','mlatd'],
-#                  'SMLrmlt':['smlr','mltd'],
-#                  'SMLrglon':['smlr','glonr'],
-#                  'SMLrstid':['smlr','stidr'],
-#                  'SMLrglat':['smlr','glatr'],
-#                  'SMLrstid':['smlr','stidr'],
-#                  'SMUrmlat':['smur','mlatr'],
-#                  'SMUrmlt':['smur','mltr'],
-#                  'SMUrglon':['smur','glonr'],
-#                  'SMUrstid':['smur','stidr'],
-#                  'SMUrglat':['smur','glatr'],
-#                  'SMUrstid':['smur','stidr']
-#                  }
-
-#     # note that we need to send msl, smu, sme in lowercase to supermag,
-#     # but the data they return is uppercase, so when we later filter
-#     # them out, we need the awkward .upper() casting below
-
-#     # Edge case, asking just for 'Time' or 'Time'+ other stuff, when
-#     # time is _always_ returned anyway
-#     if len(parameters) == 1 and parameters[0] == 'Time':
-#         parameters[0]='sme'  # replace Time with a junk data so data is fetched
-#         clean_out_later.append('SME') # and mark that junk data later
-
-#     # general clean-up
-#     try:
-#         parameters.remove('Time')
-#     except:
-#         pass
-        
-#     for para in parameters:
-#         if para in x_apikeys.keys():
-#             # replace it
-#             #print("debug, replacing: ",para)
-#             parameters.remove(para)
-#             for element in x_apikeys[para]:
-#                 # remember to check if spurious exists, before adding in
-#                 #print("debug, checking on ",element)
-#                 # See above note on why .upper() is here
-#                 if element.upper() not in parameters:
-#                     clean_out_later.append(element.upper())
-#                 parameters.append(element)
-
-#                 #print("debug: para: ",parameters)
-
-#     # and again, have to cast to lower because api expects that
-#     parameters = [x.lower() for x in parameters]
-
-#     return(parameters, clean_out_later)
-                
-
-# def sm_fill_empty(magdata,parameters,paramspec):
-#     # validate, fill if necessary
-#     # Although designed for SuperMAG, works well for any DataFrame data
-#     #
-#     # Note only can fill up to 1D lists (not built for 2D+ empty elements yet)
-#     # 'parameters' is the subset of data items we are using
-#     # 'paramspec' is the array potentially containing size and fill info
-#     # goes through each parameter, calls up paramspec['size'],
-#     # if data does not match, then puts in paramspec['fill']
-#     # Also, we search case-insensitive for param matches, to be more robust.
-    
-#     nele = magdata.shape[0]
-#     for para in parameters:
-#         #print("debug, para: ",para," and columns: ",magdata.columns, "and paramspec:",paramspec)
-#         if para.lower() not in magdata.columns.str.lower():
-#             try:
-#                 details=[item for item in paramspec if item['name'].lower() == para.lower()][0]
-#                 #print("debug, param specs are: ",details)
-#             except:
-#                 pass # no match, usually due to case-sensitivity
-#             try:
-#                 mysize = details['size'][0]
-#             except:
-#                 #print("debug, could not find size, using default")
-#                 mysize=1
-#             try:
-#                 myfill = details['fill']
-#             except:
-#                 #print("debug, could not find fill, using default")
-#                 myfill=0
-#             # cast to type since HAPI catalog uses strings for fills
-#             try:
-#                 mytype = details['type']
-#                 if mytype == 'double': myfill=float(myfill)
-#                 if mytype == 'integer': myfill=int(myfill)
-#             except:
-#                 pass
-#             #print("Debug-- missing data for ",para, "Got size ",mysize,", fill ",myfill)
-#             if mysize > 1:
-#                 element = [myfill] * mysize
-#             else:
-#                 element = myfill
-#             dummy = [element] * nele
-#             magdata[para] = dummy
-#     #n1=len(parameters)
-#     #n2 = magdata.shape[1] - 1 # remove Time and count
-#     #for i in range(n2,n1): # only fills if n1>n2
-#     #    print("debug: paramspec:",paramspec)
-#     #    dummy=[0] * nele
-#     #    magdata[parameters[i-n1]] = dummy
-#     #    print("Debug: adding col ",i,parameters[i-n1])
-#     #    #print("Debug: sizes compare:",n1,' vs ',n2)
-    
-
-# def test_polar():
-#     (yyyy,mo,dd,hh,mm,ss)=(2020,11,2,13,24,00)
-#     (status,mydata)=serve_polar_df(yyyy,mo,dd,hh,mm)
-#     if status > 0: print("Success",mydata)
-#     else: print("Failed",mydata)
-#     return(status,mydata)
-
-# def samplerun_testtiming():
-
-#     base=time.time()
-
-#     filename='hapi_sample.ncdf'
-#     mydata = xr.open_dataset(filename) # get in as an xarray
-#     print(time.time()-base,'sec to open')
-#     base=time.time()
-
-#     minute, hour = 10, 20
-#     sub_d=mydata.sel(block=(hour*60)+minute)
-#     #my_df = data.to_dataframe().reset_index()  # if you need all the data
-#     ##minute, hour = 1, 1
-#     # data files are for 1 day, so this lets you grab any given minute
-#     ##sub_d=mydata.where( (mydata.time_mt == minute) & (mydata.time_hr == hour),drop=True)
-#     print(time.time()-base,'sec to subselect 1st frame')
-#     base=time.time()
-
-#     my_df=sub_d.to_dataframe().reset_index()
-#     print(time.time()-base,'sec to convert to dataframe')
-#     base=time.time()
-
-#     my_df.vector=maketimestamp_df(my_df)
-#     my_df.drop(columns=['id']) # not needed, might confuse users
-#     print(time.time()-base,'sec to make timestamps and drop 2 columns')
-#     base=time.time()
-
-#     stringize_df(my_df) # prep it for csv-ing
-#     print(time.time()-base,'sec to stringize for csv-ing')
-#     base=time.time()
-#     my_df.apply(csvme2screen,axis=1) # apply function to each row
-#     print(time.time()-base,'sec to convert to csv')
-#     base=time.time()
-
-#     #my_df = data.to_dataframe().reset_index()  # if you need all the data
-#     minute, hour = 2, 4
-#     sub_d2=mydata.where( (mydata.time_mt == minute) & (mydata.time_hr == hour),drop=True)
-#     print(time.time()-base,'sec to subselect 2nd frame')
-#     base=time.time()
-#     my_df=sub_d2.to_dataframe().reset_index()
-#     print(time.time()-base,'sec to convert to dataframe')
-#     base=time.time()
-
-
-
-# """
-# from Robin 4/1 tagup:
-# SuperMAG polar plots aka level 3 derived data, take their netCDF files
-# and set up as a HAPI server, data is every 2 minutes and there are two
-# kinds of grids, the mlt map grid aka 1 hour of mlt is 5 degrees of
-# measured latitude so each point is a vector with north/vertical/mumble. 
-# note level 1 data is gappy so not good to use, stations drop in and out
-# etc, so it requires finesse to see if data is available.  use weatherwax
-# machine as it has the disks mounted on it, or go to SOF to get them to
-# mount.  Port 9000 fine for local testing but we will have to work with
-# network once we go for real.    current supermag is just curl request
-# using wget.  they also have an idl client.
-# """
-
-# #  Fast Access code:
-# #filename='hapi_sample.ncdf'
-# #mydata = xr.open_dataset(filename)
-# #subme=mydata.sel(block=100)
-# # next line 24 sec if 1st operation; <1 sec otherwise
-# #sub_d=mydata.where( (mydata.time_mt == 1) & (mydata.time_hr == 1),drop=True) 
-# # next line 90 sec, if 1st operation; <1 sec otherwise
-# #full_df=mydata.to_dataframe() 
-
-# def sm_to_hapitimes(mytime):
-#     mytime=time.strftime('%Y-%m-%dT%H:%MZ',time.gmtime(mytime))
-#     return(mytime)
-
-# def unwind_csv_array(magdata):
-#     """ Takes json-like arrays of e.g.
-#         60.0,DOB,"[ -19.104668,-20.155156]"
-#     or
-#         60.0,DOB,[ -19.104668,-20.155156]
-#     and converts to unwound HAPI version of e.g.
-#        60.0,DOB,-19.104668,-20.155156
+#     Raises
+#     ------
+#     None
 #     """
+#     # Initialize HAPI status code and return string.
+#     hapi_status = -1
+#     hapi_result_str = ""
 
-#     magdata = re.sub(r'\]\"','',magdata)
-#     magdata = re.sub(r'\"\[','',magdata)
-#     magdata = re.sub(r', ',',',magdata) # also remove extra spaces
-#     return(magdata)
+#     # Process the query based on the HAPI endpoint requested.
 
-# def csv_removekeys(magdata):
-#     # use:    magdata = api_removekeys(magdata)
-#     # changes {k:v,k:v} to just [v,v]
-#     magdata = re.sub(r'\'\w+\':','',magdata)
-#     magdata = re.sub(r'\{','[',magdata)
-#     magdata = re.sub(r'\}',']',magdata)
-#     magdata = re.sub(r'  ',' ',magdata)
-#     magdata = re.sub(r', ',',',magdata)
-#     # also remove extraneous end commas from some parsings
-#     magdata = re.sub(r',\n','\n',magdata)
-
-#     return(magdata)
-
-# # TIMESTAMPING WORKS!
-# def maketimestamp_str(yr,mo,dy,hr,mt,sc):
-#     mytime = "%4.4d%2.2d%2.2d%2.2d%2.2d%2d" % (yr, mo, dy, hr, mt, sc)
-#     return(mytime)
-
-# def maketimestamp_df(data_df):
-#     timestamps = data_df.time_yr.apply(lambda x: "%4.4d" % x) + data_df.time_mo.apply(lambda x: "%2.2d" % x) + data_df.time_dy.apply(lambda x: "%2.2d" % x) + data_df.time_hr.apply(lambda x: "%2.2d" % x) + data_df.time_mt.apply(lambda x: "%2.2d" % x) + data_df.time_sc.apply(lambda x: "%2.2d" % x)
-#     return(timestamps)
+#     # Return the HAPI status code and the query result string.
+#     return hapi_status, hapi_result_str
 
 
-# def csv_me_polar(row,printme=1):
-#     me = '\"' + row['vector'] + '\",\"' + row['mlat'] + '\",\"' + row['mlon'] + '\",\"' +  row['mcolat'] + '\",\"' +  row['mlt'] + '\",\"' + row['dbn_nez'] + '\",\"' + row['dbe_nez'] + '\",\"' + row['dbz_nez'] + '\",\"' + row['dbn_geo'] + '\",\"' + row['dbe_geo'] + '\",\"' + row['dbz_geo'] + '\"'
-#     if printme == 0: print(me)
-#     return(me)
+# def handle_hapi_about_request(hapi_request_url: str):
+#     """Process a HAPI "about" request.
 
-# def stringize_df(data_df):
-#     # since data_df is a dataframe, this will permanently change it
-#     data_df.mlat = data_df.mlat.apply(str)
-#     data_df.mlon = data_df.mlon.apply(str)
-#     data_df.mcolat = data_df.mcolat.apply(str)
-#     data_df.mlt = data_df.mlt.apply(str)
-#     data_df.dbn_nez = data_df.dbn_nez.apply(str)
-#     data_df.dbe_nez = data_df.dbe_nez.apply(str)
-#     data_df.dbz_nez = data_df.dbz_nez.apply(str)
-#     data_df.dbn_geo = data_df.dbn_geo.apply(str)
-#     data_df.dbe_geo = data_df.dbe_geo.apply(str)
-#     data_df.dbz_geo = data_df.dbz_geo.apply(str)
+#     Process a HAPI "about" request.
 
+#     Parameters
+#     ----------
+#     hapi_request_url : str
+#         HAPI request string.
 
-# def make_polarname(yyyy,mo,dd,orient='north'):
-#     # currently all files of the form 20201231.north.schavec-mlt-supermag.60s.rev-0005.ncdf.gz
-#     rev='rev-0005'
-#     mytime = "%4.4d%2.2d%2.2d" % (yyyy, mo, dd)
-#     fname = mytime + '.' + orient.lower() + '.schavec-mlt-supermag.60s.' + rev + '.ncdf' + '.gz'
-#     return(fname)
+#     Returns
+#     -------
+#     hapi_result_str : str
+#         Result of HAPI request.
+
+#     Raises
+#     ------
+#     None
+#     """
+#     hapi_result_str = "ABOUT"
+#     return hapi_result_str
 
 
-# def serve_polar_df(yyyy,mo,dd,hh,mm,orient='north'):
-#     # for the given minute, returns the 600 vector field dataframe
-#     status = 0 # track whether this works in the end or not
+# def handle_hapi_capabilities_request(hapi_request_url: str):
+#     """Process a HAPI "about" request.
 
-#     filename=make_polarname(yyyy,mo,dd,orient)
+#     Process a HAPI "about" request.
 
-#     filename = '../data/'+ filename
-#     if os.path.exists(filename):
-#         try:
-#             mydata = xr.open_dataset(filename) # get in as an xarray
-#             sub_d=mydata.sel(block=(hh*60)+mm)
-#             my_df=sub_d.to_dataframe().reset_index()
-#             my_df.vector=maketimestamp_df(my_df)
-#             my_df.drop(columns=['id']) # not needed, might confuse users
-#             stringize_df(my_df) # prep it for csv-ing
-#             mydata=my_df.apply(csv_me_polar,axis=1) # apply function to each row
-#             status=1 # it worked
-#         except:
-#             mydata=pd.DataFrame({0:["error","unable to process data"]})
-#     else:
-#         mydata=pd.DataFrame({0:["error",filename+" not found"]})
-    
-#     return(status,mydata)
+#     Parameters
+#     ----------
+#     hapi_request_url : str
+#         HAPI request URL string.
 
-# """
-# # mini test
+#     Returns
+#     -------
+#     hapi_result_str : str
+#         Result of HAPI request.
 
-# from superhapi import *
-# timemin= '2020-01-19T00:00Z'
-# timemax= '2020-01-20T00:00Z'
-# parameters='tbd'
-# sout='filehandle to be defined later'
-# myjson=do_data_supermag('inventory',timemin,timemax,parameters,sout,null)
+#     Raises
+#     ------
+#     None
+#     """
+#     hapi_result_str = ""
+#     return hapi_result_str
 
 
-# """
+# def handle_hapi_catalog_request(hapi_request_url: str):
+#     """Process a HAPI "catalog" request.
 
-# """
-# #import pickle
-# #pickle.dump(dataframe,open("temp.sav","wb"))
-# #testing
-# import pickle
-# dataframe=pickle.load(open('temp.sav','rb'))
-# """   
+#     Process a HAPI "catalog" request.
 
-# def tf_to_hapicode(status,datasize):
-#     # converts 0=bad, 1=good to HAPI code
-#     if status == 0:
-#         status = 1500 # 1500 is HAPI "Internal server error"
-#     elif datasize > 0:
-#         status=1200 # 1200 is HAPI "OK"
-#     else:
-#         status=1201 # 1200 is HAPI "OK - no data for time range"
-#     return(status)
+#     Parameters
+#     ----------
+#     hapi_request_url : str
+#         HAPI request URL string.
+
+#     Returns
+#     -------
+#     hapi_result_str : str
+#         Result of HAPI request.
+
+#     Raises
+#     ------
+#     None
+#     """
+#     hapi_result_str = ""
+#     return hapi_result_str
 
 
-# # appends the given data to the file as csv
-# def sm_data_to_csv(filename,mydata):
-#         comma=""
-#         dsize=len(mydata)
-#         for i, rec in enumerate(mydata):
-#             if i == dsize-1: comma=""  # turn off comma for last entry
-#             s.wfile.write(bytes(comma+rec+"\n","utf-8"))
-#             comma=","   # ensures all entries past first get a comma
-# # e.g. key='N'
+# def handle_hapi_info_request(hapi_request_url: str):
+#     """Process a HAPI "info" request.
 
+#     Process a HAPI "info" request.
+
+#     Parameters
+#     ----------
+#     hapi_request_url : str
+#         HAPI request URL string.
+
+#     Returns
+#     -------
+#     hapi_result_str : str
+#         Result of HAPI request.
+
+#     Raises
+#     ------
+#     None
+#     """
+#     hapi_result_str = ""
+#     return hapi_result_str
+
+
+def handle_hapi_data_request(
+        id, timemin, timemax, parameters, catalog, floc, stream_flag, stream
+):
+    """Process a HAPI data request.
+
+    Process a HAPI data request.
+
+    Parameters
+    ----------
+    id : str
+        Identifier string for requested dataset.
+    timemin : str
+        Start datetime string for request, format 'YYYY-MM-DDThh:mmZ'.
+    timemax : str
+        End datetime string for request, format 'YYYY-MM-DDThh:mmZ'.
+    parameters : list of str
+        List of strings specifying requested parameters.
+    catalog : dict
+        Dataset information from catalog JSON file.
+    floc : dict
+        Site-specific information from *_config.py
+    stream_flag : bool
+        True if results should be streamed back to requestor.
+    stream : MyHandler object
+        Handler object for HAPI request.
+
+    Returns
+    -------
+    hapi_status, hapi_result_str : int, str
+        HAPI status code, and result of HAPI request.
+
+    Raises
+    ------
+    None
+    """
+    # Initialize HAPI status code and return string.
+    hapi_status = 0
+    hapi_result_str = ""
+
+    # Create datetime objects for the start and end times, then convert to
+    # PSP format.
+    hapi_start_datetime = datetime.strptime(timemin, HAPI_DATETIME_FORMAT)
+    hapi_end_datetime = datetime.strptime(timemax, HAPI_DATETIME_FORMAT)
+    psp_start_datetime_s = hapi_start_datetime.strftime(PSP_DATETIME_FORMAT)
+    psp_end_datetime_s = hapi_end_datetime.strftime(PSP_DATETIME_FORMAT)
+
+    # Process the query.
+    # collection = 'psp'
+    # version = 'latest'
+    # start = '2024-001T12:15:00'
+    # stop = '2024-001T13:15:00'
+    # stepsize = 3600.0
+    # frame = 'J2000'
+    # center = 'SUN'
+    body = 'SPP'
+    # correction = 'LT-S'
+    ephemeris_json = psp_query.query_psp_ephemeris(
+        start=psp_start_datetime_s, stop=psp_end_datetime_s, body=body
+    )
+
+    # Convert the native PSP REST response to CSV.
+
+    # Return the HAPI status code and the query result string.
+    return hapi_status, ephemeris_json
+
+
+# ----------------------------------------------------------------------------
 
 # def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
 #                      stream_flag, stream):
@@ -779,8 +472,9 @@ def hapi_data(hapi_request: str):
 
 
 if __name__ == '__main__':
-    assert hapi_about("http://yoyodyne.jhuapl.edu:8080/hapi/about") != ""
-    # assert hapi_capabilities() is not ""
-    # assert hapi_catalog() is not ""
-    # assert hapi_info() is not ""
-    # assert hapi_data() is not ""
+    pass
+    # assert handle_hapi_request("http://yoyodyne.jhuapl.edu:8080/hapi/about") != ""
+    # assert handle_hapi_capabilities_request() is not ""
+    # assert handle_hapi_catalog_request() is not ""
+    # assert handle_hapi_info_request() is not ""
+    # assert handle_hapi_data_request() is not ""
