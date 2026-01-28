@@ -309,12 +309,20 @@ def handle_hapi_data_request(
             continue
         bodies.append(HAPI_TO_PSP_COLUMN_NAME_MAP[p]["body"])
     bodies = sorted(set(bodies))
-    print(f"{bodies=}")
+
+    # Determine the output format.
+    output_format = "csv"
+    if "format=csv" in stream.path:
+        output_format = "csv"
+    elif "format=json" in stream.path:
+        output_format = "json"
+    elif "format=binary" in stream.path:
+        output_format = "binary"
 
     # Process the query.
     ephemeris_s = psp_query.query_psp_ephemeris(
         start=psp_start_datetime_s, stop=psp_end_datetime_s, body=bodies,
-        outputformat="json"
+        outputformat=output_format
     )
 
     # Convert the JSON string to JSON.
