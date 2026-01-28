@@ -11,7 +11,7 @@ Lisa Knowles
 
 
 # Standard modules
-import urllib.request
+import json
 from datetime import datetime
 
 # Third-party modules
@@ -43,8 +43,78 @@ import psp_query
 # Module constants
 
 # datetime-style format strings for HAPI and PSP dates.
-HAPI_DATETIME_FORMAT = '%Y-%m-%dT%H:%MZ'
-PSP_DATETIME_FORMAT =  '%Y-%jT%H:%M:%S.%f'
+HAPI_DATETIME_FORMAT = "%Y-%m-%dT%H:%MZ"
+PSP_DATETIME_FORMAT  = "%Y-%jT%H:%M:%S.%f"
+
+# dict to map HAPI parameter names to PSP REST server parameter names.
+HAPI_TO_PSP_COLUMN_NAME_MAP = {
+    "PSP_X":  {"body": "SPP", "column":  "X"},
+    "PSP_Y":  {"body": "SPP", "column":  "Y"},
+    "PSP_Z":  {"body": "SPP", "column":  "Z"},
+    "PSP_DX": {"body": "SPP", "column": "DX"},
+    "PSP_DY": {"body": "SPP", "column": "DY"},
+    "PSP_DZ": {"body": "SPP", "column": "DZ"},
+    "SUN_X":  {"body": "SUN", "column":  "X"},
+    "SUN_Y":  {"body": "SUN", "column":  "Y"},
+    "SUN_Z":  {"body": "SUN", "column":  "Z"},
+    "SUN_DX": {"body": "SUN", "column": "DX"},
+    "SUN_DY": {"body": "SUN", "column": "DY"},
+    "SUN_DZ": {"body": "SUN", "column": "DZ"},
+    "MERCURY_X":  {"body": "MERCURY", "column":  "X"},
+    "MERCURY_Y":  {"body": "MERCURY", "column":  "Y"},
+    "MERCURY_Z":  {"body": "MERCURY", "column":  "Z"},
+    "MERCURY_DX": {"body": "MERCURY", "column": "DX"},
+    "MERCURY_DY": {"body": "MERCURY", "column": "DY"},
+    "MERCURY_DZ": {"body": "MERCURY", "column": "DZ"},
+    "VENUS_X":  {"body": "VENUS", "column":  "X"},
+    "VENUS_Y":  {"body": "VENUS", "column":  "Y"},
+    "VENUS_Z":  {"body": "VENUS", "column":  "Z"},
+    "VENUS_DX": {"body": "VENUS", "column": "DX"},
+    "VENUS_DY": {"body": "VENUS", "column": "DY"},
+    "VENUS_DZ": {"body": "VENUS", "column": "DZ"},
+    "EARTH_X":  {"body": "EARTH", "column":  "X"},
+    "EARTH_Y":  {"body": "EARTH", "column":  "Y"},
+    "EARTH_Z":  {"body": "EARTH", "column":  "Z"},
+    "EARTH_DX": {"body": "EARTH", "column": "DX"},
+    "EARTH_DY": {"body": "EARTH", "column": "DY"},
+    "EARTH_DZ": {"body": "EARTH", "column": "DZ"},
+    "MARS_X":  {"body": "MARS_BARYCENTER", "column":  "X"},
+    "MARS_Y":  {"body": "MARS_BARYCENTER", "column":  "Y"},
+    "MARS_Z":  {"body": "MARS_BARYCENTER", "column":  "Z"},
+    "MARS_DX": {"body": "MARS_BARYCENTER", "column": "DX"},
+    "MARS_DY": {"body": "MARS_BARYCENTER", "column": "DY"},
+    "MARS_DZ": {"body": "MARS_BARYCENTER", "column": "DZ"},
+    "JUPITER_X":  {"body": "JUPITER_BARYCENTER", "column":  "X"},
+    "JUPITER_Y":  {"body": "JUPITER_BARYCENTER", "column":  "Y"},
+    "JUPITER_Z":  {"body": "JUPITER_BARYCENTER", "column":  "Z"},
+    "JUPITER_DX": {"body": "JUPITER_BARYCENTER", "column": "DX"},
+    "JUPITER_DY": {"body": "JUPITER_BARYCENTER", "column": "DY"},
+    "JUPITER_DZ": {"body": "JUPITER_BARYCENTER", "column": "DZ"},
+    "SATURN_X":  {"body": "SATURN_BARYCENTER", "column":  "X"},
+    "SATURN_Y":  {"body": "SATURN_BARYCENTER", "column":  "Y"},
+    "SATURN_Z":  {"body": "SATURN_BARYCENTER", "column":  "Z"},
+    "SATURN_DX": {"body": "SATURN_BARYCENTER", "column": "DX"},
+    "SATURN_DY": {"body": "SATURN_BARYCENTER", "column": "DY"},
+    "SATURN_DZ": {"body": "SATURN_BARYCENTER", "column": "DZ"},
+    "URANUS_X":  {"body": "URANUS_BARYCENTER", "column":  "X"},
+    "URANUS_Y":  {"body": "URANUS_BARYCENTER", "column":  "Y"},
+    "URANUS_Z":  {"body": "URANUS_BARYCENTER", "column":  "Z"},
+    "URANUS_DX": {"body": "URANUS_BARYCENTER", "column": "DX"},
+    "URANUS_DY": {"body": "URANUS_BARYCENTER", "column": "DY"},
+    "URANUS_DZ": {"body": "URANUS_BARYCENTER", "column": "DZ"},
+    "NEPTUNE_X":  {"body": "NEPTUNE_BARYCENTER", "column":  "X"},
+    "NEPTUNE_Y":  {"body": "NEPTUNE_BARYCENTER", "column":  "Y"},
+    "NEPTUNE_Z":  {"body": "NEPTUNE_BARYCENTER", "column":  "Z"},
+    "NEPTUNE_DX": {"body": "NEPTUNE_BARYCENTER", "column": "DX"},
+    "NEPTUNE_DY": {"body": "NEPTUNE_BARYCENTER", "column": "DY"},
+    "NEPTUNE_DZ": {"body": "NEPTUNE_BARYCENTER", "column": "DZ"},
+    "PLUTO_X":  {"body": "PLUTO_BARYCENTER", "column":  "X"},
+    "PLUTO_Y":  {"body": "PLUTO_BARYCENTER", "column":  "Y"},
+    "PLUTO_Z":  {"body": "PLUTO_BARYCENTER", "column":  "Z"},
+    "PLUTO_DX": {"body": "PLUTO_BARYCENTER", "column": "DX"},
+    "PLUTO_DY": {"body": "PLUTO_BARYCENTER", "column": "DY"},
+    "PLUTO_DZ": {"body": "PLUTO_BARYCENTER", "column": "DZ"},
+}
 
 # ----------------------------------------------------------------------------
 
@@ -232,24 +302,26 @@ def handle_hapi_data_request(
     psp_start_datetime_s = hapi_start_datetime.strftime(PSP_DATETIME_FORMAT)
     psp_end_datetime_s = hapi_end_datetime.strftime(PSP_DATETIME_FORMAT)
 
+    # Map HAPI column names to PSP body and column name.
+    bodies = []
+    for p in parameters:
+        if p == 'Time':
+            continue
+        bodies.append(HAPI_TO_PSP_COLUMN_NAME_MAP[p]["body"])
+    bodies = sorted(set(bodies))
+    print(f"{bodies=}")
+
     # Process the query.
-    # collection = 'psp'
-    # version = 'latest'
-    # start = '2024-001T12:15:00'
-    # stop = '2024-001T13:15:00'
-    # stepsize = 3600.0
-    # frame = 'J2000'
-    # center = 'SUN'
-    body = 'SPP'
-    # correction = 'LT-S'
-    ephemeris_json = psp_query.query_psp_ephemeris(
-        start=psp_start_datetime_s, stop=psp_end_datetime_s, body=body
+    ephemeris_s = psp_query.query_psp_ephemeris(
+        start=psp_start_datetime_s, stop=psp_end_datetime_s, body=bodies,
+        outputformat="json"
     )
 
-    # Convert the native PSP REST response to CSV.
+    # Convert the JSON string to JSON.
+    # ephemeris_json = json.loads(ephemeris_json_s)
 
     # Return the HAPI status code and the query result string.
-    return hapi_status, ephemeris_json
+    return hapi_status, ephemeris_s
 
 
 # ----------------------------------------------------------------------------

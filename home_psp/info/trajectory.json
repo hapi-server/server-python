@@ -13,47 +13,407 @@
             "fill": null
         },
         {
-            "name": "X",
+            "name": "PSP_X",
             "type": "double",
-            "units": "XXX",
-            "fill": "99999.0"
+            "units": "km",
+            "fill": "-999999999.0"
         },
         {
-            "name": "Y",
+            "name": "PSP_Y",
             "type": "double",
-            "units": "XXX",
-            "fill": "99999.0"
+            "units": "km",
+            "fill": "-999999999.0"
         },
         {
-            "name": "Z",
+            "name": "PSP_Z",
             "type": "double",
-            "units": "XXX",
-            "fill": "99999.0"
+            "units": "km",
+            "fill": "-999999999.0"
         },
         {
-            "name": "DX",
+            "name": "PSP_DX",
             "type": "double",
-            "units": "XXX",
-            "fill": "99999.0"
+            "units": "km",
+            "fill": "-999999999.0"
         },
         {
-            "name": "DY",
+            "name": "PSP_DY",
             "type": "double",
-            "units": "XXX",
-            "fill": "99999.0"
+            "units": "km",
+            "fill": "-999999999.0"
         },
         {
-            "name": "DZ",
+            "name": "PSP_DZ",
             "type": "double",
-            "units": "XXX",
-            "fill": "99999.0"
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SUN_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SUN_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SUN_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SUN_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SUN_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SUN_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MERCURY_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MERCURY_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MERCURY_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MERCURY_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MERCURY_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MERCURY_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "VENUS_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "VENUS_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "VENUS_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "VENUS_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "VENUS_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "VENUS_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "EARTH_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "EARTH_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "EARTH_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "EARTH_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "EARTH_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "EARTH_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MARS_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MARS_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MARS_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MARS_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MARS_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "MARS_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "JUPITER_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "JUPITER_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "JUPITER_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "JUPITER_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "JUPITER_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "JUPITER_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SATURN_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SATURN_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SATURN_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SATURN_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SATURN_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "SATURN_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "URANUS_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "URANUS_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "URANUS_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "URANUS_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "URANUS_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "URANUS_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "NEPTUNE_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "NEPTUNE_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "NEPTUNE_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "NEPTUNE_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "NEPTUNE_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "NEPTUNE_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "PLUTO_X",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "PLUTO_Y",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "PLUTO_Z",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "PLUTO_DX",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "PLUTO_DY",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
+        },
+        {
+            "name": "PLUTO_DZ",
+            "type": "double",
+            "units": "km",
+            "fill": "-999999999.0"
         }
     ],
     "startDate": "2018-08-12T00:00Z",
-    "stopDate": "lastday-P1D",
-    "sampleStartDate": "2024-01-18T00:00Z",
-    "sampleStopDate": "2024-01-19T00:00Z",
-    "cadence": "PT1H",
+    "stopDate": "2026-01-01T00:00Z",
+    "sampleStartDate": "2024-01-01T00:00Z",
+    "sampleStopDate": "2024-01-01T01:00Z",
+    "cadence": "00-00-00T00:10:00Z",
     "citation": "XXX",
     "description": "PSP trajectory"
 }

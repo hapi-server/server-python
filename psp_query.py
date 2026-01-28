@@ -5,23 +5,24 @@
 import requests
 
 def query_psp_ephemeris(
-    url="http://yoyodyne.jhuapl.edu:8080/v1/psp/latest/ephemerides/json",
+    url="http://yoyodyne.jhuapl.edu:8080/v1/psp/latest/ephemerides",
     collection="psp",
     version="latest",
     start=None,
     stop=None,
-    stepsize=600.0,
+    stepsize=3600.0,
     frame="ECLIPJ2000",
     center="SOLAR_SYSTEM_BARYCENTER",
     body=None,
     correction="NONE",
+    outputformat="csv"
 ):
     """
     Takes user-defined query parameters for PSP ephemeris time series data, and returns the data in json format
 
     Parameters
     ----------
-    url (str): Base URL for the PSP ephemeris API endpoint. Defaults to "http://yoyodyne.jhuapl.edu:8080/v1/psp/latest/ephemerides/json"
+    url (str): Base URL for the PSP ephemeris API endpoint. Defaults to "http://yoyodyne.jhuapl.edu:8080/v1/psp/latest/ephemerides"
     collection (str): Geometry collection from which to compute. Default is 'psp.'
     version (str): Version of interest within the collection. Default is 'latest.'
     start (str): UTC start time in <YYYY>-<DOY>T<HH>:<MM>:<SS.SSSSSS> format. 
@@ -29,15 +30,16 @@ def query_psp_ephemeris(
     stop (str): UTC stop time in <YYYY>-<DOY>T<HH>:<MM>:<SS.SSSSSS> format.
                 For example, '2024-001T12:15:00.123456.' Must be provided. Defaults to None.
     stepsize (float): Step size between queried records in TAI seconds. Defaults to 3600.0 seconds.
-    frame (str): Name of the supported frame in which to compute ephemerides. Defaults to 'ECLIP2000.'
+    frame (str): Name of the supported frame in which to compute ephemerides. Defaults to 'ECLIPJ2000.'
     center (str): Name of central body relative to which ephemeris state vectors are computed.
                   Defaults to 'SOLAR_SYSTEM_BARYCENTER.'
     body (str or None): Name of body for which to compute ephemerides. Must be provided. Defaults to None.
     correction (str): Aberration correction to apply. Defaults to the string value 'NONE.'
+    outputformat (str): Format of the output data. Options are 'json' or 'csv.' Defaults to 'csv.'
 
     Returns
     -------
-    emphemeris_json (dict): JSON-serializable result
+    emphemeris_output (str): JSON-serializable result or CSV string depending on what the user requested.
     """
 
     if start is None or stop is None:
@@ -46,9 +48,11 @@ def query_psp_ephemeris(
     if body is None:
         raise ValueError("body must be provided")
 
+    full_url = url + "/" + outputformat
+
     payload = {
-        # "collection": collection,
-        # "version": version,
+        "collection": collection,
+        "version": version,
         "start": start,
         "stop": stop,
         "stepsize": stepsize,
@@ -58,11 +62,9 @@ def query_psp_ephemeris(
         "correction": correction
     }
     
-    r = requests.get(url, params=payload, timeout=30)
+    r = requests.get(full_url, params=payload, timeout=30)
     r.raise_for_status()
-    print(f"{r.url=}")
-    print(f"{r.json()=}")
-    # ephemeris_json = r.json()
-    ephemeris_json_str = r.text
 
-    return ephemeris_json_str
+    ephemeris_output = r.text
+
+    return ephemeris_output
