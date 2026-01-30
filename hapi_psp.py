@@ -11,6 +11,7 @@ Lisa Knowles
 
 
 # Standard modules
+import copy
 import json
 from datetime import datetime
 
@@ -28,72 +29,72 @@ PSP_DATETIME_FORMAT  = "%Y-%jT%H:%M:%S.%f"
 
 # dict to map HAPI parameter names to PSP REST server parameter names.
 HAPI_TO_PSP_COLUMN_NAME_MAP = {
-    "SPP.x":  {"body": "SPP"},
-    "SPP.y":  {"body": "SPP"},
-    "SPP.z":  {"body": "SPP"},
-    "SPP.dx": {"body": "SPP"},
-    "SPP.dy": {"body": "SPP"},
-    "SPP.dz": {"body": "SPP"},
-    "SUN.x":  {"body": "SUN"},
-    "SUN.y":  {"body": "SUN"},
-    "SUN.z":  {"body": "SUN"},
-    "SUN.dx": {"body": "SUN"},
-    "SUN.dy": {"body": "SUN"},
-    "SUN.dz": {"body": "SUN"},
-    "MERCURY.x":  {"body": "MERCURY"},
-    "MERCURY.y":  {"body": "MERCURY"},
-    "MERCURY.z":  {"body": "MERCURY"},
-    "MERCURY.dx": {"body": "MERCURY"},
-    "MERCURY.dy": {"body": "MERCURY"},
-    "MERCURY.dz": {"body": "MERCURY"},
-    "VENUS.x":  {"body": "VENUS"},
-    "VENUS.y":  {"body": "VENUS"},
-    "VENUS.z":  {"body": "VENUS"},
-    "VENUS.dx": {"body": "VENUS"},
-    "VENUS.dy": {"body": "VENUS"},
-    "VENUS.dz": {"body": "VENUS"},
-    "EARTH.x":  {"body": "EARTH"},
-    "EARTH.y":  {"body": "EARTH"},
-    "EARTH.z":  {"body": "EARTH"},
-    "EARTH.dx": {"body": "EARTH"},
-    "EARTH.dy": {"body": "EARTH"},
-    "EARTH.dz": {"body": "EARTH"},
-    "MARS_BARYCENTER.x":  {"body": "MARS_BARYCENTER"},
-    "MARS_BARYCENTER.y":  {"body": "MARS_BARYCENTER"},
-    "MARS_BARYCENTER.z":  {"body": "MARS_BARYCENTER"},
-    "MARS_BARYCENTER.dx": {"body": "MARS_BARYCENTER"},
-    "MARS_BARYCENTER.dy": {"body": "MARS_BARYCENTER"},
-    "MARS_BARYCENTER.dz": {"body": "MARS_BARYCENTER"},
-    "JUPITER_BARYCENTER.x":  {"body": "JUPITER_BARYCENTER"},
-    "JUPITER_BARYCENTER.y":  {"body": "JUPITER_BARYCENTER"},
-    "JUPITER_BARYCENTER.z":  {"body": "JUPITER_BARYCENTER"},
-    "JUPITER_BARYCENTER.dx": {"body": "JUPITER_BARYCENTER"},
-    "JUPITER_BARYCENTER.dy": {"body": "JUPITER_BARYCENTER"},
-    "JUPITER_BARYCENTER.dz": {"body": "JUPITER_BARYCENTER"},
-    "SATURN_BARYCENTER.x":  {"body": "SATURN_BARYCENTER"},
-    "SATURN_BARYCENTER.y":  {"body": "SATURN_BARYCENTER"},
-    "SATURN_BARYCENTER.z":  {"body": "SATURN_BARYCENTER"},
-    "SATURN_BARYCENTER.dx": {"body": "SATURN_BARYCENTER"},
-    "SATURN_BARYCENTER.dy": {"body": "SATURN_BARYCENTER"},
-    "SATURN_BARYCENTER.dz": {"body": "SATURN_BARYCENTER"},
-    "URANUS_BARYCENTER.x":  {"body": "URANUS_BARYCENTER"},
-    "URANUS_BARYCENTER.y":  {"body": "URANUS_BARYCENTER"},
-    "URANUS_BARYCENTER.z":  {"body": "URANUS_BARYCENTER"},
-    "URANUS_BARYCENTER.dx": {"body": "URANUS_BARYCENTER"},
-    "URANUS_BARYCENTER.dy": {"body": "URANUS_BARYCENTER"},
-    "URANUS_BARYCENTER.dz": {"body": "URANUS_BARYCENTER"},
-    "NEPTUNE_BARYCENTER.x":  {"body": "NEPTUNE_BARYCENTER"},
-    "NEPTUNE_BARYCENTER.y":  {"body": "NEPTUNE_BARYCENTER"},
-    "NEPTUNE_BARYCENTER.z":  {"body": "NEPTUNE_BARYCENTER"},
-    "NEPTUNE_BARYCENTER.dx": {"body": "NEPTUNE_BARYCENTER"},
-    "NEPTUNE_BARYCENTER.dy": {"body": "NEPTUNE_BARYCENTER"},
-    "NEPTUNE_BARYCENTER.dz": {"body": "NEPTUNE_BARYCENTER"},
-    "PLUTO_BARYCENTER.x":  {"body": "PLUTO_BARYCENTER"},
-    "PLUTO_BARYCENTER.y":  {"body": "PLUTO_BARYCENTER"},
-    "PLUTO_BARYCENTER.z":  {"body": "PLUTO_BARYCENTER"},
-    "PLUTO_BARYCENTER.dx": {"body": "PLUTO_BARYCENTER"},
-    "PLUTO_BARYCENTER.dy": {"body": "PLUTO_BARYCENTER"},
-    "PLUTO_BARYCENTER.dz": {"body": "PLUTO_BARYCENTER"},
+    "SPP.x":  {"body": "SPP", "column": "SPP.x",  "column_index": 0},
+    "SPP.y":  {"body": "SPP", "column": "SPP.y",  "column_index": 1},
+    "SPP.z":  {"body": "SPP", "column": "SPP.z",  "column_index": 2},
+    "SPP.dx": {"body": "SPP", "column": "SPP.dx", "column_index": 3},
+    "SPP.dy": {"body": "SPP", "column": "SPP.dy", "column_index": 4},
+    "SPP.dz": {"body": "SPP", "column": "SPP.dz", "column_index": 5},
+    "SUN.x":  {"body": "SUN", "column": "SUN.x",  "column_index": 0},
+    "SUN.y":  {"body": "SUN", "column": "SUN.y",  "column_index": 1},
+    "SUN.z":  {"body": "SUN", "column": "SUN.z",  "column_index": 2},
+    "SUN.dx": {"body": "SUN", "column": "SUN.dx", "column_index": 3},
+    "SUN.dy": {"body": "SUN", "column": "SUN.dy", "column_index": 4},
+    "SUN.dz": {"body": "SUN", "column": "SUN.dz", "column_index": 5},
+    "MERCURY.x":  {"body": "MERCURY", "column": "MERCURY.x",  "column_index": 0},
+    "MERCURY.y":  {"body": "MERCURY", "column": "MERCURY.y",  "column_index": 1},
+    "MERCURY.z":  {"body": "MERCURY", "column": "MERCURY.z",  "column_index": 2},
+    "MERCURY.dx": {"body": "MERCURY", "column": "MERCURY.dx", "column_index": 3},
+    "MERCURY.dy": {"body": "MERCURY", "column": "MERCURY.dy", "column_index": 4},
+    "MERCURY.dz": {"body": "MERCURY", "column": "MERCURY.dz", "column_index": 5},
+    "VENUS.x":  {"body": "VENUS", "column": "VENUS.x",  "column_index": 0},
+    "VENUS.y":  {"body": "VENUS", "column": "VENUS.y",  "column_index": 1},
+    "VENUS.z":  {"body": "VENUS", "column": "VENUS.z",  "column_index": 2},
+    "VENUS.dx": {"body": "VENUS", "column": "VENUS.dx", "column_index": 3},
+    "VENUS.dy": {"body": "VENUS", "column": "VENUS.dy", "column_index": 4},
+    "VENUS.dz": {"body": "VENUS", "column": "VENUS.dz", "column_index": 5},
+    "EARTH.x":  {"body": "EARTH", "column": "EARTH.x",  "column_index": 0},
+    "EARTH.y":  {"body": "EARTH", "column": "EARTH.y",  "column_index": 1},
+    "EARTH.z":  {"body": "EARTH", "column": "EARTH.z",  "column_index": 2},
+    "EARTH.dx": {"body": "EARTH", "column": "EARTH.dx", "column_index": 3},
+    "EARTH.dy": {"body": "EARTH", "column": "EARTH.dy", "column_index": 4},
+    "EARTH.dz": {"body": "EARTH", "column": "EARTH.dz", "column_index": 5},
+    "MARS_BARYCENTER.x":  {"body": "MARS_BARYCENTER", "column": "MARS_BARYCENTER.x",  "column_index": 0},
+    "MARS_BARYCENTER.y":  {"body": "MARS_BARYCENTER", "column": "MARS_BARYCENTER.y",  "column_index": 1},
+    "MARS_BARYCENTER.z":  {"body": "MARS_BARYCENTER", "column": "MARS_BARYCENTER.z",  "column_index": 2},
+    "MARS_BARYCENTER.dx": {"body": "MARS_BARYCENTER", "column": "MARS_BARYCENTER.dx", "column_index": 3},
+    "MARS_BARYCENTER.dy": {"body": "MARS_BARYCENTER", "column": "MARS_BARYCENTER.dy", "column_index": 4},
+    "MARS_BARYCENTER.dz": {"body": "MARS_BARYCENTER", "column": "MARS_BARYCENTER.dz", "column_index": 5},
+    "JUPITER_BARYCENTER.x":  {"body": "JUPITER_BARYCENTER", "column": "JUPITER_BARYCENTER.x",  "column_index": 0},
+    "JUPITER_BARYCENTER.y":  {"body": "JUPITER_BARYCENTER", "column": "JUPITER_BARYCENTER.y",  "column_index": 1},
+    "JUPITER_BARYCENTER.z":  {"body": "JUPITER_BARYCENTER", "column": "JUPITER_BARYCENTER.z",  "column_index": 2},
+    "JUPITER_BARYCENTER.dx": {"body": "JUPITER_BARYCENTER", "column": "JUPITER_BARYCENTER.dx", "column_index": 3},
+    "JUPITER_BARYCENTER.dy": {"body": "JUPITER_BARYCENTER", "column": "JUPITER_BARYCENTER.dy", "column_index": 4},
+    "JUPITER_BARYCENTER.dz": {"body": "JUPITER_BARYCENTER", "column": "JUPITER_BARYCENTER.dz", "column_index": 5},
+    "SATURN_BARYCENTER.x":  {"body": "SATURN_BARYCENTER", "column": "SATURN_BARYCENTER.x",  "column_index": 0},
+    "SATURN_BARYCENTER.y":  {"body": "SATURN_BARYCENTER", "column": "SATURN_BARYCENTER.y",  "column_index": 1},
+    "SATURN_BARYCENTER.z":  {"body": "SATURN_BARYCENTER", "column": "SATURN_BARYCENTER.z",  "column_index": 2},
+    "SATURN_BARYCENTER.dx": {"body": "SATURN_BARYCENTER", "column": "SATURN_BARYCENTER.dx", "column_index": 3},
+    "SATURN_BARYCENTER.dy": {"body": "SATURN_BARYCENTER", "column": "SATURN_BARYCENTER.dy", "column_index": 4},
+    "SATURN_BARYCENTER.dz": {"body": "SATURN_BARYCENTER", "column": "SATURN_BARYCENTER.dz", "column_index": 5},
+    "URANUS_BARYCENTER.x":  {"body": "URANUS_BARYCENTER", "column": "URANUS_BARYCENTER.x",  "column_index": 0},
+    "URANUS_BARYCENTER.y":  {"body": "URANUS_BARYCENTER", "column": "URANUS_BARYCENTER.y",  "column_index": 1},
+    "URANUS_BARYCENTER.z":  {"body": "URANUS_BARYCENTER", "column": "URANUS_BARYCENTER.z",  "column_index": 2},
+    "URANUS_BARYCENTER.dx": {"body": "URANUS_BARYCENTER", "column": "URANUS_BARYCENTER.dx", "column_index": 3},
+    "URANUS_BARYCENTER.dy": {"body": "URANUS_BARYCENTER", "column": "URANUS_BARYCENTER.dy", "column_index": 4},
+    "URANUS_BARYCENTER.dz": {"body": "URANUS_BARYCENTER", "column": "URANUS_BARYCENTER.dz", "column_index": 5},
+    "NEPTUNE_BARYCENTER.x":  {"body": "NEPTUNE_BARYCENTER", "column": "NEPTUNE_BARYCENTER.x",  "column_index": 0},
+    "NEPTUNE_BARYCENTER.y":  {"body": "NEPTUNE_BARYCENTER", "column": "NEPTUNE_BARYCENTER.y",  "column_index": 1},
+    "NEPTUNE_BARYCENTER.z":  {"body": "NEPTUNE_BARYCENTER", "column": "NEPTUNE_BARYCENTER.z",  "column_index": 2},
+    "NEPTUNE_BARYCENTER.dx": {"body": "NEPTUNE_BARYCENTER", "column": "NEPTUNE_BARYCENTER.dx", "column_index": 3},
+    "NEPTUNE_BARYCENTER.dy": {"body": "NEPTUNE_BARYCENTER", "column": "NEPTUNE_BARYCENTER.dy", "column_index": 4},
+    "NEPTUNE_BARYCENTER.dz": {"body": "NEPTUNE_BARYCENTER", "column": "NEPTUNE_BARYCENTER.dz", "column_index": 5},
+    "PLUTO_BARYCENTER.x":  {"body": "PLUTO_BARYCENTER", "column": "PLUTO_BARYCENTER.x",  "column_index": 0},
+    "PLUTO_BARYCENTER.y":  {"body": "PLUTO_BARYCENTER", "column": "PLUTO_BARYCENTER.y",  "column_index": 1},
+    "PLUTO_BARYCENTER.z":  {"body": "PLUTO_BARYCENTER", "column": "PLUTO_BARYCENTER.z",  "column_index": 2},
+    "PLUTO_BARYCENTER.dx": {"body": "PLUTO_BARYCENTER", "column": "PLUTO_BARYCENTER.dx", "column_index": 3},
+    "PLUTO_BARYCENTER.dy": {"body": "PLUTO_BARYCENTER", "column": "PLUTO_BARYCENTER.dy", "column_index": 4},
+    "PLUTO_BARYCENTER.dz": {"body": "PLUTO_BARYCENTER", "column": "PLUTO_BARYCENTER.dz", "column_index": 5},
 }
 
 # ----------------------------------------------------------------------------
@@ -304,6 +305,7 @@ def handle_hapi_data_request(
         start=psp_start_datetime_s, stop=psp_end_datetime_s, body=bodies,
         outputformat=output_format
     )
+    print(f"{ephemeris_s=}")
 
     # Filter the results string to include only the columns requested by the
     # client.
@@ -425,7 +427,7 @@ def filter_csv_results_string(csv_s, parameters):
     return new_csv_s
 
 
-def filter_json_results_string(csv_s, parameters):
+def filter_json_results_string(json_s, parameters):
     """Extract requested columns from a JSON result string.
 
     Extract requested columns from a JSON result string.
@@ -446,8 +448,45 @@ def filter_json_results_string(csv_s, parameters):
     ------
     None
     """
-    # Filter the result based on the requested columns.
-    new_json_s = None
+    # Parse the result string to a JSON object.
+    json_j = json.loads(json_s)
+
+    # Make a copy of the list of bodies in the results.
+    bodies = json_j["bodies"]
+
+    # Invert the bodies list to a dictionary to map from the body name to the
+    # sub-list of the result records.
+    bodies_d = {}
+    for (i, b) in enumerate(bodies):
+        bodies_d[b] = i + 1  # Add 1 since Time is column 0.
+
+    # Make a parameter map (pmap) for the requested columns to the
+    # corresponding sub-array and index of the results. Time is always
+    # parameter 0 and result column 0.
+    pmap = {}
+    for (ip, p) in enumerate(parameters[1:]):
+        b = HAPI_TO_PSP_COLUMN_NAME_MAP[p]["body"]
+        ib = bodies_d[b]
+        ic = HAPI_TO_PSP_COLUMN_NAME_MAP[p]["column_index"]
+        pmap[p] = {"ib": ib, "ic": ic}
+
+    # Make a deep copy of the parsed JSON.
+    new_json_j = copy.deepcopy(json_j)
+
+    # Clear the data element of the copy.
+    new_json_j["data"] = []
+
+    # Create a new 2-D table using Time and the requested columns.
+    for r in json_j["data"]:
+        new_r = [r[0]]  # Time
+        ib = pmap[p]["ib"]
+        ic = pmap[p]["ic"]
+        for p in pmap:
+            new_r.append(r[ib][ic])
+        new_json_j["data"].append(new_r)
+
+    # Convert the JSON object to a string.
+    new_json_s = json.dumps(new_json_j)
 
     # Return the filtered result string.
     return new_json_s
