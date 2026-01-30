@@ -1,8 +1,5 @@
+import json
 import requests
-
-# Specify query parameters.
-start = ''
-stop = ''
 
 # Assemble the query string.
 # query_url = 'http://localhost:8000/hapi'
@@ -10,9 +7,18 @@ stop = ''
 # query_url = 'http://localhost:8000/hapi/capabilities'
 # query_url = 'http://localhost:8000/hapi/catalog'
 # query_url = 'http://localhost:8000/hapi/info?dataset=trajectory'
-# query_url = 'http://localhost:8000/hapi/data?dataset=trajectory&start=2024-01-01T00:00Z&stop=2024-01-01T01:00Z&parameters=Time,SPP.x,SPP.y,SPP.z'
-query_url = 'http://localhost:8000/hapi/data?dataset=trajectory&start=2024-01-01T00:00Z&stop=2024-01-02T01:00Z&parameters=Time,SPP.x&format=json'
+query_url = 'http://localhost:8000/hapi/data?dataset=trajectory&start=2024-01-01T00:00Z&stop=2024-01-01T01:00Z&parameters=Time,SPP.x,SPP.y,SPP.z'
+# query_url = 'http://localhost:8000/hapi/data?dataset=trajectory&start=2024-01-01T00:00Z&stop=2024-01-02T01:00Z&parameters=Time,SPP.x&format=json'
 
 # Fetch and print the result.
 r = requests.get(query_url, timeout=30)
-print(r.text)
+if "format=json" in query_url:
+    # Parse JSON results.
+    results = json.loads(r.text)
+else:
+    # Parse CSV results.
+    lines = r.text.split('\r\n')
+    results = []
+    for r in lines:
+        results.append(r.split(","))
+print(results)

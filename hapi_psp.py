@@ -417,8 +417,8 @@ def filter_csv_results_string(csv_s, parameters):
     # Assemble the new header line.
     new_header_line = ','.join(parameters)
 
-    # Combine the original header and the filtered records.
-    lines = [new_header_line] + new_records
+    # Combine the filtered records without the header.
+    lines = new_records
 
     # Reasemble the filtered data into a single string.
     new_csv_s = '\r\n'.join(lines)
