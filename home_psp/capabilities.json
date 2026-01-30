@@ -1,7 +1,7 @@
 {
     "HAPI": "3.3",
     "outputFormats": [
-        "json"
+        "csv", "json"
     ],
     "status": {
         "code": 1200,

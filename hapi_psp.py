@@ -1,7 +1,7 @@
 """
 hapi_psp.py, web pass-thru reader for Parker Solar Probe
 
-Author:
+Authors:
 Eric Winter
 Lisa Knowles
 """
@@ -20,26 +20,6 @@ from datetime import datetime
 import psp_query
 
 
-# #import netCDF4 as nc
-# #import numpy as np
-# #import pandas as pd
-# import copy
-# import xarray as xr
-# import pandas as pd
-# import time
-# import os
-# #
-# import urllib.request
-# import certifi # needed at APL for SSL
-# from pandas import to_datetime # used for julian date, actually
-# import json
-# import re
-# #from datetime import datetime, timedelta
-# import datetime
-
-# from supermag_api import *
-
-
 # Module constants
 
 # datetime-style format strings for HAPI and PSP dates.
@@ -48,72 +28,72 @@ PSP_DATETIME_FORMAT  = "%Y-%jT%H:%M:%S.%f"
 
 # dict to map HAPI parameter names to PSP REST server parameter names.
 HAPI_TO_PSP_COLUMN_NAME_MAP = {
-    "PSP_X":  {"body": "SPP", "column":  "X"},
-    "PSP_Y":  {"body": "SPP", "column":  "Y"},
-    "PSP_Z":  {"body": "SPP", "column":  "Z"},
-    "PSP_DX": {"body": "SPP", "column": "DX"},
-    "PSP_DY": {"body": "SPP", "column": "DY"},
-    "PSP_DZ": {"body": "SPP", "column": "DZ"},
-    "SUN_X":  {"body": "SUN", "column":  "X"},
-    "SUN_Y":  {"body": "SUN", "column":  "Y"},
-    "SUN_Z":  {"body": "SUN", "column":  "Z"},
-    "SUN_DX": {"body": "SUN", "column": "DX"},
-    "SUN_DY": {"body": "SUN", "column": "DY"},
-    "SUN_DZ": {"body": "SUN", "column": "DZ"},
-    "MERCURY_X":  {"body": "MERCURY", "column":  "X"},
-    "MERCURY_Y":  {"body": "MERCURY", "column":  "Y"},
-    "MERCURY_Z":  {"body": "MERCURY", "column":  "Z"},
-    "MERCURY_DX": {"body": "MERCURY", "column": "DX"},
-    "MERCURY_DY": {"body": "MERCURY", "column": "DY"},
-    "MERCURY_DZ": {"body": "MERCURY", "column": "DZ"},
-    "VENUS_X":  {"body": "VENUS", "column":  "X"},
-    "VENUS_Y":  {"body": "VENUS", "column":  "Y"},
-    "VENUS_Z":  {"body": "VENUS", "column":  "Z"},
-    "VENUS_DX": {"body": "VENUS", "column": "DX"},
-    "VENUS_DY": {"body": "VENUS", "column": "DY"},
-    "VENUS_DZ": {"body": "VENUS", "column": "DZ"},
-    "EARTH_X":  {"body": "EARTH", "column":  "X"},
-    "EARTH_Y":  {"body": "EARTH", "column":  "Y"},
-    "EARTH_Z":  {"body": "EARTH", "column":  "Z"},
-    "EARTH_DX": {"body": "EARTH", "column": "DX"},
-    "EARTH_DY": {"body": "EARTH", "column": "DY"},
-    "EARTH_DZ": {"body": "EARTH", "column": "DZ"},
-    "MARS_X":  {"body": "MARS_BARYCENTER", "column":  "X"},
-    "MARS_Y":  {"body": "MARS_BARYCENTER", "column":  "Y"},
-    "MARS_Z":  {"body": "MARS_BARYCENTER", "column":  "Z"},
-    "MARS_DX": {"body": "MARS_BARYCENTER", "column": "DX"},
-    "MARS_DY": {"body": "MARS_BARYCENTER", "column": "DY"},
-    "MARS_DZ": {"body": "MARS_BARYCENTER", "column": "DZ"},
-    "JUPITER_X":  {"body": "JUPITER_BARYCENTER", "column":  "X"},
-    "JUPITER_Y":  {"body": "JUPITER_BARYCENTER", "column":  "Y"},
-    "JUPITER_Z":  {"body": "JUPITER_BARYCENTER", "column":  "Z"},
-    "JUPITER_DX": {"body": "JUPITER_BARYCENTER", "column": "DX"},
-    "JUPITER_DY": {"body": "JUPITER_BARYCENTER", "column": "DY"},
-    "JUPITER_DZ": {"body": "JUPITER_BARYCENTER", "column": "DZ"},
-    "SATURN_X":  {"body": "SATURN_BARYCENTER", "column":  "X"},
-    "SATURN_Y":  {"body": "SATURN_BARYCENTER", "column":  "Y"},
-    "SATURN_Z":  {"body": "SATURN_BARYCENTER", "column":  "Z"},
-    "SATURN_DX": {"body": "SATURN_BARYCENTER", "column": "DX"},
-    "SATURN_DY": {"body": "SATURN_BARYCENTER", "column": "DY"},
-    "SATURN_DZ": {"body": "SATURN_BARYCENTER", "column": "DZ"},
-    "URANUS_X":  {"body": "URANUS_BARYCENTER", "column":  "X"},
-    "URANUS_Y":  {"body": "URANUS_BARYCENTER", "column":  "Y"},
-    "URANUS_Z":  {"body": "URANUS_BARYCENTER", "column":  "Z"},
-    "URANUS_DX": {"body": "URANUS_BARYCENTER", "column": "DX"},
-    "URANUS_DY": {"body": "URANUS_BARYCENTER", "column": "DY"},
-    "URANUS_DZ": {"body": "URANUS_BARYCENTER", "column": "DZ"},
-    "NEPTUNE_X":  {"body": "NEPTUNE_BARYCENTER", "column":  "X"},
-    "NEPTUNE_Y":  {"body": "NEPTUNE_BARYCENTER", "column":  "Y"},
-    "NEPTUNE_Z":  {"body": "NEPTUNE_BARYCENTER", "column":  "Z"},
-    "NEPTUNE_DX": {"body": "NEPTUNE_BARYCENTER", "column": "DX"},
-    "NEPTUNE_DY": {"body": "NEPTUNE_BARYCENTER", "column": "DY"},
-    "NEPTUNE_DZ": {"body": "NEPTUNE_BARYCENTER", "column": "DZ"},
-    "PLUTO_X":  {"body": "PLUTO_BARYCENTER", "column":  "X"},
-    "PLUTO_Y":  {"body": "PLUTO_BARYCENTER", "column":  "Y"},
-    "PLUTO_Z":  {"body": "PLUTO_BARYCENTER", "column":  "Z"},
-    "PLUTO_DX": {"body": "PLUTO_BARYCENTER", "column": "DX"},
-    "PLUTO_DY": {"body": "PLUTO_BARYCENTER", "column": "DY"},
-    "PLUTO_DZ": {"body": "PLUTO_BARYCENTER", "column": "DZ"},
+    "SPP.x":  {"body": "SPP"},
+    "SPP.y":  {"body": "SPP"},
+    "SPP.z":  {"body": "SPP"},
+    "SPP.dx": {"body": "SPP"},
+    "SPP.dy": {"body": "SPP"},
+    "SPP.dz": {"body": "SPP"},
+    "SUN.x":  {"body": "SUN"},
+    "SUN.y":  {"body": "SUN"},
+    "SUN.z":  {"body": "SUN"},
+    "SUN.dx": {"body": "SUN"},
+    "SUN.dy": {"body": "SUN"},
+    "SUN.dz": {"body": "SUN"},
+    "MERCURY.x":  {"body": "MERCURY"},
+    "MERCURY.y":  {"body": "MERCURY"},
+    "MERCURY.z":  {"body": "MERCURY"},
+    "MERCURY.dx": {"body": "MERCURY"},
+    "MERCURY.dy": {"body": "MERCURY"},
+    "MERCURY.dz": {"body": "MERCURY"},
+    "VENUS.x":  {"body": "VENUS"},
+    "VENUS.y":  {"body": "VENUS"},
+    "VENUS.z":  {"body": "VENUS"},
+    "VENUS.dx": {"body": "VENUS"},
+    "VENUS.dy": {"body": "VENUS"},
+    "VENUS.dz": {"body": "VENUS"},
+    "EARTH.x":  {"body": "EARTH"},
+    "EARTH.y":  {"body": "EARTH"},
+    "EARTH.z":  {"body": "EARTH"},
+    "EARTH.dx": {"body": "EARTH"},
+    "EARTH.dy": {"body": "EARTH"},
+    "EARTH.dz": {"body": "EARTH"},
+    "MARS_BARYCENTER.x":  {"body": "MARS_BARYCENTER"},
+    "MARS_BARYCENTER.y":  {"body": "MARS_BARYCENTER"},
+    "MARS_BARYCENTER.z":  {"body": "MARS_BARYCENTER"},
+    "MARS_BARYCENTER.dx": {"body": "MARS_BARYCENTER"},
+    "MARS_BARYCENTER.dy": {"body": "MARS_BARYCENTER"},
+    "MARS_BARYCENTER.dz": {"body": "MARS_BARYCENTER"},
+    "JUPITER_BARYCENTER.x":  {"body": "JUPITER_BARYCENTER"},
+    "JUPITER_BARYCENTER.y":  {"body": "JUPITER_BARYCENTER"},
+    "JUPITER_BARYCENTER.z":  {"body": "JUPITER_BARYCENTER"},
+    "JUPITER_BARYCENTER.dx": {"body": "JUPITER_BARYCENTER"},
+    "JUPITER_BARYCENTER.dy": {"body": "JUPITER_BARYCENTER"},
+    "JUPITER_BARYCENTER.dz": {"body": "JUPITER_BARYCENTER"},
+    "SATURN_BARYCENTER.x":  {"body": "SATURN_BARYCENTER"},
+    "SATURN_BARYCENTER.y":  {"body": "SATURN_BARYCENTER"},
+    "SATURN_BARYCENTER.z":  {"body": "SATURN_BARYCENTER"},
+    "SATURN_BARYCENTER.dx": {"body": "SATURN_BARYCENTER"},
+    "SATURN_BARYCENTER.dy": {"body": "SATURN_BARYCENTER"},
+    "SATURN_BARYCENTER.dz": {"body": "SATURN_BARYCENTER"},
+    "URANUS_BARYCENTER.x":  {"body": "URANUS_BARYCENTER"},
+    "URANUS_BARYCENTER.y":  {"body": "URANUS_BARYCENTER"},
+    "URANUS_BARYCENTER.z":  {"body": "URANUS_BARYCENTER"},
+    "URANUS_BARYCENTER.dx": {"body": "URANUS_BARYCENTER"},
+    "URANUS_BARYCENTER.dy": {"body": "URANUS_BARYCENTER"},
+    "URANUS_BARYCENTER.dz": {"body": "URANUS_BARYCENTER"},
+    "NEPTUNE_BARYCENTER.x":  {"body": "NEPTUNE_BARYCENTER"},
+    "NEPTUNE_BARYCENTER.y":  {"body": "NEPTUNE_BARYCENTER"},
+    "NEPTUNE_BARYCENTER.z":  {"body": "NEPTUNE_BARYCENTER"},
+    "NEPTUNE_BARYCENTER.dx": {"body": "NEPTUNE_BARYCENTER"},
+    "NEPTUNE_BARYCENTER.dy": {"body": "NEPTUNE_BARYCENTER"},
+    "NEPTUNE_BARYCENTER.dz": {"body": "NEPTUNE_BARYCENTER"},
+    "PLUTO_BARYCENTER.x":  {"body": "PLUTO_BARYCENTER"},
+    "PLUTO_BARYCENTER.y":  {"body": "PLUTO_BARYCENTER"},
+    "PLUTO_BARYCENTER.z":  {"body": "PLUTO_BARYCENTER"},
+    "PLUTO_BARYCENTER.dx": {"body": "PLUTO_BARYCENTER"},
+    "PLUTO_BARYCENTER.dy": {"body": "PLUTO_BARYCENTER"},
+    "PLUTO_BARYCENTER.dz": {"body": "PLUTO_BARYCENTER"},
 }
 
 # ----------------------------------------------------------------------------
@@ -325,230 +305,152 @@ def handle_hapi_data_request(
         outputformat=output_format
     )
 
-    # Convert the JSON string to JSON.
-    # ephemeris_json = json.loads(ephemeris_json_s)
+    # Filter the results string to include only the columns requested by the
+    # client.
+    new_ephemeris_s = filter_results_string(ephemeris_s, parameters,
+                                            output_format)
 
     # Return the HAPI status code and the query result string.
-    return hapi_status, ephemeris_s
+    return hapi_status, new_ephemeris_s
 
 
-# ----------------------------------------------------------------------------
+def filter_results_string(ephemeris_s, parameters, output_format):
+    """Extract requested columns from result string.
 
-# def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
-#                      stream_flag, stream):
-#     #print("debug, got parameters: ",parameters)
-#     # 'ignore' is because hapi-server uses that only for file-bsaed fetches
-#     userid='superhapi'  # debug, temporarily for now
+    Extract requested columns from result string.
 
-#     #timenow = datetime.datetime.strptime(timemin,'%Y-%m-%dT%H:%M:%SZ')
-#     #timeend = datetime.datetime.strptime(timemax,'%Y-%m-%dT%H:%M:%SZ')
-#     start = datetime.datetime.strptime(timemin,'%Y-%m-%dT%H:%MZ')
-#     timeend = datetime.datetime.strptime(timemax,'%Y-%m-%dT%H:%MZ')
-#     delta=timeend-start
-#     extent = delta.total_seconds()
+    Parameters
+    ----------
+    ephemeris_s : str
+        Original result string from PSP server.
+    parameters : list of str
+        List of column names requested by client.
+    output_format : str
+        String identifying output format ("csv" or "json")
 
-#     if len(floc['customOptions']) > 0:
-#         parameters += floc['customOptions']
-    
-#     #if ( parameters!=None ):
-#     #    mp= do_parameters_map( id, parameters )
-#     #else:
-#     #    mp= None
-#     #print("debug: parameters found ",parameters)
-#     final_parameters = parameters  # save for later
+    Returns
+    -------
+    new_result_s : str
+        Filtered result string containing only requested columns.
 
-#     #print("debug: parameters updated ",parameters)
+    Raises
+    ------
+    TypeError
+        If an invalid output format was specified.
+    """
+    # Filter the result based on the output format.
+    new_ephemeris_s = None
+    if output_format == "csv":
+        new_ephemeris_s = filter_csv_results_string(ephemeris_s, parameters)
+    elif output_format == "json":
+        new_ephemeris_s = filter_json_results_string(ephemeris_s, parameters)
+    else:
+        raise TypeError(
+            f"Invalid PSP trajectory query output format: {output_format}."
+        )
 
-#     #print("debug: id is ",id)
-#     if id.startswith("stations"):
-#         """ note this is NOT a proper HAPI function so we do not use it
-#             as it only returns a list of stations, not a time-ordered
-#             function
-#             To get a list of stations, construct a URL akin to:
-#         https://supermag.jhuapl.edu/services/inventory.php?python&nohead&start=2018-01-18T00:00&logon=superhapi&extent=000000086400
-#         """
-#         # no 'parameters' used by this
-#         #print("Debug:",userid,start,extent)
-#         (status,magdata) = supermag_getinventory(userid,start,extent) # FORMAT='list')
-#         ## add column 'window_end'
-#         for i, iaga in enumerate(magdata):
-#             #print(timemin, iaga, timemax)
-#             line = timemin + ',' + iaga + ',' + timemax
-#             magdata[i] = line
-#         magdata = '\n'.join(magdata)
-#         #magdata = "#Time,IAGA,window_end\n" + magdata
-#         #magdata = '\',\''.join(magdata) # cheap csv-ing
-#         #magdata = '\'' + magdata + '\'' # add leading and following quote
-#         status=tf_to_hapicode(status,len(magdata))
-#     elif id.startswith('indices'):
-#         # 'parameters' is which data items to fetch, HAPI default = 'all'
-#         (parameters, clean_out_later) = sm_lookup(parameters)
-            
-#         (status,magdata)=supermag_getindices(userid,start,extent,parameters,FORMAT='json')
-#         # (note we remove 'row' because HAPI requires start as 1st var)
-
-#         # converts to csv string with \n
-#         #magdata = magdata.to_csv(header=1,index=False)
-#         try:
-#             magdata['tval'] = magdata['tval'].apply(sm_to_hapitimes)
-#         except:
-#             pass # pass when there is no valid data to parse
-#         #print("Debug: all magdata = ",magdata)
-
-#         if parameters != None:
-#             # verify and fill if no data exists
-#             #print("debug: catalog is ",catalog)
-#             #print("debug: catalog keys are ",catalog.keys())
-#             ### NOTE-- removed sm_fill_empty() BECAUSE SuperMAG data is weird
-#             ###sm_fill_empty(magdata,parameters,catalog['parameters'])
-#             #magdata.rename(indicesmap,inplace=True,errors='ignore')
-#             #print("Debug: renamed magdata = ",magdata)
-
-#             if len(clean_out_later) > 0:
-#                 #print("Debug, removing ",clean_out_later,"\n from ",magdata.keys())
-#                 magdata=magdata.drop(columns=clean_out_later,errors='ignore')
-#                 #print("Debug, removed ",clean_out_later,"\n from ",magdata.keys())
-#         #print("Debug: empty filled magdata = ",magdata)
-            
-#         magdata = magdata.to_csv(header=0,index=False,sep=',')
-#         magdata = csv_removekeys(magdata) # change {k:v,k:v} to just [v,v]
-#         magdata = unwind_csv_array(magdata) # change [v,v] to just v,v
-#         status=tf_to_hapicode(status,len(magdata))
-
-#     elif "/baseline_" in id: # was previously id.startswith('data'):
-#         """ spec data/iaga/baseline_[all/yearly/none]/PT1M/[XYX/NEZ].json """
-#         # New 'data' code, replaces prior mess
-#         if "NEZ" in id:
-#             vectortype = 'NEZ'
-#         else:
-#             vectortype = 'GEO'
-#         station = id.split('/')[0] # (dataword,station)=id.split('_')
-#         pattern = r'baseline_[^/]+'
-#         match = re.search(pattern, id)
-#         baseline = match.group()
-#         """ The SuperMAG Python API expects flags N, E, Z but our
-#             SuperHAPI spec renames to N_geo, E_geo, Z_geo and also
-#             defaults to providing a Field_Vector = [N_geo, E_geo, Z_geo]
-#             so the following code translates this, later sm_filter_data
-#             will handle the returned pandas array to match the HAPI request.
-#             The geomagnetic set is [N_nez, E_nez, Z_nez] in geomagnetic coords.
-#             We also removed fetching individual N, E, Z in favor of the vector.
-#         """
-#         if 'Time' not in parameters: parameters.insert(0, 'tval')
-#         parameters_munged = copy.deepcopy(parameters)
-#         if parameters_munged != None:
-#             if 'Field_Vector' in parameters:
-#                 parameters_munged.extend(['N','E','Z'])
-#                 parameters_munged.remove('Field_Vector')
-#             #if 'N_geo' in parameters and 'N' not in parameters_munged:
-#             #    parameters_munged[parameters_munged.index('N_geo')] = 'N'
-#             #if 'E_geo' in parameters and 'E' not in parameters_munged:
-#             #    parameters_munged[parameters_munged.index('E_geo')] = 'E'
-#             #if 'Z_geo' in parameters and 'Z' not in parameters_munged:
-#             #    parameters_munged[parameters_munged.index('Z_geo')] = 'Z'
-#             #if 'N_geo' in parameters_munged: parameters_munged.remove('N_geo')
-#             #if 'E_geo' in parameters_munged: parameters_munged.remove('E_geo')
-#             #if 'Z_geo' in parameters_munged: parameters_munged.remove('Z_geo')
-#             #if 'mlt' in parameters_munged:
-#             #    i=parameters_munged.index('mlt')
-#             #    parameters_munged[i:i+1] = ['mlt','mcolat']
-#         else:
-#             #flagstring = "&mlt&mcolat&geo&decl&sza"
-#             parameters_munged = ['tval','Field_Vector','mlt','mcolat','sza','decl','N','E','Z']
-#         if 'Time' in parameters_munged:
-#             parameters_munged[parameters_munged.index('Time')] = 'tval'
-#         flagstring = '&'.join(parameters_munged) # more than needed, will filter later
-#         flagstring.replace("&Field_Vector","")
-
-#         flagstring += f"&baseline='{baseline}'"
-#         (status,magdata)=supermag_getdata(userid,start,extent,flagstring,station,FORMAT='json')
-#         try:
-#             magdata['tval'] = magdata['tval'].apply(sm_to_hapitimes)
-#         except:
-#             pass # pass when there is no valid data to parse
-
-#         # Massive filtering needed to match parameters requested
-#         if len(magdata) > 0:
-#             magdata=sm_filter_data(magdata, parameters, vectortype)
-
-#         magdata = magdata.to_csv(header=0,index=False,sep=',')
-#         magdata = csv_removekeys(magdata) # change {k:v,k:v} to just [v,v]
-#         magdata = unwind_csv_array(magdata) # change [v,v] to just v,v
-#         #magdata = magdata.split('\n')# optional, converts csv string to list
-#         status=tf_to_hapicode(status,len(magdata))
-            
-#     else:
-#         # did not match a SuperMAG-likely keyword, so produce error message
-#         status=1406 # 1406 is HAPI "unknown dataset id"
-#         magdata="Error, \"" + id + "\" is not a valid query"
-
-#     #print("Debug-- done for id,parameters: ",id,parameters)
-#     return(status,magdata)
+    # Return the filtered result string.
+    return new_ephemeris_s
 
 
-# def do_file_supermag( id, timemin, timemax, parameters):
+def filter_csv_results_string(csv_s, parameters):
+    """Extract requested columns from a CSV result string.
 
-#     # need to figure out time limits, and enforce them
-#     #timemin= dateutil.parser.parse( timemin ).strftime('%Y-%m-%d-%H-%M-%S')
-#     #(yyyy,mo,dd,hh,mm,ss)=(int(x) for x in timemin.split('-'))
-#     #timenow=datetime.datetime(yyyy,mo,dd,hh,mm,ss).timestamp()
-#     #timemax= dateutil.parser.parse( timemax ).strftime('%Y-%m-%d-%H-%M-%S')
-#     #(yyyy,mo,dd,hh,mm,ss)=(int(x) for x in timemax.split('-'))
+    Extract requested columns from a CSV result string.
 
-#     timenow = datetime.datetime.strptime(timemin,'%Y-%m-%dT%H:%M:%SZ')
-#     timeend = datetime.datetime.strptime(timemax,'%Y-%m-%dT%H:%M:%SZ')
+    Parameters
+    ----------
+    csv_s : str
+        Original CSV result string from PSP server.
+    parameters : list of str
+        List of column names requested by client.
 
-#     if ( parameters!=None ):
-#         mp= do_parameters_map( id, parameters )
-#     else:
-#         mp= None
+    Returns
+    -------
+    new_csv_s : str
+        Filtered CSV result string containing only requested columns.
 
-#     # go in X-minute increments?????
-#     increment = 10*60 # 10 minute increments
+    Raises
+    ------
+    None
+    """
+    # Strip trailing whitespace.
+    csv_s = csv_s.rstrip()
 
-#     # TO DO: do we actually serve the data?
-#     # TO DO: also pass parameters for subselecting data
+    # Split the original strings into a list containing the header line
+    # and individual record lines.
+    lines = csv_s.split('\r\n')
 
-#     mydata = ""
-    
-#     while timenow < timeend:
-#         status=0 # gets set to 1 if this timestep works
-#         if id == "polar":
-#             # returns 600 vectors for that given minute as a dataframe
-#             (status,mydata_df)= serve_polar_df(yyyy,dd,mo,hh,m)
-#             mydata += mydata_df
-#             status=tf_to_hapicode(status,len(mydata_list))
-            
-#         elif id == "inventory":
-#             (status,mydata_list) = SuperMAGGetInventory(userid,timenow.year,timenow.month,timenow.day,timenow.hour,timenow.minute,0,increment)
-#             mydata += mydata_list
-#             status=tf_to_hapicode(status,len(mydata_list))
-            
-#         elif id == 'indices':
-#             (status,magdata)=SuperMAGGetDataArray('indices',userid,timenow.year,timenow.month,timenow.day,timenow.hour,timenow.minute,0,increment,mystation)
-#             mydata += magdata
-#             status=tf_to_hapicode(status,len(magdata))
+    # Split the first row to get a list of column names.
+    header_line = lines[0]
+    column_names = header_line.split(',')
 
-#         elif id == "all" or strlength(id) == 3:
-#             # if a 3-digit string, is likely (?) a station request
-#             if id == "all":
-#                 (status,stations_list) = SuperMAGGetInventory(userid,timenow.year,timenow.month,timenow.day,timenow.hour,timenow.minute,0,increment)
-#             else:
-#                 stations_list=[id] # wants just 1 station
-#             for mystation in stations_list:
-#                 (status,magdata)=SuperMAGGetDataStruct('data',userid,timenow.year,timenow.month,timenow.day,timenow.hour,timenow.minute,0,increment,mystation)
-#                 mydata += magdata
-#             status=tf_to_hapicode(status,len(magdata))
+    # <HACK>
+    # Make sure the first column is called "Time".
+    column_names[0] = 'Time'
+    # </HACK>
 
-#         else:
-#             # did not match a HAPI-approved keyword, so produce error message
-#             status=1406 # 1406 is HAPI "unknown dataset id"
-#             mydata="Error, \"" + id + "\" is not a valid query"
+    # Map the column names to column number.
+    column_numbers = {}
+    for (i, s) in enumerate(column_names):
+        column_numbers[s] = i
 
-#         #s.wfile.write(bytes(',',"utf-8"))
-#         #s.wfile.write(bytes(ss[i],"utf-8"))
-#         timenow = timenow + datetime.timedelta(minutes=+increment)
-#         sm_data_to_csv(filename,mydata)
+    # Make a list of the column numbers to extract.
+    columns_to_keep = []
+    for p in parameters:
+        i_col = column_numbers[p]
+        columns_to_keep.append(i_col)
+
+    # Make a new list containing only the requested columns.
+    records = lines[1:]  # Skip header line.
+    new_records = []
+    for r in records:
+        cols = r.split(',')
+        keep = []
+        for ic in columns_to_keep:
+            keep.append(cols[ic])
+        s = ','.join(keep)
+        new_records.append(s)
+
+    # Assemble the new header line.
+    new_header_line = ','.join(parameters)
+
+    # Combine the original header and the filtered records.
+    lines = [new_header_line] + new_records
+
+    # Reasemble the filtered data into a single string.
+    new_csv_s = '\r\n'.join(lines)
+
+    # Return the filtered result string.
+    return new_csv_s
+
+
+def filter_json_results_string(csv_s, parameters):
+    """Extract requested columns from a JSON result string.
+
+    Extract requested columns from a JSON result string.
+
+    Parameters
+    ----------
+    json_s : str
+        Original JSON result string from PSP server.
+    parameters : list of str
+        List of column names requested by client.
+
+    Returns
+    -------
+    new_json_s : str
+        Filtered JSON result string containing only requested columns.
+
+    Raises
+    ------
+    None
+    """
+    # Filter the result based on the requested columns.
+    new_json_s = None
+
+    # Return the filtered result string.
+    return new_json_s
 
 
 if __name__ == '__main__':

@@ -13,397 +13,397 @@
             "fill": null
         },
         {
-            "name": "PSP_X",
+            "name": "SPP.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PSP_Y",
+            "name": "SPP.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PSP_Z",
+            "name": "SPP.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PSP_DX",
+            "name": "SPP.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PSP_DY",
+            "name": "SPP.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PSP_DZ",
+            "name": "SPP.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SUN_X",
+            "name": "SUN.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SUN_Y",
+            "name": "SUN.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SUN_Z",
+            "name": "SUN.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SUN_DX",
+            "name": "SUN.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SUN_DY",
+            "name": "SUN.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SUN_DZ",
+            "name": "SUN.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MERCURY_X",
+            "name": "MERCURY.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MERCURY_Y",
+            "name": "MERCURY.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MERCURY_Z",
+            "name": "MERCURY.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MERCURY_DX",
+            "name": "MERCURY.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MERCURY_DY",
+            "name": "MERCURY.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MERCURY_DZ",
+            "name": "MERCURY.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "VENUS_X",
+            "name": "VENUS.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "VENUS_Y",
+            "name": "VENUS.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "VENUS_Z",
+            "name": "VENUS.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "VENUS_DX",
+            "name": "VENUS.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "VENUS_DY",
+            "name": "VENUS.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "VENUS_DZ",
+            "name": "VENUS.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "EARTH_X",
+            "name": "EARTH.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "EARTH_Y",
+            "name": "EARTH.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "EARTH_Z",
+            "name": "EARTH.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "EARTH_DX",
+            "name": "EARTH.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "EARTH_DY",
+            "name": "EARTH.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "EARTH_DZ",
+            "name": "EARTH.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MARS_X",
+            "name": "MARS_BARYCENTER.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MARS_Y",
+            "name": "MARS_BARYCENTER.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MARS_Z",
+            "name": "MARS_BARYCENTER.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MARS_DX",
+            "name": "MARS_BARYCENTER.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MARS_DY",
+            "name": "MARS_BARYCENTER.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "MARS_DZ",
+            "name": "MARS_BARYCENTER.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "JUPITER_X",
+            "name": "JUPITER_BARYCENTER.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "JUPITER_Y",
+            "name": "JUPITER_BARYCENTER.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "JUPITER_Z",
+            "name": "JUPITER_BARYCENTER.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "JUPITER_DX",
+            "name": "JUPITER_BARYCENTER.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "JUPITER_DY",
+            "name": "JUPITER_BARYCENTER.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "JUPITER_DZ",
+            "name": "JUPITER_BARYCENTER.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SATURN_X",
+            "name": "SATURN_BARYCENTER.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SATURN_Y",
+            "name": "SATURN_BARYCENTER.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SATURN_Z",
+            "name": "SATURN_BARYCENTER.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SATURN_DX",
+            "name": "SATURN_BARYCENTER.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SATURN_DY",
+            "name": "SATURN_BARYCENTER.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "SATURN_DZ",
+            "name": "SATURN_BARYCENTER.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "URANUS_X",
+            "name": "URANUS_BARYCENTER.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "URANUS_Y",
+            "name": "URANUS_BARYCENTER.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "URANUS_Z",
+            "name": "URANUS_BARYCENTER.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "URANUS_DX",
+            "name": "URANUS_BARYCENTER.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "URANUS_DY",
+            "name": "URANUS_BARYCENTER.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "URANUS_DZ",
+            "name": "URANUS_BARYCENTER.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "NEPTUNE_X",
+            "name": "NEPTUNE_BARYCENTER.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "NEPTUNE_Y",
+            "name": "NEPTUNE_BARYCENTER.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "NEPTUNE_Z",
+            "name": "NEPTUNE_BARYCENTER.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "NEPTUNE_DX",
+            "name": "NEPTUNE_BARYCENTER.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "NEPTUNE_DY",
+            "name": "NEPTUNE_BARYCENTER.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "NEPTUNE_DZ",
+            "name": "NEPTUNE_BARYCENTER.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PLUTO_X",
+            "name": "PLUTO_BARYCENTER.x",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PLUTO_Y",
+            "name": "PLUTO_BARYCENTER.y",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PLUTO_Z",
+            "name": "PLUTO_BARYCENTER.z",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PLUTO_DX",
+            "name": "PLUTO_BARYCENTER.dx",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PLUTO_DY",
+            "name": "PLUTO_BARYCENTER.dy",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
         },
         {
-            "name": "PLUTO_DZ",
+            "name": "PLUTO_BARYCENTER.dz",
             "type": "double",
             "units": "km",
             "fill": "-999999999.0"
