@@ -415,5 +415,5 @@
     "sampleStopDate": "2024-01-01T01:00Z",
     "cadence": "00-00-00T00:60:00Z",
     "citation": "XXX",
-    "description": "PSP trajectory"
+    "description": "PSP trajectory at 1 hour cadence"
 }

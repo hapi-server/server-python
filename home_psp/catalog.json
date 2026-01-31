@@ -8,6 +8,10 @@
         {
             "id": "trajectory_10minute",
             "title": "Parker Solar Probe trajectory at 10 minute cadence"
+        },
+        {
+            "id": "trajectory_1minute",
+            "title": "Parker Solar Probe trajectory at 1 minute cadence"
         }
     ],
     "status": {

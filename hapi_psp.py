@@ -35,6 +35,9 @@ VIRTUAL_DATASET_MAP = {
     "trajectory_10minute": {
         "stepsize": 600.0,
     },
+    "trajectory_1minute": {
+        "stepsize": 60.0,
+    },
 }
 
 # dict to map HAPI parameter names to PSP REST server parameter names.
