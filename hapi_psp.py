@@ -27,6 +27,16 @@ import psp_query
 HAPI_DATETIME_FORMAT = "%Y-%m-%dT%H:%MZ"
 PSP_DATETIME_FORMAT  = "%Y-%jT%H:%M:%S.%f"
 
+# Map from virtual dataset names to PSP query parameters.
+VIRTUAL_DATASET_MAP = {
+    "trajectory": {
+        "stepsize": 3600.0,
+    },
+    "trajectory_10minute": {
+        "stepsize": 600.0,
+    },
+}
+
 # dict to map HAPI parameter names to PSP REST server parameter names.
 HAPI_TO_PSP_COLUMN_NAME_MAP = {
     "SPP.x":  {"body": "SPP", "column": "SPP.x",  "column_index": 0},
@@ -238,7 +248,7 @@ HAPI_TO_PSP_COLUMN_NAME_MAP = {
 
 
 def handle_hapi_data_request(
-        id, timemin, timemax, parameters, catalog, floc, stream_flag, stream
+        dataset, timemin, timemax, parameters, catalog, floc, stream_flag, stream
 ):
     """Process a HAPI data request.
 
@@ -246,7 +256,7 @@ def handle_hapi_data_request(
 
     Parameters
     ----------
-    id : str
+    dataset : str
         Identifier string for requested dataset.
     timemin : str
         Start datetime string for request, format 'YYYY-MM-DDThh:mmZ'.
@@ -265,7 +275,7 @@ def handle_hapi_data_request(
 
     Returns
     -------
-    hapi_status, hapi_result_str : int, str
+    hapi_status, new_ephemeris_s : int, str
         HAPI status code, and result of HAPI request.
 
     Raises
@@ -291,6 +301,8 @@ def handle_hapi_data_request(
         bodies.append(HAPI_TO_PSP_COLUMN_NAME_MAP[p]["body"])
     bodies = sorted(set(bodies))
 
+    # Map the (virtual) dataset name to query parameters.
+
     # Determine the output format.
     output_format = "csv"
     if "format=csv" in stream.path:
@@ -303,6 +315,7 @@ def handle_hapi_data_request(
     # Process the query.
     ephemeris_s = psp_query.query_psp_ephemeris(
         start=psp_start_datetime_s, stop=psp_end_datetime_s, body=bodies,
+        stepsize=VIRTUAL_DATASET_MAP[dataset]["stepsize"],
         outputformat=output_format
     )
     print(f"{ephemeris_s=}")

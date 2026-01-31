@@ -413,7 +413,7 @@
     "stopDate": "2026-01-01T00:00Z",
     "sampleStartDate": "2024-01-01T00:00Z",
     "sampleStopDate": "2024-01-01T01:00Z",
-    "cadence": "00-00-00T00:60:00Z",
+    "cadence": "00-00-00T00:10:00Z",
     "citation": "XXX",
     "description": "PSP trajectory"
 }
