@@ -115,8 +115,8 @@ def sm_lookup(parameters):
                  'SMUdglat':['smud','glatd'],
                  'SMUdstid':['smud','stidd'],
 
-                 'SMLrmlat':['smlr','mlatd'],
-                 'SMLrmlt':['smlr','mltd'],
+                 'SMLrmlat':['smlr','mlatr'],
+                 'SMLrmlt':['smlr','mltr'],
                  'SMLrglon':['smlr','glonr'],
                  'SMLrstid':['smlr','stidr'],
                  'SMLrglat':['smlr','glatr'],
@@ -454,7 +454,7 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
     final_parameters = parameters  # save for later
 
     #print("debug: parameters updated ",parameters)
-
+  
     #print("debug: id is ",id)
     if id.startswith("stations"):
         """ note this is NOT a proper HAPI function so we do not use it
@@ -478,8 +478,8 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
         status=tf_to_hapicode(status,len(magdata))
     elif id.startswith('indices'):
         # 'parameters' is which data items to fetch, HAPI default = 'all'
+        original_parameters = copy.deepcopy(parameters)
         (parameters, clean_out_later) = sm_lookup(parameters)
-            
         (status,magdata)=supermag_getindices(userid,start,extent,parameters,FORMAT='json')
         # (note we remove 'row' because HAPI requires start as 1st var)
 
@@ -503,6 +503,7 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
             if len(clean_out_later) > 0:
                 #print("Debug, removing ",clean_out_later,"\n from ",magdata.keys())
                 magdata=magdata.drop(columns=clean_out_later,errors='ignore')
+                magdata = remove_unwanted_columns(magdata, original_parameters)
                 #print("Debug, removed ",clean_out_later,"\n from ",magdata.keys())
         #print("Debug: empty filled magdata = ",magdata)
             
@@ -646,3 +647,69 @@ def do_file_supermag( id, timemin, timemax, parameters):
         timenow = timenow + datetime.timedelta(minutes=+increment)
         sm_data_to_csv(filename,mydata)
 
+
+def remove_unwanted_columns(
+    magdata: pd.DataFrame, original_parameters: list[str]
+) -> pd.DataFrame:
+    """Remove unwanted columns from SuperMag results.
+
+    Remove unwanted columns from SuperMag results.
+    
+    Parameters
+    ----------
+    magdata : pd.DataFrame
+        SuperMag results to filter.
+    original_parameters: list[str]
+        Names of columns to remove from SuperMag results.
+    
+    Returns
+    -------
+    magdata : pd.DataFrame
+        Filtered SuperMag results.
+
+    Raises
+    ------
+    None
+    """
+    SUPERMAG_COLUMNS_TO_DISCARD = {
+        'SMLsmlat': ['SMLs'],
+        'SMLsmlt':  ['SMLs'],
+        'SMLsglat': ['SMLs'],
+        'SMLsglon': ['SMLs'],
+        'SMLsstid': ['SMLs'],
+
+        'SMUsmlat': ['SMUs'],
+        'SMUsmlt':  ['SMUs'],
+        'SMUsglat': ['SMUs'],
+        'SMUsglon': ['SMUs'],
+        'SMUsstid': ['SMUs'],
+
+        'SMLdmlat': ['SMLd'],
+        'SMLdmlt':  ['SMLd'],
+        'SMLdglat': ['SMLd'],
+        'SMLdglon': ['SMLd'],
+        'SMLdstid': ['SMLd'],
+
+        'SMUdmlat': ['SMUd'],
+        'SMUdmlt':  ['SMUd'],
+        'SMUdglat': ['SMUd'],
+        'SMUdglon': ['SMUd'],
+        'SMUdstid': ['SMUd'],
+
+        'SMLrmlat': ['SMLr'],
+        'SMLrmlt':  ['SMLr'],
+        'SMLrglat': ['SMLr'],
+        'SMLrglon': ['SMLr'],
+        'SMLrstid': ['SMLr'],
+
+        'SMUrmlat': ['SMUr'],
+        'SMUrmlt':  ['SMUr'],
+        'SMUrglat': ['SMUr'],
+        'SMUrglon': ['SMUr'],
+        'SMUrstid': ['SMUr'],
+    }
+    for op in original_parameters:
+        if op in SUPERMAG_COLUMNS_TO_DISCARD:
+            for scd in SUPERMAG_COLUMNS_TO_DISCARD[op]:
+                magdata.drop(columns=[scd], inplace=True)
+    return magdata
