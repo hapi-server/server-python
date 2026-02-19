@@ -76,58 +76,55 @@ def sm_lookup(parameters):
     # for data that requires 2 API keywords, gives them here
     clean_out_later=[] # for storing 'excess' data items temp needed
     #parameters = [x.lower() for x in parameters]
-    x_apikeys = {'SMLmlat':['sml','mlat'],
-                 'SMLmlt':['sml','mlt'],
-                 'SMLglon':['sml','glon'],
-                 'SMLstid':['sml','stid'],
-                 'SMLglat':['sml','glat'],
-                 'SMLstid':['sml','stid'],
-                 'SMUmlat':['smu','mlat'],
-                 'SMUmlt':['smu','mlt'],
-                 'SMUglon':['smu','glon'],
-                 'SMUstid':['smu','stid'],
-                 'SMUglat':['smu','glat'],
-                 'SMUstid':['smu','stid'],
+    x_apikeys = {
+        'SMLmlat': ['sml', 'mlat'],
+        'SMLmlt':  ['sml', 'mlt'],
+        'SMLglon': ['sml', 'glon'],
+        'SMLglat': ['sml', 'glat'],
+        'SMLstid': ['sml', 'stid'],
 
-                 'SMLsmlat':['smls','mlats'],
-                 'SMLsmlt':['smls','mlts'],
-                 'SMLsglon':['smls','glons'],
-                 'SMLsstid':['smls','stids'],
-                 'SMLsglat':['smls','glats'],
-                 'SMLsstid':['smls','stids'],
-                 'SMUsmlat':['smus','mlats'],
-                 'SMUsmlt':['smus','mlts'],
-                 'SMUsglon':['smus','glons'],
-                 'SMUsstid':['smus','stids'],
-                 'SMUsglat':['smus','glats'],
-                 'SMUsstid':['smus','stids'],
+        'SMUmlat': ['smu', 'mlat'],
+        'SMUmlt':  ['smu', 'mlt'],
+        'SMUglon': ['smu', 'glon'],
+        'SMUglat': ['smu', 'glat'],
+        'SMUstid': ['smu', 'stid'],
 
-                 'SMLdmlat':['smld','mlatd'],
-                 'SMLdmlt':['smld','mltd'],
-                 'SMLdglon':['smld','glond'],
-                 'SMLdstid':['smld','stidd'],
-                 'SMLdglat':['smld','glatd'],
-                 'SMLdstid':['smld','stidd'],
-                 'SMUdmlat':['smud','mlatd'],
-                 'SMUdmlt':['smud','mltd'],
-                 'SMUdglon':['smud','glond'],
-                 'SMUdstid':['smud','stidd'],
-                 'SMUdglat':['smud','glatd'],
-                 'SMUdstid':['smud','stidd'],
+        'SMLsmlat': ['smls', 'mlats'],
+        'SMLsmlt':  ['smls', 'mlts'],
+        'SMLsglon': ['smls', 'glons'],
+        'SMLsglat': ['smls', 'glats'],
+        'SMLsstid': ['smls', 'stids'],
 
-                 'SMLrmlat':['smlr','mlatr'],
-                 'SMLrmlt':['smlr','mltr'],
-                 'SMLrglon':['smlr','glonr'],
-                 'SMLrstid':['smlr','stidr'],
-                 'SMLrglat':['smlr','glatr'],
-                 'SMLrstid':['smlr','stidr'],
-                 'SMUrmlat':['smur','mlatr'],
-                 'SMUrmlt':['smur','mltr'],
-                 'SMUrglon':['smur','glonr'],
-                 'SMUrstid':['smur','stidr'],
-                 'SMUrglat':['smur','glatr'],
-                 'SMUrstid':['smur','stidr']
-                 }
+        'SMUsmlat': ['smus', 'mlats'],
+        'SMUsmlt':  ['smus', 'mlts'],
+        'SMUsglon': ['smus', 'glons'],
+        'SMUsglat': ['smus', 'glats'],
+        'SMUsstid': ['smus', 'stids'],
+
+        'SMLdmlat': ['smld', 'mlatd'],
+        'SMLdmlt':  ['smld', 'mltd'],
+        'SMLdglon': ['smld', 'glond'],
+        'SMLdglat': ['smld', 'glatd'],
+        'SMLdstid': ['smld', 'stidd'],
+
+        'SMUdmlat': ['smud', 'mlatd'],
+        'SMUdmlt':  ['smud', 'mltd'],
+        'SMUdglon': ['smud', 'glond'],
+        'SMUdglat': ['smud', 'glatd'],
+        'SMUdstid': ['smud', 'stidd'],
+
+        'SMLrmlat': ['smlr', 'mlatr'],
+        'SMLrmlt':  ['smlr', 'mltr'],
+        'SMLrglon': ['smlr', 'glonr'],
+        'SMLrglat': ['smlr', 'glatr'],
+        'SMLrstid': ['smlr', 'stidr'],
+
+        'SMUrmlat': ['smur', 'mlatr'],
+        'SMUrmlt':  ['smur', 'mltr'],
+        'SMUrglon': ['smur', 'glonr'],
+        'SMUrglat': ['smur', 'glatr'],
+        'SMUrstid': ['smur', 'stidr']
+    }
 
     # note that we need to send msl, smu, sme in lowercase to supermag,
     # but the data they return is uppercase, so when we later filter
@@ -503,7 +500,7 @@ def do_data_supermag(id,timemin,timemax,parameters,catalog,floc,
             if len(clean_out_later) > 0:
                 #print("Debug, removing ",clean_out_later,"\n from ",magdata.keys())
                 magdata=magdata.drop(columns=clean_out_later,errors='ignore')
-                magdata = remove_unwanted_columns(magdata, original_parameters)
+                # magdata = remove_unwanted_columns(magdata, original_parameters)
                 #print("Debug, removed ",clean_out_later,"\n from ",magdata.keys())
         #print("Debug: empty filled magdata = ",magdata)
             

@@ -367,6 +367,7 @@ def supermag_getindices(logon,start,extent,flagstring='',**kwargs):
   urlstr += indices
   
   # get the string array of JSON data     
+  print(f"{urlstr=}")
   (status,data_list)=sm_GetUrl(urlstr,typecode)
 
   # default is to return a dataframe, but can also return an array
