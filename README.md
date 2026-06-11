@@ -13,16 +13,8 @@ convert your files into HAPI-formatted data (sample readers provided).
 The code and documentation resides at 
     https://github.com/hapi-server/server-python
 
-
-# Requires the following Python packages
-  hapi-server3.py: dateutil
-
-netcdf_hapireader.py: xarray
-
-
-# Usage:
-  python hapi-server3.py <MISSIONNAME> [localhost/http/https/custom]
-
+Usage:
+  python hapi_server.py <MISSIONNAME> [localhost/http/https/custom]
 (If no arguments provided, defaults to 'csv' and 'localhost')
 
 where MISSIONNAME points to the appropriation MISSIONNAME.config file
@@ -32,19 +24,17 @@ and:
    https:     server runs on port 443
    custom:    server runs on custom port that you hardcode into this code
 
-Capabilities and catalog responses must be formatted as JSON in SERVER_HOME
-info responses are in SERVER_HOME/info.
+Configuration requirements
+* capabilities and catalog responses must be formatted as JSON in SERVER_HOME
+* info responses are in SERVER_HOME/info.
+* responses can have templates like "lasthour" to mean the last hour boundary
+  and "lastday-P1D" to mean the last midnight minus one day.
+
 IDs must be defined, as per HAPI, in info/*.json.
 
-The 'reader' routines (coded by the mission) then process the data to
-actually return for each id.  So the JSON defines to the server and the
-user what data is available, and the reader program also uses the JSON keys
-to find the appropriate data in the data files.
-
-
-# Readers
-
-Currently this HAPI server has sample readers that can handle:
+The 'reader' routines (coded by the mission) then specify which data
+to actually return for each id, in the handler code.  Currently this
+HAPI server has sample readers that can handle:
 1) csv flat files in a directory hierarchy of "data/[id]/YYYY/[id].YYYYMMDD.csv"
 2) reading netCDF files and sending csv of a pre-defined sets of keys (GUVI)
 
@@ -58,18 +48,17 @@ data as it is processed and is generally recommended; fetch-all is useful
 if you need to add anything to post-process data before sending, or
 if data sets are small (so either way works).
 
+# Requires the following Python packages
+  hapi_server.py: dateutil
+
+# Usage:
+  python hapi_server.py <MISSIONNAME> [localhost/http/https/custom]
 
 # Sample Data Sets
 
 A sample of CSV flat-file data (home_csv.zip) and NetCDF files
 (home_netcdf.zip) are provided, including all configuration, reader,
 JSON, and data files.
-
-
-# Configuration requirements
- * responses can have templates like "lasthour" to mean the last hour boundary
-   and "lastday-P1D" to mean the last midnight minus one day.
-
 
 # Fun Fact
 Although intended as a big data server, this was originally a module needed
