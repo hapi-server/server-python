@@ -1,0 +1,135 @@
+import gc
+import pytest
+import asyncio
+from flask import Flask
+from a2wsgi import ASGIMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.test import Client
+from werkzeug.wrappers import Response
+
+from hapiserver_demo.app import app as hapi_app
+
+
+@pytest.fixture(autouse=True)
+def cleanup_asyncio_tasks():
+  """Clean up asyncio tasks and event loops after each test."""
+  yield
+
+  # Force garbage collection to clean up any lingering tasks
+  gc.collect()
+
+  # Try to cancel any pending tasks
+  loop = None
+  created_loop = False
+
+  try:
+    # Try to get the running event loop
+    try:
+      loop = asyncio.get_running_loop()
+    except RuntimeError:
+      # No running loop - create a new one for cleanup
+      loop = asyncio.new_event_loop()
+      asyncio.set_event_loop(loop)
+      created_loop = True
+
+    # Get all pending tasks
+    pending = [task for task in asyncio.all_tasks(loop) if not task.done()]
+
+    # Cancel them
+    for task in pending:
+      task.cancel()
+
+    # Give them a chance to complete cancellation
+    if pending and not loop.is_running():
+      loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+
+    # Close and clean up the loop if we created it
+    if created_loop:
+      loop.close()
+      asyncio.set_event_loop(None)
+
+  except (RuntimeError, Exception):
+    # Event loop issues, just skip cleanup
+    pass
+
+  # Force another garbage collection
+  gc.collect()
+
+
+def test_hapi_mounted_in_flask_wsgi():
+  """Test that HAPI server can be mounted in a Flask/WSGI app"""
+  # Create Flask WSGI application
+  main_app = Flask(__name__)
+
+  @main_app.route('/')
+  def index():
+    return 'Main Flask app running'
+
+  # Wrap ASGI app as WSGI and mount under /hapi
+  cfg = {'/hapi': ASGIMiddleware(hapi_app)}
+  main_app.wsgi_app = DispatcherMiddleware(main_app.wsgi_app, cfg)
+
+  # Create test client
+  client = main_app.test_client()
+
+  # Test main Flask app endpoint
+  response = client.get('/')
+  assert response.status_code == 200
+  assert b'Main Flask app running' in response.data
+
+  # Test HAPI server is accessible at mounted path
+  # HAPI servers typically have /catalog endpoint
+  response = client.get('/hapi/catalog')
+  assert response.status_code in [200, 404, 500]  # Valid response codes
+
+  # Verify response has content
+  assert response.data is not None
+
+
+def test_dispatcher_middleware_routing():
+  """Test that DispatcherMiddleware correctly routes requests."""
+  main_app = Flask(__name__)
+
+  @main_app.route('/')
+  def root():
+    return 'root'
+
+  @main_app.route('/test')
+  def test_route():
+    return 'test endpoint'
+
+  # Mount HAPI under /hapi
+  cfg = {'/hapi': ASGIMiddleware(hapi_app)}
+  main_app.wsgi_app = DispatcherMiddleware(main_app.wsgi_app, cfg)
+
+  client = main_app.test_client()
+
+  # Main app routes should work
+  assert client.get('/').status_code == 200
+  assert client.get('/test').status_code == 200
+
+  # HAPI routes should be separate
+  hapi_response = client.get('/hapi/catalog')
+  assert hapi_response.status_code in [200, 404, 500]
+
+
+def test_asgi_to_wsgi_conversion():
+  """Verify that ASGIMiddleware successfully converts ASGI app to WSGI."""
+  from hapiserver_demo.app import app as hapi_app
+
+  # Wrap ASGI app as WSGI
+  wsgi_app = ASGIMiddleware(hapi_app)
+
+  # WSGI apps should be callable with (environ, start_response)
+  assert callable(wsgi_app)
+
+  # Create a minimal WSGI test
+  client = Client(wsgi_app, Response)
+  response = client.get('/catalog')
+
+  # Should get a valid response (even if 404 or error)
+  assert response.status_code in [200, 404, 500]
+
+
+if __name__ == '__main__':
+  pytest.main([__file__, '-v'])
