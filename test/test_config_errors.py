@@ -60,6 +60,14 @@ def test_index_html_not_found():
   assert "index.html file not found" in output
 
 
+def test_default_index_html_is_packaged():
+  from hapiserver.endpoints import hapi
+
+  response = hapi({}, {})
+  assert response["status_code"] == 200
+  assert "HAPI Server for" in response["content"]
+
+
 def test_unresolvable_function_reference():
   from hapiserver.config import config
 

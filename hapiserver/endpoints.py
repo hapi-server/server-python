@@ -16,8 +16,7 @@ def hapi(query, config):
     logger.debug(f"_query_error() returned error: {error}")
     return hapiserver.error(error, config)
 
-  default = os.path.normpath(os.path.join(os.path.dirname(__file__)))
-  default = os.path.join(default, "..", "html", "index.html")
+  default = os.path.join(os.path.dirname(__file__), "html", "index.html")
   fname = config.get("index.html", None)
   if fname is None:
     logger.debug(f"No index.html configured, using default: {default}")

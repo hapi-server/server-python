@@ -30,9 +30,9 @@ def test_functions():
   import sys
 
   demo_dir = prep_demo_repo()
-  config = demo_dir / "src" / "config-functions.json"
+  config = demo_dir / "src" / "config.json"
 
-  # config-functions.json references dotted paths such as
+  # config.json references dotted paths such as
   # "src.catalog.catalog", which requires the demo repo's root directory
   # (the parent of src/) to be importable. Add it to sys.path for imports
   # performed in this process (e.g. hapiserver.config()'s function
@@ -61,11 +61,16 @@ def _check_data_response(resp):
 
 def _run_tests(config):
   import requests
+  import socket
 
   import hapiserver
 
   # Get default configs and override with command line arguments.
   configs = hapiserver.cli(config=config)
+
+  with socket.socket() as sock:
+    sock.bind(("127.0.0.1", 0))
+    configs['server']['--port'] = sock.getsockname()[1]
 
   port = configs['server']['--port']
   url_base = f"http://0.0.0.0:{port}/hapi"
