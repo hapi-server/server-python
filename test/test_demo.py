@@ -60,18 +60,31 @@ def _check_data_response(resp):
 
 def _run_tests(config):
   import requests
+  import socket
 
   import hapiserver
 
   # Get default configs and override with command line arguments.
   configs = hapiserver.cli(config=config)
 
+  with socket.socket() as sock:
+    sock.bind(("127.0.0.1", 0))
+    configs['server']['--port'] = sock.getsockname()[1]
+
   port = configs['server']['--port']
-  url_base = f"http://0.0.0.0:{port}/hapi"
+  url_base = f"http://127.0.0.1:{port}/hapi"
 
   wait['url'] = url_base
 
   process = hapiserver.start(configs, wait)
+  try:
+    _run_requests(url_base)
+  finally:
+    hapiserver.stop(process)
+
+
+def _run_requests(url_base):
+  import requests
 
   _log_test_title(url_base)
 
@@ -326,9 +339,6 @@ def _run_tests(config):
   assert response.status_code == 400
   json_response = response.json()
   assert json_response['status']['code'] == 1410
-
-
-  hapiserver.stop(process)
 
 
 def _log_test_title(url):

@@ -25,7 +25,7 @@ classifiers = [
 Homepage = "https://github.com/hapi-server/server-python-generic"
 
 [project.optional-dependencies]
-dev = ["pytest", "check-manifest"]
+dev = ["pytest", "requests", "gunicorn", "check-manifest", "tox", "tox-uv"]
 
 [project.scripts]
 hapiserver = "hapiserver:run_cli"
