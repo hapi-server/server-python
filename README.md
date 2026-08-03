@@ -22,7 +22,7 @@ git clone https://github.com/hapi-server/server-python-demo
 cd server-python-demo
 pip install -e .
 hapiserver -h
-hapiserver --config src/config.json
+hapiserver --config hapiserver_demo/config.json
 ```
 
 # Notes

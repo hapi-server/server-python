@@ -17,7 +17,7 @@ wait = {
 
 def test_scripts():
   demo_dir = prep_demo_repo()
-  config = demo_dir / "src" / "config-scripts.json"
+  config = demo_dir / "hapiserver_demo" / "config-scripts.json"
 
   logger.info("Executing test_scripts()")
   _run_tests(config)
@@ -30,11 +30,10 @@ def test_functions():
   import sys
 
   demo_dir = prep_demo_repo()
-  config = demo_dir / "src" / "config.json"
+  config = demo_dir / "hapiserver_demo" / "config.json"
 
-  # config.json references dotted paths such as
-  # "src.catalog.catalog", which requires the demo repo's root directory
-  # (the parent of src/) to be importable. Add it to sys.path for imports
+  # config.json references the hapiserver_demo package, which requires the
+  # demo repo's root directory to be importable. Add it to sys.path for imports
   # performed in this process (e.g. hapiserver.config()'s function
   # validation) and to PYTHONPATH so the spawned uvicorn worker process
   # can resolve the same imports.
@@ -61,16 +60,11 @@ def _check_data_response(resp):
 
 def _run_tests(config):
   import requests
-  import socket
 
   import hapiserver
 
   # Get default configs and override with command line arguments.
   configs = hapiserver.cli(config=config)
-
-  with socket.socket() as sock:
-    sock.bind(("127.0.0.1", 0))
-    configs['server']['--port'] = sock.getsockname()[1]
 
   port = configs['server']['--port']
   url_base = f"http://0.0.0.0:{port}/hapi"
