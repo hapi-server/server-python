@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hapiserver"
+dynamic = ["version"]
+description = "Generic HAPI server implementation in Python"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.6"
+dependencies = [
+  "fastapi>=0.97",
+  "uvicorn>=0.22",
+  "utilrsw[uvicorn,time] @ git+https://github.com/rweigel/utilrsw.git@main",
+  "hapiclient"
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/hapi-server/server-python-generic"
+
+[project.optional-dependencies]
+dev = ["pytest", "check-manifest"]
+
+[project.scripts]
+hapiserver = "hapiserver:run_cli"
+
+[tool.setuptools.dynamic]
+version = { attr = "hapiserver.__version__" }
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "docs"]
+
+[tool.setuptools.package-data]
+hapiserver = ["html/**/*", "openapi.json"]

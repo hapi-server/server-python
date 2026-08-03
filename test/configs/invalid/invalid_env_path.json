@@ -1,0 +1,17 @@
+{
+  "path": "/hapi",
+  "ENV": {
+    "BIN_DIR": "bin",
+    "DATA_DIR": "data"
+  },
+  "scripts": {
+    "catalog": "$BIN_DIR/catalog.py",
+    "info": "$BIN_DIR/info.py",
+    "data": "$BIN_DIR/data.py"
+  },
+  "about": {
+    "id": "Demo",
+    "title": "Demo HAPI Server using hapiserver Python package",
+    "contact": ""
+  }
+}

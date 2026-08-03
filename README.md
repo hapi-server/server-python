@@ -1,65 +1,26 @@
-# HAPI Python Server, including sample reader programs
+# Overview
 
-original by jbfaden, Python3 update by sandyfreelance 04-06-2021 and onward
+`hapiserver` is Python HAPI server that uses FastAPI and a partial OpenAPI specification (see also the [`Java`](https://github.com/hapi-server/server-java) and [`NodeJS`](https://github.com/hapi-server/server-nodejs) generic HAPI servers).
 
+To create a HAPI server, a data provider must create four files
 
-# Introduction
-This program sets up a server to stream HAPI-specification data to any
-existing HAPI client programs.  Setup requires making a configuration
-file for your server file setup, a set of JSON configuration files to
-comply with the HAPI specification, and use of a 'reader' program to
-convert your files into HAPI-formatted data (sample readers provided).
+1. `config.json`
+2. `catalog.py` with a function returns `/catalog` metadata
+3. `info.py` with a function returns `/info` metadata
+4. `data.py` with a function that returns the `/data` response
 
-The code and documentation resides at 
-    https://github.com/hapi-server/server-python
+For a new project, we recommend cloning and modifying the demo repository https://github.com/hapi-server/server-python-demo
 
-Usage:
-  python hapi_server.py <MISSIONNAME> [localhost/http/https/custom]
-(If no arguments provided, defaults to 'csv' and 'localhost')
+Other examples:
+* https://github.com/hapi-server/server-python-supermag
+* https://github.com/rweigel/server-python-psws
 
-where MISSIONNAME points to the appropriation MISSIONNAME.config file
-and:
-   localhost: server runs on localhost/port 8080
-   http:      server runs on port 80
-   https:     server runs on port 443
-   custom:    server runs on custom port that you hardcode into this code
+# Install and Run Demo
 
-Configuration requirements
-* capabilities and catalog responses must be formatted as JSON in SERVER_HOME
-* info responses are in SERVER_HOME/info.
-* responses can have templates like "lasthour" to mean the last hour boundary
-  and "lastday-P1D" to mean the last midnight minus one day.
-
-IDs must be defined, as per HAPI, in info/*.json.
-
-The 'reader' routines (coded by the mission) then specify which data
-to actually return for each id, in the handler code.  Currently this
-HAPI server has sample readers that can handle:
-1) csv flat files in a directory hierarchy of "data/[id]/YYYY/[id].YYYYMMDD.csv"
-2) reading netCDF files and sending csv of a pre-defined sets of keys (GUVI)
-
-Additional readers will be provided as they are developed, and you are
-encouraged to create your own.  A reader has to read your data files
-and return CSV-formatted data for the subset of variables selected.
-
-Note server can implement per-file streaming or fetch-all then serve
-via the _config.py "stream_flag".  Generally, per-file continues sending
-data as it is processed and is generally recommended; fetch-all is useful
-if you need to add anything to post-process data before sending, or
-if data sets are small (so either way works).
-
-# Requires the following Python packages
-  hapi_server.py: dateutil
-
-# Usage:
-  python hapi_server.py <MISSIONNAME> [localhost/http/https/custom]
-
-# Sample Data Sets
-
-A sample of CSV flat-file data (home_csv.zip) and NetCDF files
-(home_netcdf.zip) are provided, including all configuration, reader,
-JSON, and data files.
-
-# Fun Fact
-Although intended as a big data server, this was originally a module needed
-to run on jfaden's Raspberry Pi, and should still will work on a Raspberry Pi!
+```bash
+git clone https://github.com/hapi-server/server-python-demo
+cd server-python-demo
+pip install -e .
+hapiserver -h
+hapiserver --config src/config.json
+```

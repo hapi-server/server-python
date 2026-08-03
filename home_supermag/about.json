@@ -1,9 +1,0 @@
-{
-    "HAPI": "3.3",
-    "status": {"code": 1200, "message": "OK"},
-    "id": "SuperMAG",
-    "title": "SuperMAG Data via HAPI",
-    "contact": "supermag@listserv.jhuapl.edu",
-    "citation": "https://supermag.jhuapl.edu/info/?page=rulesoftheroad",
-    "description": "This HAPI server provides data from magnetometer stations with three options for baselines (baseline_none, baseline_all, and baseline_yearly) and two options for coordinate systems (XYZ and NEZ). These options are indicated by the dataset ID. If the dataset ID contains 'baseline_all', daily and yearly trends are removed. If the dataset ID contains 'baseline_yearly', only the yearly trend is removed. If the dataset ID contains 'baseline_none', neither the yearly nor the daily trends are removed. For details on how the trends are computed and the recommendations for choosing among them, see https://supermag.jhuapl.edu/mag/?fidelity=low&tab=description. If the dataset ID contains 'XYZ', the components of the Field_Vector parameter are in geographic coordinates, and X=North, Y=East, and Z=vertical down. If the dataset ID contains 'NEZ', the components of the Field_Vector parameter are in local geomagnetic coordinates, and N=North, E=East, and Z=vertical down."
-}

@@ -1,3 +1,0 @@
-python3.12 hapi_server.py supermag custom
-
-
