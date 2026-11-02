@@ -1,18 +1,3 @@
-__version__ = "0.0.1"
-
-__all__ = [
-  "app",
-  "call",
-  "cli",
-  "config",
-  "endpoints",
-  "error",
-  "exec",
-  "get",
-  "openapi",
-  "util"
-]
-
 from hapiserver import endpoints
 from hapiserver import openapi
 from hapiserver import util
@@ -39,7 +24,7 @@ if not _hapiserver_logger.handlers:
   _hapiserver_logger.setLevel(logging.INFO)
 logger = logging.getLogger(__name__)
 
-__version__ = "0.0.1"
+__version__ = "0.9.0"
 HAPI_VERSION = "3.3"
 
 
