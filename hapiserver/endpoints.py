@@ -22,10 +22,18 @@ def hapi(query, config):
     logger.debug(f"No index.html configured, using default: {default}")
     fname = default
 
+  about_json = config['about']
   logger.debug("Reading: " + fname)
   try:
     with open(fname) as f:
       content = f.read()
+      reps = [("__CATALOG__", about_json.get("id", "")),
+              ("__VERSION__", hapiserver.HAPI_VERSION),
+              ("__SERVERCONTACT__", about_json.get("contact", "")),
+              ("__DATACONTACT__", about_json.get("contact", ""))
+            ]
+      for rep in reps:
+        content = content.replace(rep[0], rep[1])
       response = {
         "status_code": 200,
         "content": content,
